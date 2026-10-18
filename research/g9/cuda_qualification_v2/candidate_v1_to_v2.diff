@@ -1,0 +1,128 @@
+--- v1/research/g9/cuda_qualification/stage2_cuda_d013_inactive.cu
++++ v2/research/g9/cuda_qualification_v2/stage2_cuda_d013_inactive_v2.cu
+@@ -1,3 +1,45 @@
+ // D013 INACTIVE-FAMILY (`+0.0`) ADDITIVE CUDA PATH -- OFFLINE / SYNTHETIC-ONLY DRAFT.
++//
++// ============================ CANDIDATE v2 (NOT APPROVED) ================
++// Derived from the approved v1 source by an enumerated, auditable edit set;
++// the v1 file itself is preserved byte-identically and is NOT modified.
++//
++// WHAT THIS CANDIDATE CHANGES (device-pointer staging only; no numerical,
++// guard, ABI, status-code, counter or refusal-path change):
++//   v1 `g9_d013_run` launched all three D013 kernels with the CALLER'S HOST
++//   pointer `payload`, and launched `segment_kernel`/`flags_kernel` with the
++//   HOST `energies` array. The qualified v1 core stages the equivalent
++//   structures to device memory first (`stage2_cuda_core_stream_engine.cu`
++//   :583 `cudaMalloc(&device_payload,...)`, :590 `cudaMemcpy(...HostToDevice)`,
++//   :593/:686 launch with `device_payload`, :733/:757 launch segment/flags
++//   with `device_energies`). A device kernel cannot dereference a host
++//   pointer, so the v1 D013 build faults on its first launch and the run
++//   collapses to the single post-allocation `ok == false` return.
++//   This candidate therefore adds the MINIMAL device staging the core
++//   already performs, so the three D013 kernels receive a DEVICE payload
++//   pointer and the two unchanged core kernels receive a DEVICE energy
++//   pointer. Both are allocated, copied and freed exactly once.
++//
++//   NOTE ON `payload->lambda_ref` at the `flags_kernel` launch: that scalar
++//   is still read from the validated HOST payload, exactly as in v1. It is
++//   a host-side scalar kernel argument (passed BY VALUE, not dereferenced
++//   in the kernel body), so it is not a device-pointer defect. It is left
++//   untouched deliberately to keep this candidate minimal and to avoid any
++//   appearance of changing v1 numerics; recorded here as a reviewed,
++//   explicit, non-defect rather than silently altered.
++//
++// EVIDENCE STATUS -- READ THIS BEFORE QUOTING ANY RESULT:
++//   * STATIC/CPU EVIDENCE ONLY. These edits are proven by source inspection
++//     plus a synthetic host-stub (g++ / `cudaMalloc = malloc`) run on CPU.
++//   * NO T4 / GPU CONFIRMATION EXISTS. No nvcc, no CUDA device and no
++//     /dev/nvidia* were available. The claim that the v1 host-pointer
++//     launch is the cause of the observed T4 REFUSED remains a STRONG
++//     STATIC INFERENCE, and the claim that this candidate fixes it on real
++//     hardware is UNVERIFIED. Only a T4 run can settle either.
++//
++// This candidate is NOT owner-approved, is NOT bound by any release, source
++// map, runtime config or bundle, and is NOT routed by the accepted
++// launcher. It cannot execute without a NEW owner-reviewed release.
++// =======================================================================
+ //
+ // Authority:
+@@ -592,4 +634,8 @@
+   }
+ 
++  // CANDIDATE v2: the validated payload is staged to device memory here.
++  // v1 declared no device payload at all and passed the host `payload`
++  // pointer straight into all three D013 kernels.
++  PayloadData* device_payload = nullptr;
+   CoefficientData* device_rows = nullptr;
+   double* device_objective = nullptr;
+@@ -623,5 +669,9 @@
+   const dim3 chunk_grid((chunk_count + kBlockSize - 1u) / kBlockSize);
+ 
+-  bool ok = cudaMalloc(&device_rows, sizeof(CoefficientData) * kRowCount) == cudaSuccess &&
++  // CANDIDATE v2: first in the chain, mirroring the qualified v1 core
++  // (stream_engine.cu:583), so a payload-allocation failure short-circuits
++  // every later allocation exactly as the core's does.
++  bool ok = cudaMalloc(&device_payload, sizeof(PayloadData)) == cudaSuccess &&
++            cudaMalloc(&device_rows, sizeof(CoefficientData) * kRowCount) == cudaSuccess &&
+             cudaMalloc(&device_objective, sizeof(double) * kStateCount) == cudaSuccess &&
+             cudaMalloc(&device_card_square, sizeof(double) * kStateCount) == cudaSuccess &&
+@@ -635,4 +685,9 @@
+             cudaMalloc(&device_offsets, sizeof(std::uint64_t) * (kStateCount + 1ULL)) == cudaSuccess &&
+             cudaMalloc(&device_energies, sizeof(double) * kD013MaxWords) == cudaSuccess;
++  // CANDIDATE v2: stage the validated payload HostToDevice, mirroring the
++  // qualified v1 core (stream_engine.cu:590). The copy is guarded by the same
++  // `ok` chain, so a copy failure refuses without launching anything.
++  ok = ok && cudaMemcpy(device_payload, payload, sizeof(PayloadData),
++                        cudaMemcpyHostToDevice) == cudaSuccess;
+   ok = ok && cudaMemcpy(device_rows, rows, sizeof(CoefficientData) * row_count,
+                         cudaMemcpyHostToDevice) == cudaSuccess;
+@@ -682,5 +737,6 @@
+                           cudaMemcpyHostToDevice) == cudaSuccess;
+     if (ok) {
+-      G9_CORE_LAUNCH(g9_d013_terms_kernel, dim3(state_grid), dim3(kBlockSize), payload, device_activity,
++      // CANDIDATE v2: device payload pointer, not the host `payload`.
++      G9_CORE_LAUNCH(g9_d013_terms_kernel, dim3(state_grid), dim3(kBlockSize), device_payload, device_activity,
+                      device_objective, device_card_square, device_sector_penalty, device_lift_counts,
+                      device_invalid, device_register_visits);
+@@ -724,5 +780,6 @@
+     // The `+0.0` bit-pattern probe, one run per row.
+     if (ok) {
+-      G9_CORE_LAUNCH(g9_d013_probe_kernel, dim3(state_grid), dim3(kBlockSize), payload,
++      // CANDIDATE v2: device payload pointer.
++      G9_CORE_LAUNCH(g9_d013_probe_kernel, dim3(state_grid), dim3(kBlockSize), device_payload,
+                      &device_rows[row], condition, device_probe);
+       ok = ok && cudaGetLastError() == cudaSuccess && cudaDeviceSynchronize() == cudaSuccess;
+@@ -766,5 +823,6 @@
+           static_cast<std::uint32_t>((word_count + kCompactionChunkSize - 1ULL) / kCompactionChunkSize);
+       for (std::uint64_t index = 0; index < kStateCount; ++index) lift_visits[index] = 0ULL;
+-      G9_CORE_LAUNCH(g9_d013_energy_kernel, dim3(state_grid), dim3(kBlockSize), payload,
++      // CANDIDATE v2: device payload pointer.
++      G9_CORE_LAUNCH(g9_d013_energy_kernel, dim3(state_grid), dim3(kBlockSize), device_payload,
+                      &device_rows[row], condition, device_objective, device_card_square,
+                      device_sector_penalty, encoding, device_offsets, device_energies,
+@@ -782,5 +840,7 @@
+       }
+ 
+-      G9_CORE_LAUNCH(segment_kernel, dim3(segment_grid), dim3(kBlockSize), energies, word_count,
++      // CANDIDATE v2: device energy stream, as the core does
++      // (stream_engine.cu:733). v1 passed the HOST `energies` array here.
++      G9_CORE_LAUNCH(segment_kernel, dim3(segment_grid), dim3(kBlockSize), device_energies, word_count,
+                      words_segment_count, device_segment_value, device_segment_index, device_segment_nonfinite);
+       ok = ok && cudaGetLastError() == cudaSuccess && cudaDeviceSynchronize() == cudaSuccess;
+@@ -826,5 +886,7 @@
+ 
+       const dim3 words_segment_grid = segment_grid;
+-      G9_CORE_LAUNCH(flags_kernel, dim3(words_segment_grid), dim3(kBlockSize), energies, word_count,
++      // CANDIDATE v2: device energy stream, as the core does
++      // (stream_engine.cu:757). v1 passed the HOST `energies` array here.
++      G9_CORE_LAUNCH(flags_kernel, dim3(words_segment_grid), dim3(kBlockSize), device_energies, word_count,
+                      minimum, payload->lambda_ref, words_segment_count, device_per_ch,
+                      device_illegal, device_nesting, device_flag_bytes);
+@@ -958,4 +1020,7 @@
+   }
+ 
++  // CANDIDATE v2: free the staged payload on the single post-allocation
++  // return path, alongside every other device buffer.
++  cudaFree(device_payload);
+   cudaFree(device_rows);
+   cudaFree(device_objective);

@@ -1,0 +1,8 @@
+{
+  "schema": "decisions_os/g9_stage2_generation_approval/v1",
+  "status": "owner_approved",
+  "approves_record_content_sha256": "20ee3c59c18782b050b95470f4fef8864cdf8b6ac8b8051f3b916a067b0517d5",
+  "statement": "Owner draw approval asserted for the named implementation record. It confirms only that the sources and runtime at draw time are the approved ones.",
+  "label": "non_synthetic",
+  "scope": "stage2_generator_draw"
+}

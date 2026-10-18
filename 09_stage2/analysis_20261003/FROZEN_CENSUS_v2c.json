@@ -1,0 +1,51 @@
+{
+  "content_sha256": "7367b75cf4c38ee88dffccddb96648a6db80895e855e14aeeb85822df917f100",
+  "family_census": {
+    "d011__d011__r0x1_0000000000000p_0": {
+      "axis_length": 13,
+      "citation": "src/g6/d011_matched_subgrid.py:52-54 (MATCHED_COORDINATE_COUNT=13**3)",
+      "coordinates": 2197,
+      "sealed_ranges": 1
+    },
+    "primary__primary__r0x1_0000000000000p-1": {
+      "axis_length": 61,
+      "citation": "src/g5/core_pass.py:43-44 (R_VALUES, ROW_COUNT=61) -> 61**3",
+      "coordinates": 226981,
+      "sealed_ranges": 56
+    },
+    "primary__primary__r0x1_0000000000000p_0": {
+      "axis_length": 61,
+      "citation": "src/g5/core_pass.py:43-44 (R_VALUES, ROW_COUNT=61) -> 61**3",
+      "coordinates": 226981,
+      "sealed_ranges": 56
+    },
+    "primary__primary__r0x1_0000000000000p_1": {
+      "axis_length": 61,
+      "citation": "src/g5/core_pass.py:43-44 (R_VALUES, ROW_COUNT=61) -> 61**3",
+      "coordinates": 226981,
+      "sealed_ranges": 56
+    },
+    "v14__v14_0_5x__r0x1_0000000000000p_0": {
+      "axis_length": 31,
+      "citation": "src/g6/ledgers.py:290 (N_axis=31) -> 31**3",
+      "coordinates": 29791,
+      "sealed_ranges": 8
+    },
+    "v14__v14_2x__r0x1_0000000000000p_0": {
+      "axis_length": 111,
+      "citation": "src/g6/ledgers.py:291 (N_axis=111) -> 111**3",
+      "coordinates": 1367631,
+      "sealed_ranges": 334
+    }
+  },
+  "label": "FROZEN_REAL_PRODUCTION_CENSUS",
+  "max_coordinates_per_range": 4096,
+  "per_slot_cuda_flushes": 1040284,
+  "per_slot_rows": 2080562,
+  "per_slot_sealed_ranges": 511,
+  "records_per_range": 4096,
+  "row_capacity": 2,
+  "scale": 1,
+  "schema": "decisions_os/g9_stage2_census_profile/v1",
+  "per_slot_cuda_flushes_derivation": "LEAD FIX 2026-10-04: production batches per family (cuda_range_producer per family space, ROW_CAPACITY=2), so flushes = sum over families of ceil(rows/2) = 3*113491 + 1099 + 14896 + 683816 = 1040284. The v2 value 1040281 (= ceil(2080562/2)) wrongly paired rows across family boundaries. Piece splitting does not change the total (each family split point is at an even offset or preserves the per-family ceiling sum)."
+}

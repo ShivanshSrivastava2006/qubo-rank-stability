@@ -1,0 +1,307 @@
+{
+  "authorization": {
+    "gpu_allocation_authorized": false,
+    "note": "DRAFT. Nothing in this package may be pushed. The kaggle CLI and the Kaggle API are never invoked by this package.",
+    "push_authorized": false,
+    "run_authorized": false
+  },
+  "can_emit_approved_or_pushed": false,
+  "content_sha256": "461a6ce69c425bb6b157f6a89e224fb3da7ee3c39d57c00e18ee184a9601847c",
+  "dependencies": [
+    {
+      "current_sha256": "a94b59f672456de8370d020800bde80f0c892a6a258e2f78b8d59dde5e199846",
+      "path": "research/g9/cuda_qualification/stage2_cuda_core_bridge.cu",
+      "reason": null,
+      "recorded_reviewed_sha256": "a94b59f672456de8370d020800bde80f0c892a6a258e2f78b8d59dde5e199846",
+      "state": "matched"
+    },
+    {
+      "current_sha256": "e0d13fbbc693be58c7c062edb546b5412397074de2f39f60f472d7b30aaaa088",
+      "path": "research/g9/cuda_qualification/stage2_cuda_core_bridge.py",
+      "reason": null,
+      "recorded_reviewed_sha256": "e0d13fbbc693be58c7c062edb546b5412397074de2f39f60f472d7b30aaaa088",
+      "state": "matched"
+    },
+    {
+      "current_sha256": "65f0f1d67d9df65602df28854b1dcae976a9c0bfe0c25eebb45cd7249527e218",
+      "path": "research/g9/cuda_qualification/stage2_cuda_core_corruption_qualification.py",
+      "reason": null,
+      "recorded_reviewed_sha256": "65f0f1d67d9df65602df28854b1dcae976a9c0bfe0c25eebb45cd7249527e218",
+      "state": "matched"
+    },
+    {
+      "current_sha256": "8b8cae6d839e581f993c5bf4a52a970036fa110b433481be1b31c7199103871d",
+      "path": "research/g9/cuda_qualification/stage2_cuda_core_qualification.py",
+      "reason": null,
+      "recorded_reviewed_sha256": "8b8cae6d839e581f993c5bf4a52a970036fa110b433481be1b31c7199103871d",
+      "state": "matched"
+    },
+    {
+      "current_sha256": "fce00217f8530a695d676a774e4f741a83dec2aa7066c8f8a85ce136eac37d14",
+      "path": "research/g9/cuda_qualification/stage2_cuda_core_stream_engine.cu",
+      "reason": null,
+      "recorded_reviewed_sha256": "fce00217f8530a695d676a774e4f741a83dec2aa7066c8f8a85ce136eac37d14",
+      "state": "matched"
+    },
+    {
+      "current_sha256": "d377411e6494c19fbc891df52e1ad7226de1df771bc7afdf059cf8a4368a644d",
+      "path": "research/g9/cuda_qualification/stage2_cuda_core_stream_engine.py",
+      "reason": null,
+      "recorded_reviewed_sha256": "d377411e6494c19fbc891df52e1ad7226de1df771bc7afdf059cf8a4368a644d",
+      "state": "matched"
+    },
+    {
+      "current_sha256": "2d7bc8f559ced574283b8b4430ab6326058ae351dc5dde89386934910a3d023f",
+      "path": "research/g9/cuda_qualification/stage2_cuda_d013_inactive.cu",
+      "reason": null,
+      "recorded_reviewed_sha256": "2d7bc8f559ced574283b8b4430ab6326058ae351dc5dde89386934910a3d023f",
+      "state": "matched"
+    },
+    {
+      "current_sha256": "06b02b2ba800f0c888eb1eb9d9d9a727c0f72d6a11871deeece6e0cf342f74c4",
+      "path": "research/g9/cuda_qualification/stage2_cuda_d013_inactive.py",
+      "reason": null,
+      "recorded_reviewed_sha256": "06b02b2ba800f0c888eb1eb9d9d9a727c0f72d6a11871deeece6e0cf342f74c4",
+      "state": "matched"
+    },
+    {
+      "current_sha256": "f731690ec858bc4abaecd8edd3bd3c285ebae332b2ee1894241e431804d1a0c6",
+      "path": "research/g9/cuda_qualification/stage2_cuda_execution_contract.py",
+      "reason": null,
+      "recorded_reviewed_sha256": "f731690ec858bc4abaecd8edd3bd3c285ebae332b2ee1894241e431804d1a0c6",
+      "state": "matched"
+    },
+    {
+      "current_sha256": "61186bf383ec25935852c01dd735f1ffd1f278d922baf4de26f6a95b0c13c597",
+      "path": "research/g9/cuda_qualification/stage2_cuda_input_frame.py",
+      "reason": null,
+      "recorded_reviewed_sha256": "61186bf383ec25935852c01dd735f1ffd1f278d922baf4de26f6a95b0c13c597",
+      "state": "matched"
+    },
+    {
+      "current_sha256": "be6c06cf0587a0f4dadb47fb19554c4cbd4f368d9906a37bbc7b714c9c86f8b8",
+      "path": "research/g9/run_stage2_cuda_core_corruption_qualification.py",
+      "reason": null,
+      "recorded_reviewed_sha256": "be6c06cf0587a0f4dadb47fb19554c4cbd4f368d9906a37bbc7b714c9c86f8b8",
+      "state": "matched"
+    },
+    {
+      "current_sha256": "b207aa09afc65a12341297dfc20e79bd163083c6f7221c574b96e60f7e6e431e",
+      "path": "research/g9/run_stage2_cuda_core_qualification.py",
+      "reason": null,
+      "recorded_reviewed_sha256": "b207aa09afc65a12341297dfc20e79bd163083c6f7221c574b96e60f7e6e431e",
+      "state": "matched"
+    },
+    {
+      "current_sha256": "fce7bbf2f39ca70d9a97ca3f6e2a7d8a4427256013bf7b9be1ee7430e266b3c5",
+      "path": "research/g9/stage2_beacon_bls_verify.py",
+      "reason": null,
+      "recorded_reviewed_sha256": "fce7bbf2f39ca70d9a97ca3f6e2a7d8a4427256013bf7b9be1ee7430e266b3c5",
+      "state": "matched"
+    },
+    {
+      "current_sha256": "31fa49efa2510bc04ca44a255129b7101602e1c09c00adf969cdd1b57cfd2108",
+      "path": "research/g9/stage2_commitment_adapter.py",
+      "reason": null,
+      "recorded_reviewed_sha256": "31fa49efa2510bc04ca44a255129b7101602e1c09c00adf969cdd1b57cfd2108",
+      "state": "matched"
+    },
+    {
+      "current_sha256": "ed6c2033fa3d650c1e367f5b00f53d714e445dd70eed4aa1d1fcba2dc658f009",
+      "path": "research/g9/stage2_coordinate_records.py",
+      "reason": null,
+      "recorded_reviewed_sha256": "ed6c2033fa3d650c1e367f5b00f53d714e445dd70eed4aa1d1fcba2dc658f009",
+      "state": "matched"
+    },
+    {
+      "current_sha256": "f1b701dcd3887c98641b34b0ad4840fe4350835f8818e1e976edef85c92e6fc6",
+      "path": "research/g9/stage2_d013_inactive_evaluator.py",
+      "reason": null,
+      "recorded_reviewed_sha256": "f1b701dcd3887c98641b34b0ad4840fe4350835f8818e1e976edef85c92e6fc6",
+      "state": "matched"
+    },
+    {
+      "current_sha256": "2b6129e1d559a85b23c055275844fc032a34eccaeec53383f27b6076f21980e6",
+      "path": "research/g9/stage2_generation_contract.py",
+      "reason": null,
+      "recorded_reviewed_sha256": "2b6129e1d559a85b23c055275844fc032a34eccaeec53383f27b6076f21980e6",
+      "state": "matched"
+    },
+    {
+      "current_sha256": "fc746ecf909f3501f06f0fa7afe439acdcb0a4a5b0be971aa9f1efa26f1bb213",
+      "path": "research/g9/stage2_generation_release.py",
+      "reason": null,
+      "recorded_reviewed_sha256": "fc746ecf909f3501f06f0fa7afe439acdcb0a4a5b0be971aa9f1efa26f1bb213",
+      "state": "matched"
+    },
+    {
+      "current_sha256": "f2dbed527574acec5739c2310ad06a2c3d4c684e82634727d46b0a6c5cf152e6",
+      "path": "research/g9/stage2_generation_writer.py",
+      "reason": null,
+      "recorded_reviewed_sha256": "f2dbed527574acec5739c2310ad06a2c3d4c684e82634727d46b0a6c5cf152e6",
+      "state": "matched"
+    },
+    {
+      "current_sha256": "acb1e7191da1c61c89574d5986c86c2dfcaf1b7a915838ce9ca6071c8b665229",
+      "path": "research/g9/stage2_generator_guard.py",
+      "reason": null,
+      "recorded_reviewed_sha256": "acb1e7191da1c61c89574d5986c86c2dfcaf1b7a915838ce9ca6071c8b665229",
+      "state": "matched"
+    },
+    {
+      "current_sha256": "6a34b3df324b6da00b0552e9dd5237532073bb7c8f6f9a6562f1fdf4d620d21e",
+      "path": "research/g9/stage2_instance_preparation.py",
+      "reason": null,
+      "recorded_reviewed_sha256": "6a34b3df324b6da00b0552e9dd5237532073bb7c8f6f9a6562f1fdf4d620d21e",
+      "state": "matched"
+    },
+    {
+      "current_sha256": "e27a70b0dcc39487fc1595a5630c2a5ab692cbdddd8380eb099e3a006f57c172",
+      "path": "research/g9/stage2_production_identity.py",
+      "reason": null,
+      "recorded_reviewed_sha256": "e27a70b0dcc39487fc1595a5630c2a5ab692cbdddd8380eb099e3a006f57c172",
+      "state": "matched"
+    },
+    {
+      "current_sha256": "6aead30747985536b0b87bb698d2ef7567cfa65af3c312dbf1b0ca4768b55145",
+      "path": "research/g9/stage2_production_writer.py",
+      "reason": null,
+      "recorded_reviewed_sha256": "6aead30747985536b0b87bb698d2ef7567cfa65af3c312dbf1b0ca4768b55145",
+      "state": "matched"
+    },
+    {
+      "current_sha256": "5eae8b2836f8ea4641031361bf33ef23fcc7baa02b60d92a3ecf0d1e84eb484f",
+      "path": "research/g9/stage2_reference_seal.py",
+      "reason": null,
+      "recorded_reviewed_sha256": "5eae8b2836f8ea4641031361bf33ef23fcc7baa02b60d92a3ecf0d1e84eb484f",
+      "state": "matched"
+    },
+    {
+      "current_sha256": "36a891ddf5064f86e27ddab830fed5d2b7602adf99f10a39d62eea8b1f30cd93",
+      "path": "research/g9/stage2_section_b1_recheck.py",
+      "reason": null,
+      "recorded_reviewed_sha256": "36a891ddf5064f86e27ddab830fed5d2b7602adf99f10a39d62eea8b1f30cd93",
+      "state": "matched"
+    },
+    {
+      "current_sha256": "4d46ee775ffcfac5c7cc56c932ae3dab2965b7e9442c0cb32682e3dc48f6d8c1",
+      "path": "research/g9/stage2_section_b2_harness.py",
+      "reason": null,
+      "recorded_reviewed_sha256": "4d46ee775ffcfac5c7cc56c932ae3dab2965b7e9442c0cb32682e3dc48f6d8c1",
+      "state": "matched"
+    },
+    {
+      "current_sha256": "a1c248767ef952c51a279947f04371685833676b776084de6dc47f58f0453ee8",
+      "path": "research/g9/stage2_timestamp_witness.py",
+      "reason": null,
+      "recorded_reviewed_sha256": "a1c248767ef952c51a279947f04371685833676b776084de6dc47f58f0453ee8",
+      "state": "matched"
+    },
+    {
+      "current_sha256": "b8d6ea456475436f1bf63b6dbcb8a01d825de56d3f6f9be5f165368ca8d6386f",
+      "path": "research/g9/verify_stage2_cuda_core_corruption_qualification_fixtures.py",
+      "reason": null,
+      "recorded_reviewed_sha256": "b8d6ea456475436f1bf63b6dbcb8a01d825de56d3f6f9be5f165368ca8d6386f",
+      "state": "matched"
+    },
+    {
+      "current_sha256": "16867cd54ac113d9ed9e28ef76cf072ce5a6b4663cbcec3638b3a0a3541dd630",
+      "path": "research/g9/verify_stage2_cuda_core_stream_engine_host_emulation.py",
+      "reason": null,
+      "recorded_reviewed_sha256": "16867cd54ac113d9ed9e28ef76cf072ce5a6b4663cbcec3638b3a0a3541dd630",
+      "state": "matched"
+    }
+  ],
+  "dependencies_all_matched": true,
+  "dependency_count": 29,
+  "dependency_table_sha256": "5cd520030482f7103f4bbc89e056e11c147ab78d3bc26c42c8cf51cec153d655",
+  "environment_pin": {
+    "comparison_mode": "fail_closed",
+    "image_reported": {
+      "build_env": {
+        "BUILD_DATE": "20260629-122508",
+        "COLAB_IMAGE_TYPE": "gpu",
+        "CUDA_VERSION": "12.8.1",
+        "GIT_COMMIT": "fc61d5cda7da39530055bae9bd0e92865f995cd9"
+      },
+      "cuda_home": "/usr/local/cuda",
+      "image_config_id": "sha256:c72831376c5485ec652a6f4a771bf091ae0726310e1b9db3db064387e173e941",
+      "image_manifest_sha256": "37c64f7dd9c54116ecd1bcc88817c5469b88387388fade02bfa8bf3fc647d461",
+      "image_name": "gcr.io/kaggle-gpu-images/python",
+      "kaggle_image": "gcr.io/kaggle-private-byod/python@sha256:37c64f7dd9c54116ecd1bcc88817c5469b88387388fade02bfa8bf3fc647d461",
+      "nvcc_path": "/usr/local/cuda/bin/nvcc"
+    },
+    "pinning_request": {
+      "docker_image_pinning": "REQUEST_PIN_TO_ACCEPTED_IMAGE_DIGEST",
+      "enable_gpu": true,
+      "enable_internet": false,
+      "enable_tpu": false,
+      "is_private": true,
+      "kernel_type": "script",
+      "language": "python",
+      "machine_shape": "NvidiaTeslaT4",
+      "pinning_rationale": "The provider-trust amendment accepts platform-reported image values but requires that a reported change force requalification. An unpinned notebook can silently move to a new image and invalidate the qualification identity, so WP1 makes pinning an operational requirement. The dry run v1 postmortem shows an unpinned CPU image and dry run v2 shows a submitted pin that still ran a CPU environment, so the pin is requested and then VERIFIED BY COMPARISON at session start; it is never assumed to have taken effect.",
+      "requested_docker_image": "gcr.io/kaggle-gpu-images/python@sha256:37c64f7dd9c54116ecd1bcc88817c5469b88387388fade02bfa8bf3fc647d461"
+    },
+    "platform_reported": {
+      "compute_capability": "7.5",
+      "cuda_driver_version": "13000",
+      "cuda_runtime_version": "12080",
+      "gpu_name": "Tesla T4",
+      "numpy_version": "2.0.2",
+      "nvcc_version_release": "12.8, V12.8.93",
+      "python_version": "3.12.13"
+    },
+    "provenance": "PLATFORM-REPORTED"
+  },
+  "gpu_allocation_authorized": false,
+  "invalidating_reasons": [],
+  "invalidation_rule": "Any change to any dependency file -- one byte is enough -- changes its content hash, so this manifest's status returns to draft_invalid and the package requires revalidation before any owner review. The same is true of any file of the package itself, and of the dependency set as a whole.",
+  "is_draft": true,
+  "kaggle_rewrites_on_pull": {
+    "code_file": "slugified (dashes) by Kaggle; the submitted form used underscores",
+    "docker_image": "added by Kaggle on pull; never submitted in the accepted v1 run",
+    "id_no": "added by Kaggle; not present in the submitted form",
+    "keywords": "Kaggle added 'gpu' in the accepted v1 pull; submitted value was []",
+    "title": "echoed back; case and spacing preserved in every observed pair"
+  },
+  "kernel_metadata_draft": {
+    "code_file": "g9_wp7_nonscientific_dry_run_draft.py",
+    "competition_sources": [],
+    "dataset_sources": [],
+    "docker_image_pinning_type": "DRAFT_REQUEST_PIN_TO_ACCEPTED_IMAGE_DIGEST",
+    "draft": true,
+    "enable_gpu": true,
+    "enable_internet": false,
+    "enable_tpu": false,
+    "id": "OWNER_SLUG/g9-wp7-nonscientific-dry-run-DRAFT",
+    "is_private": true,
+    "kernel_sources": [],
+    "kernel_type": "script",
+    "keywords": [],
+    "language": "python",
+    "machine_shape": "NvidiaTeslaT4",
+    "model_sources": [],
+    "title": "G9 WP7 Nonscientific Dry Run DRAFT"
+  },
+  "package_file_count": 5,
+  "package_files_all_matched": true,
+  "package_files_sha256": {
+    "GATE_9_WP7_PACKAGE_DRAFT.md": "d12cbaa4a8eca0ce847989465f3292e8441aeb73b1d0165e7e5496ea191d3dbb",
+    "build_wp7_package.py": "1b33af87c514042aadb5d6a1083c214be9bfe6c7db17b3d593ba9b85537ce76c",
+    "verify_wp7_package_fixtures.py": "f0a5dcc5eeb01161845fcc987260ff553a10609c636f8070967537e29cf358fa",
+    "wp7_environment_pin.json": "c0c57c774380ed025cf00925512ff57c6185ff0b4955669d5282bd1bdda0cadc",
+    "wp7_session.py": "7b2975adf30c3694f914a3ee8648a20c4bbe774a643144eb5f2b970b79973e52"
+  },
+  "path_containment_rule": "Every dependency path is repo-relative, normalized, free of '.' and '..' components, and must resolve to a regular file inside the root. Absolute paths, parent-relative paths, backslashes, NUL bytes and symlinks that escape the root are refused before any file is read.",
+  "pin_closure_rule": "The dependency set is itself pinned: dependency_table_sha256 is the digest of the reviewed dependency set and dependency_count fixes its size. A manifest whose entries do not reproduce exactly that set at exactly that count is refused, so removing, adding or renaming a dependency entry invalidates the package even when every surviving entry still matches.",
+  "push_authorized": false,
+  "reviewed_table_sha256": "f2c0be0ee2a33dad44f3f02d4b29222647a1554177e0c3c87f83cf2f660f7c49",
+  "run_authorized": false,
+  "schema": "decisions_os/g9_wp7_push_manifest_draft/v2",
+  "status": "draft_ready_for_owner_review",
+  "status_vocabulary": [
+    "draft_invalid",
+    "draft_ready_for_owner_review"
+  ]
+}

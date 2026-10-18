@@ -1,0 +1,45 @@
+{
+  "authorizes": "nothing",
+  "caveats": [],
+  "colab_image_type": "gpu",
+  "colab_image_type_agrees_with_allocation": true,
+  "compilation_performed": false,
+  "cuda_bin_on_path": true,
+  "cuda_compiler": "PRESENT",
+  "cuda_compiler_usable": "USABLE",
+  "cuda_home": "/usr/local/cuda",
+  "cuda_home_is_absolute_dir": true,
+  "gpu_allocation": "PASS",
+  "gpu_allocation_notes": [],
+  "launcher_guard_cuda_home": "SATISFIED",
+  "launcher_guard_problems": [],
+  "nvcc": {
+    "path": "/usr/local/cuda/bin/nvcc",
+    "presence": "PRESENT",
+    "returncode": 0,
+    "usability": "USABLE",
+    "version_line": "Cuda compilation tools, release 12.8, V12.8.93"
+  },
+  "nvcc_matches_cuda_home_bin": true,
+  "nvidia_device_node_count": 2,
+  "nvidia_device_nodes": [
+    "/dev/nvidia0",
+    "/dev/nvidia1"
+  ],
+  "nvidia_smi": {
+    "gpu_count": 2,
+    "gpu_lines": [
+      "GPU 0: Tesla T4 (UUID: GPU-9db3cb81-5616-bff2-1c4c-65c72a493592)",
+      "GPU 1: Tesla T4 (UUID: GPU-6372ad62-117b-50f2-7ed7-f0b74687ffd0)"
+    ],
+    "present": true,
+    "returncode": 0,
+    "state": "ok"
+  },
+  "nvidiactl_present": true,
+  "probe": "gate9_kaggle_gpu_allocation_probe",
+  "probe_conditions_met": true,
+  "requested_accelerator": "GPU T4 x2 (NvidiaTeslaT4)",
+  "requested_gpu_count": 2,
+  "schema_version": 3
+}

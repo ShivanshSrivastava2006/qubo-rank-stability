@@ -1,0 +1,16 @@
+{
+  "schema": "decisions_os/g9_stage2_generator_runtime_owner_amendment/v1",
+  "status": "owner_approved",
+  "approved_at": "2026-10-03T04:01:46.979451+05:30",
+  "owner_message": "approved",
+  "approval_context": "Owner approved explicit question to use Kaggle Python3.12.13/NumPy2.0.2 for five-instance generator and linked runtime-only protocol candidate",
+  "approved_candidate_protocol_sha256": "d9544c09af6b29e5fbe83700ba784db26608760c7702cd4ea0c71f86df275ea5",
+  "original_protocol_sha256": "8a5785fd6d495f548ebd94d61fac9aab9986413c2c1d2b0a7528500fd86635d0",
+  "runtime": {
+    "python": "3.12.13",
+    "numpy": "2.0.2"
+  },
+  "implementation_record_content_sha256": "20ee3c59c18782b050b95470f4fef8864cdf8b6ac8b8051f3b916a067b0517d5",
+  "scope": "Runtime-only generator amendment; original approved protocol preserved, real identity/release/source/instance/write gates retained",
+  "scientific_equivalence_asserted": false
+}

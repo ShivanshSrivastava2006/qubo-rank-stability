@@ -1,0 +1,12 @@
+command: /home/shivansh-srivastava/venv/bin/kaggle kernels push -p /tmp/g9-image-channel-probe.bdO3di -t 600 --accelerator NvidiaTeslaT4
+return_code: 0
+stdout:
+Your kernel title does not resolve to the specified id. This may result in surprising behavior. We suggest making your title something that resolves to the specified id. See https://en.wikipedia.org/wiki/Clean_URL#Slug for more information on how slugs are determined.
+Kernel version 1 successfully pushed.  Please check progress at https://www.kaggle.com/code/shivanshsrivastava06/g9-cuda-image-channel-discovery-probe
+stderr: [empty]
+resolved_ref: shivanshsrivastava06/g9-cuda-image-channel-discovery-probe
+submitted_id: shivanshsrivastava06/g9-cuda-image-channel-probe
+note: Kaggle assigned the slug from the title, not from the submitted id. The
+      submitted id is NOT a valid ref; kernels status on it returns permission
+      denied. The title-derived ref above is authoritative.
+status_after_run: KernelWorkerStatus.COMPLETE

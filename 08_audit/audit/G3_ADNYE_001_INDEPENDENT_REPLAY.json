@@ -1,0 +1,22 @@
+{
+  "calculated": {
+    "F_count": 976,
+    "cardinality_count": 38760,
+    "f_star": -0.011208571005366133,
+    "range_F": 0.009142375225086057,
+    "range_cardinality": 0.014095699981532154,
+    "range_full": 0.018407980994804198,
+    "std_F": 0.001686572901938418,
+    "std_cardinality": 0.0021206984459013847,
+    "x_star_count": 1
+  },
+  "official": {
+    "delta_full": 0.018407980994804198,
+    "range_F": 0.009142375225086057,
+    "range_cardinality": 0.014095699981532154,
+    "range_full": 0.018407980994804198,
+    "std_F": 0.0016865729019384184,
+    "std_cardinality": 0.002120698445901396
+  },
+  "status": "REPLAY_CLEAN_NOT_ACCEPTED"
+}

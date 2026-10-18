@@ -1,0 +1,17 @@
+{
+  "code_file": "g9_cuda_image_channel_probe_kaggle.py",
+  "competition_sources": [],
+  "dataset_sources": [],
+  "enable_gpu": true,
+  "enable_internet": false,
+  "enable_tpu": false,
+  "id": "shivanshsrivastava06/g9-cuda-image-channel-probe",
+  "is_private": true,
+  "kernel_sources": [],
+  "kernel_type": "script",
+  "keywords": [],
+  "language": "python",
+  "machine_shape": "NvidiaTeslaT4",
+  "model_sources": [],
+  "title": "G9 CUDA Image Channel Discovery Probe"
+}

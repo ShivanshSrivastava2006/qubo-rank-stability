@@ -1,0 +1,54 @@
+{
+  "original_sha256": "2d7bc8f559ced574283b8b4430ab6326058ae351dc5dde89386934910a3d023f",
+  "candidate_sha256": "953b7f15a14950d75536d72b074a7907dc06df13539b2ce3f4122cc427ab0f61",
+  "original_bytes": 51777,
+  "candidate_bytes": 55978,
+  "edits": [
+    {
+      "label": "version banner",
+      "occurrences": 1
+    },
+    {
+      "label": "declare device_payload",
+      "occurrences": 1
+    },
+    {
+      "label": "cudaMalloc device_payload",
+      "occurrences": 1
+    },
+    {
+      "label": "cudaMemcpy payload HostToDevice",
+      "occurrences": 1
+    },
+    {
+      "label": "terms kernel device pointer",
+      "occurrences": 1
+    },
+    {
+      "label": "probe kernel device pointer",
+      "occurrences": 1
+    },
+    {
+      "label": "energy kernel device pointer",
+      "occurrences": 1
+    },
+    {
+      "label": "segment kernel device pointer",
+      "occurrences": 1
+    },
+    {
+      "label": "flags kernel device pointer",
+      "occurrences": 1
+    },
+    {
+      "label": "cudaFree device_payload",
+      "occurrences": 1
+    }
+  ],
+  "unchanged": {
+    "refused_returns": 7,
+    "counter_writes": 12,
+    "cudaMalloc": 26,
+    "cudaFree": 25
+  }
+}

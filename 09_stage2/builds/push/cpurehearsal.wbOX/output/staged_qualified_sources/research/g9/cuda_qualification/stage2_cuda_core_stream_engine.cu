@@ -1,0 +1,1155 @@
+// Synthetic full-domain energy / strict-minimum / D015-flag self-test.
+//
+// Independent of every other Stage-2 CUDA component.  For a fixed synthetic
+// 20-asset payload with an explicit non-contiguous 4x5 membership it scans the
+// WHOLE canonical decoded domain (2^20 unbalanced states) and the COMPLETE
+// active-CSB slack lift cache, at two fixed synthetic coefficient rows,
+// computing both encodings' energies, deterministic strict-first-seen minima,
+// and frozen D015 flags at c_H in {1024, 2048, 4096}.
+//
+// There is no instance reader, ledger reader, output writer or production
+// mode.  --self-test prints synthetic checksums, integer counters, fixed
+// identity metadata and a verdict only — never an energy, a minimum, an index,
+// a tie list, a label, a rate or a record.
+//
+// Pre-nvcc numerical compile contract.  Any future integrated CUDA runner MUST
+// build this translation unit with:
+//   nvcc --fmad=false --ftz=false --prec-div=true --prec-sqrt=true
+// and the host emulation build MUST use:
+//   g++ -ffp-contract=off -fno-fast-math
+// Contracted flags: --fmad=false --ftz=false --prec-div=true --prec-sqrt=true
+// Every one of them is required for the frozen binary64 transcripts to be
+// reproduced exactly: contraction, flush-to-zero, or fast division/sqrt would
+// each silently change a reported word.  This declaration is
+// NOT a claim of real CUDA numerical qualification: nothing in this component
+// invokes nvcc, and that qualification remains future work for the integrated
+// runner.
+//
+// Frozen rules reproduced here, not invented:
+//   * canonical decoded order x[i] = (index >> (19 - i)) & 1;
+//   * the residual transcript, the clamped floor/floor+1 minimizer rule with
+//     EVERY tied minimizer retained, the frozen 19-bit register layout and the
+//     frozen Cartesian-product lift order (sector 0 slowest, budget fastest),
+//     with uint64 offsets and a capacity proof;
+//   * the prepared-energy transcripts: objective first, then alpha*card_square,
+//     then each sector family, then the budget family, accumulators from +0.0;
+//   * D015: gap = abs(fl(y - y_min)); scale = fl(lambda_ref + max(abs(y),
+//     abs(y_min))); tau = fl((c_H * eps) * scale); tie iff gap <= tau.
+//
+// Two optimisations are exact, not approximations.  Objective terms whose x
+// factor is zero are skipped: each is +-0.0 and the accumulator starts at
+// +0.0, so they cannot change the value.  Flags short-circuit on the loosest
+// threshold: c_H is a power of two and eps = 2^-52, so c_H*eps is exact and
+// tau is exactly monotone in c_H.
+//
+// Synthetic control adjustment (declared, checksum-bound).  The natural
+// landscape has unique minima and no near-ties, so a small fixed set of
+// control positions per (row, encoding) takes the value natural_minimum +
+// offset.  Offsets are non-negative, so the controlled minimum VALUE is the
+// natural minimum; only the first-seen winner and the flag population change.
+// A natural pre-control checksum over every full-domain word is retained
+// beside the controlled checksum, so a natural-energy defect cannot hide
+// behind a control.
+//
+// Numerical contract: binary64 only; no fp32, FMA, reassociation, fast math,
+// FTZ, atomics, shared-memory reductions, sorting, libm, or nondeterministic
+// minimum selection.  Coefficient words are fixed host-validated inputs; the
+// device never derives a coefficient map.
+
+#include <cuda_runtime.h>
+
+#include <cstdint>
+#include <cstdio>
+#include <cstdlib>
+#include <cstring>
+
+#pragma STDC FP_CONTRACT OFF
+
+#if defined(__CUDACC__)
+#define G9_CORE_LAUNCH(kernel, grid, block, ...) kernel<<<grid, block>>>(__VA_ARGS__)
+#else
+#define G9_CORE_LAUNCH(kernel, grid, block, ...) g6_host_emulation_launch(kernel, grid, block, __VA_ARGS__)
+#endif
+
+constexpr std::uint32_t kAssetCount = 20;
+constexpr std::uint32_t kSectorCount = 4;
+constexpr std::uint32_t kSectorSize = 5;
+constexpr std::uint32_t kSectorSlackBits = 2;
+constexpr std::uint32_t kBudgetSlackBits = 11;
+constexpr std::uint32_t kAuxiliaryBits = kSectorCount * kSectorSlackBits + kBudgetSlackBits;
+constexpr std::uint32_t kRegisterCount = kSectorCount + 1;
+constexpr std::uint32_t kDecodedWidth = kAssetCount;
+constexpr std::uint64_t kStateCount = 1ULL << kDecodedWidth;
+constexpr std::uint32_t kSegmentSize = 1024;
+constexpr std::uint32_t kMaxLiftsPerState = 1u << kRegisterCount;
+constexpr std::uint64_t kCacheCapacity = kStateCount * static_cast<std::uint64_t>(kMaxLiftsPerState);
+constexpr std::uint32_t kRowCount = 2;
+constexpr std::uint32_t kEncodingCount = 2;
+constexpr std::uint32_t kCHCount = 3;
+constexpr std::uint32_t kControlCount = 11;
+// Deterministic stable compaction of (flags << 32) | canonical_index.
+constexpr std::uint64_t kCompactionChunkSize = 4096;
+constexpr std::uint64_t kMaxCompactedEntries = 1ULL << 14;
+constexpr std::uint32_t kBlockSize = 64;
+constexpr double kEpsilon = 0x1p-52;
+// Lambda_ref is INSTANCE-SPECIFIC and lives in PayloadData: the approved
+// protocol recomputes it per instance, so the comparator holds no global
+// fallback.  This is only the value the synthetic payload carries.
+constexpr double kSyntheticLambdaRef = 0x1p-5;
+constexpr std::uint64_t kFNVOffset = 1469598103934665603ULL;
+constexpr std::uint64_t kFNVPrime = 1099511628211ULL;
+constexpr std::uint64_t kUint64Max = ~0ULL;
+
+struct PayloadData {
+  double mu[kAssetCount];
+  double sigma[kAssetCount * kAssetCount];
+  double prices[kAssetCount];
+  double kappa_risk;
+  double k_value;
+  double c_value;
+  double b;
+  double lambda_ref;
+  std::uint32_t membership[kSectorCount][kSectorSize];
+};
+
+struct CoefficientData {
+  double alpha;
+  double sector_slack;
+  double budget_slack;
+  double sector_linear;
+  double sector_quadratic;
+  double budget_linear;
+  double budget_quadratic;
+};
+
+__host__ __device__ static std::uint64_t double_to_word(const double value) {
+  std::uint64_t word = 0;
+#if defined(__CUDA_ARCH__)
+  word = static_cast<std::uint64_t>(__double_as_longlong(value));
+#else
+  std::memcpy(&word, &value, sizeof(word));
+#endif
+  return word;
+}
+
+__host__ __device__ static bool value_is_nonfinite(const double value) {
+  return ((double_to_word(value) >> 52) & 0x7ffULL) == 0x7ffULL;
+}
+
+__host__ __device__ static bool decoded_selected(const std::uint32_t index, const std::uint32_t asset) {
+  return ((index >> (kDecodedWidth - 1u - asset)) & 1u) != 0u;
+}
+
+__host__ __device__ static std::uint32_t register_maximum(const std::uint32_t reg) {
+  const std::uint32_t bits = reg < kSectorCount ? kSectorSlackBits : kBudgetSlackBits;
+  return (1u << bits) - 1u;
+}
+
+__host__ __device__ static std::uint32_t register_offset(const std::uint32_t reg) {
+  return reg < kSectorCount ? (reg * kSectorSlackBits) : (kSectorCount * kSectorSlackBits);
+}
+
+// Frozen objective, skipping the provably neutral zero terms.
+__host__ __device__ static double objective_of(const PayloadData* payload, const std::uint32_t index) {
+  double accumulator = +0.0;
+  for (std::uint32_t asset = 0; asset < kAssetCount; ++asset) {
+    if (decoded_selected(index, asset)) accumulator = accumulator + (-(payload->mu[asset] * 1.0));
+  }
+  for (std::uint32_t row = 0; row < kAssetCount; ++row) {
+    if (!decoded_selected(index, row)) continue;
+    for (std::uint32_t column = 0; column < kAssetCount; ++column) {
+      if (!decoded_selected(index, column)) continue;
+      const double sigma_x = payload->sigma[row * kAssetCount + column] * 1.0;
+      accumulator = accumulator + (payload->kappa_risk * (sigma_x * 1.0));
+    }
+  }
+  return accumulator;
+}
+
+__host__ __device__ static double card_square_of(const PayloadData* payload, const std::uint32_t index) {
+  double cardinality = +0.0;
+  for (std::uint32_t asset = 0; asset < kAssetCount; ++asset) {
+    cardinality = cardinality + (decoded_selected(index, asset) ? 1.0 : 0.0);
+  }
+  const double h = cardinality - payload->k_value;
+  return h * h;
+}
+
+__host__ __device__ static void residuals_of(const PayloadData* payload, const std::uint32_t index,
+                                             double* sector, double* budget) {
+  for (std::uint32_t s = 0; s < kSectorCount; ++s) {
+    double total = +0.0;
+    for (std::uint32_t member = 0; member < kSectorSize; ++member) {
+      const std::uint32_t asset = payload->membership[s][member];
+      total = total + (decoded_selected(index, asset) ? 1.0 : 0.0);
+    }
+    sector[s] = payload->c_value - total;
+  }
+  double spend = +0.0;
+  for (std::uint32_t asset = 0; asset < kAssetCount; ++asset) {
+    spend = spend + (payload->prices[asset] * (decoded_selected(index, asset) ? 1.0 : 0.0));
+  }
+  *budget = payload->b - spend;
+}
+
+__host__ __device__ static long long floor_double(const double value) {
+  long long lower = static_cast<long long>(value);
+  if (static_cast<double>(lower) > value) lower -= 1;
+  return lower;
+}
+
+// Frozen per-register rule with both fail-closed guards; 0 means invalid.
+__host__ __device__ static std::uint32_t register_minimizers(const double residual, const std::uint32_t maximum,
+                                                             std::uint32_t* values, double* penalties) {
+  values[0] = 0u; values[1] = 0u;
+  penalties[0] = +0.0; penalties[1] = +0.0;
+  if (value_is_nonfinite(residual)) return 0u;
+  std::uint32_t low = 0u, high = 0u;
+  if (residual < 0.0) {
+    low = 0u; high = 0u;
+  } else if (residual >= static_cast<double>(maximum)) {
+    low = maximum; high = maximum;
+  } else {
+    const long long lower = floor_double(residual);
+    std::uint32_t first = lower < 0 ? 0u : (lower > static_cast<long long>(maximum) ? maximum : static_cast<std::uint32_t>(lower));
+    const long long next = lower + 1;
+    std::uint32_t second = next < 0 ? 0u : (next > static_cast<long long>(maximum) ? maximum : static_cast<std::uint32_t>(next));
+    low = first < second ? first : second;
+    high = first < second ? second : first;
+  }
+  const double delta_low = residual - static_cast<double>(low);
+  const double delta_high = residual - static_cast<double>(high);
+  const double penalty_low = delta_low * delta_low;
+  const double penalty_high = delta_high * delta_high;
+  if (value_is_nonfinite(penalty_low) || value_is_nonfinite(penalty_high)) return 0u;
+  if (low == high) { values[0] = low; penalties[0] = penalty_low; return 1u; }
+  if (penalty_low < penalty_high) { values[0] = low; penalties[0] = penalty_low; return 1u; }
+  if (penalty_high < penalty_low) { values[0] = high; penalties[0] = penalty_high; return 1u; }
+  values[0] = low; penalties[0] = penalty_low;
+  values[1] = high; penalties[1] = penalty_high;
+  return 2u;
+}
+
+// FROZEN_MATH_SPEC 5.3 order, with the exactly monotone short-circuit.
+__host__ __device__ static std::uint32_t tie_flags(const double y, const double y_min,
+                                                   const double lambda_ref) {
+  const double difference = y - y_min;
+  const double gap = difference < 0.0 ? -difference : difference;
+  const double y_magnitude = y < 0.0 ? -y : y;
+  const double min_magnitude = y_min < 0.0 ? -y_min : y_min;
+  const double maximum = y_magnitude > min_magnitude ? y_magnitude : min_magnitude;
+  const double scale = lambda_ref + maximum;
+  if (gap > (4096.0 * kEpsilon) * scale) return 0u;
+  std::uint32_t flags = 0u;
+  if (gap <= (1024.0 * kEpsilon) * scale) flags |= 1u;
+  if (gap <= (2048.0 * kEpsilon) * scale) flags |= 2u;
+  if (gap <= (4096.0 * kEpsilon) * scale) flags |= 4u;
+  return flags;
+}
+
+__global__ void terms_kernel(const PayloadData* payload, double* objective, double* card_square,
+                             std::uint32_t* lift_counts, std::uint32_t* invalid) {
+  const std::uint32_t index = blockIdx.x * blockDim.x + threadIdx.x;
+  if (index >= kStateCount) return;
+  objective[index] = objective_of(payload, index);
+  card_square[index] = card_square_of(payload, index);
+  double sector[kSectorCount], budget;
+  residuals_of(payload, index, sector, &budget);
+  std::uint32_t multiplicity = 1u;
+  std::uint32_t bad = 0u;
+  for (std::uint32_t s = 0; s < kSectorCount; ++s) {
+    std::uint32_t values[2]; double penalties[2];
+    const std::uint32_t count = register_minimizers(sector[s], register_maximum(s), values, penalties);
+    if (count == 0u) bad = 1u; else multiplicity *= count;
+  }
+  std::uint32_t values[2]; double penalties[2];
+  const std::uint32_t count = register_minimizers(budget, register_maximum(kSectorCount), values, penalties);
+  if (count == 0u) bad = 1u; else multiplicity *= count;
+  invalid[index] = bad;
+  lift_counts[index] = (bad != 0u || multiplicity > kMaxLiftsPerState) ? 0u : multiplicity;
+}
+
+// One thread per decoded state writes that state's energies: for slack it
+// fills its own disjoint [offsets[i], offsets[i+1]) range in frozen product
+// order, so no atomics and no scheduling assumption are needed.
+__global__ void energy_kernel(const PayloadData* payload, const CoefficientData* coefficients,
+                              const double* objective, const double* card_square,
+                              const std::uint64_t* offsets, const std::uint32_t encoding,
+                              double* energies) {
+  const std::uint32_t index = blockIdx.x * blockDim.x + threadIdx.x;
+  if (index >= kStateCount) return;
+  double sector[kSectorCount], budget;
+  residuals_of(payload, index, sector, &budget);
+  double base = objective[index];
+  base = base + (coefficients->alpha * card_square[index]);
+  if (encoding == 0u) {
+    double h = base;
+    for (std::uint32_t s = 0; s < kSectorCount; ++s) {
+      const double linear = coefficients->sector_linear * sector[s];
+      const double quadratic = coefficients->sector_quadratic * (sector[s] * sector[s]);
+      h = h + ((-linear) + quadratic);
+    }
+    const double linear = coefficients->budget_linear * budget;
+    const double quadratic = coefficients->budget_quadratic * (budget * budget);
+    energies[index] = h + ((-linear) + quadratic);
+    return;
+  }
+  double h = base;
+  for (std::uint32_t s = 0; s < kSectorCount; ++s) {
+    std::uint32_t values[2]; double penalties[2];
+    register_minimizers(sector[s], register_maximum(s), values, penalties);
+    h = h + (coefficients->sector_slack * penalties[0]);
+  }
+  std::uint32_t values[2]; double penalties[2];
+  const std::uint32_t count = register_minimizers(budget, register_maximum(kSectorCount), values, penalties);
+  std::uint64_t cursor = offsets[index];
+  for (std::uint32_t lift = 0; lift < count; ++lift) {
+    energies[cursor] = h + (coefficients->budget_slack * penalties[lift]);
+    cursor = cursor + 1u;
+  }
+}
+
+// Deterministic contiguous segments: one thread per segment, strict '<', so
+// the earliest position inside a segment wins an exact tie.
+__global__ void segment_kernel(const double* energies, const std::uint64_t word_count,
+                               const std::uint32_t segment_count, double* segment_value,
+                               std::uint64_t* segment_index, std::uint32_t* nonfinite) {
+  const std::uint32_t segment = blockIdx.x * blockDim.x + threadIdx.x;
+  if (segment >= segment_count) return;
+  const std::uint64_t start = static_cast<std::uint64_t>(segment) * kSegmentSize;
+  std::uint64_t stop = start + kSegmentSize;
+  if (stop > word_count) stop = word_count;
+  std::uint32_t bad = 0u;
+  double best = 0.0;
+  std::uint64_t best_index = start;
+  bool have = false;
+  for (std::uint64_t position = start; position < stop; ++position) {
+    const double value = energies[position];
+    if (value_is_nonfinite(value)) { bad += 1u; continue; }
+    if (!have || value < best) { best = value; best_index = position; have = true; }
+  }
+  segment_value[segment] = have ? best : 0.0;
+  segment_index[segment] = have ? best_index : kUint64Max;
+  nonfinite[segment] = bad;
+}
+
+__global__ void flags_kernel(const double* energies, const std::uint64_t word_count,
+                             const double minimum, const double lambda_ref,
+                             const std::uint32_t segment_count,
+                             std::uint64_t* per_ch, std::uint32_t* illegal, std::uint32_t* nesting,
+                             std::uint8_t* flag_bytes) {
+  const std::uint32_t segment = blockIdx.x * blockDim.x + threadIdx.x;
+  if (segment >= segment_count) return;
+  const std::uint64_t start = static_cast<std::uint64_t>(segment) * kSegmentSize;
+  std::uint64_t stop = start + kSegmentSize;
+  if (stop > word_count) stop = word_count;
+  std::uint64_t counts[kCHCount] = {0ULL, 0ULL, 0ULL};
+  std::uint32_t bad_legal = 0u, bad_nest = 0u;
+  for (std::uint64_t position = start; position < stop; ++position) {
+    const std::uint32_t flags = tie_flags(energies[position], minimum, lambda_ref);
+    flag_bytes[position] = static_cast<std::uint8_t>(flags);
+    if (!(flags == 0u || flags == 4u || flags == 6u || flags == 7u)) bad_legal += 1u;
+    const bool t1 = (flags & 1u) != 0u, t2 = (flags & 2u) != 0u, t4 = (flags & 4u) != 0u;
+    if ((t1 && !t2) || (t2 && !t4)) bad_nest += 1u;
+    for (std::uint32_t bit = 0; bit < kCHCount; ++bit) {
+      if ((flags & (1u << bit)) != 0u) counts[bit] += 1ULL;
+    }
+  }
+  for (std::uint32_t bit = 0; bit < kCHCount; ++bit) per_ch[segment * kCHCount + bit] = counts[bit];
+  illegal[segment] = bad_legal;
+  nesting[segment] = bad_nest;
+}
+
+// One thread per compaction chunk counts only its own slice.  No atomics and
+// no shared-memory reduction: the exclusive prefix is formed on the host.
+__global__ void compaction_count_kernel(const std::uint8_t* flag_bytes, const std::uint64_t word_count,
+                                        const std::uint32_t chunk_count, std::uint32_t* counts,
+                                        std::uint32_t* illegal) {
+  const std::uint32_t chunk = blockIdx.x * blockDim.x + threadIdx.x;
+  if (chunk >= chunk_count) return;
+  const std::uint64_t start = static_cast<std::uint64_t>(chunk) * kCompactionChunkSize;
+  std::uint64_t stop = start + kCompactionChunkSize;
+  if (stop > word_count) stop = word_count;
+  std::uint32_t total = 0u, bad = 0u;
+  for (std::uint64_t position = start; position < stop; ++position) {
+    const std::uint32_t flags = flag_bytes[position];
+    if (flags == 0u) continue;
+    if (!(flags == 4u || flags == 6u || flags == 7u)) bad += 1u;
+    total += 1u;
+  }
+  counts[chunk] = total;
+  illegal[chunk] = bad;
+}
+
+// Each chunk writes only its own entries, in ascending canonical order, at its
+// exclusive-prefix offset.  Stable by construction, free of atomics and of any
+// sort, and it fails closed rather than writing past the declared hard cap.
+__global__ void compaction_write_kernel(const std::uint8_t* flag_bytes, const std::uint64_t word_count,
+                                        const std::uint32_t chunk_count, const std::uint64_t* prefix,
+                                        const std::uint64_t capacity, std::uint64_t* entries,
+                                        std::uint32_t* refused) {
+  const std::uint32_t chunk = blockIdx.x * blockDim.x + threadIdx.x;
+  if (chunk >= chunk_count) return;
+  const std::uint64_t start = static_cast<std::uint64_t>(chunk) * kCompactionChunkSize;
+  std::uint64_t stop = start + kCompactionChunkSize;
+  if (stop > word_count) stop = word_count;
+  std::uint64_t cursor = prefix[chunk];
+  for (std::uint64_t position = start; position < stop; ++position) {
+    const std::uint64_t flags = flag_bytes[position];
+    if (flags == 0ULL) continue;
+    if (cursor >= capacity) { refused[chunk] = 1u; return; }
+    entries[cursor] = (flags << 32) | position;
+    cursor = cursor + 1ULL;
+  }
+  refused[chunk] = (cursor == prefix[chunk + 1ULL]) ? 0u : 1u;
+}
+
+static std::uint64_t fnv_step(const std::uint64_t state, const std::uint64_t word) {
+  return (state ^ word) * kFNVPrime;
+}
+
+static PayloadData synthetic_payload() {
+  PayloadData value{};
+  for (std::uint32_t asset = 0; asset < kAssetCount; ++asset) {
+    value.mu[asset] = (static_cast<double>(asset) - 9.0) / 1000.0;
+    value.prices[asset] = static_cast<double>(1u + (asset % 5u));
+    for (std::uint32_t other = 0; other < kAssetCount; ++other) {
+      value.sigma[asset * kAssetCount + other] =
+          asset == other ? (0.01 + static_cast<double>(asset) / 10000.0)
+                         : static_cast<double>((asset + other) % 7u) / 100000.0;
+    }
+  }
+  value.prices[7] = 2.5;
+  value.kappa_risk = 1.0;
+  value.k_value = 6.0;
+  value.c_value = 2.0;
+  value.b = 40.0;
+  value.lambda_ref = kSyntheticLambdaRef;
+  const std::uint32_t blocks[kSectorCount][kSectorSize] = {
+      {0u, 6u, 11u, 15u, 19u}, {1u, 5u, 10u, 14u, 18u}, {2u, 7u, 9u, 13u, 17u}, {3u, 4u, 8u, 12u, 16u}};
+  for (std::uint32_t s = 0; s < kSectorCount; ++s) {
+    for (std::uint32_t m = 0; m < kSectorSize; ++m) value.membership[s][m] = blocks[s][m];
+  }
+  return value;
+}
+
+static CoefficientData synthetic_row(const std::uint32_t row) {
+  CoefficientData value{};
+  if (row == 0u) {
+    value.alpha = 0x1p-3; value.sector_slack = 0x1p-4; value.budget_slack = 0x1.8p-5;
+    value.sector_linear = 0x1.4p-3; value.sector_quadratic = 0x1p-5;
+    value.budget_linear = 0x1p-4; value.budget_quadratic = 0x1p-6;
+  } else {
+    value.alpha = 0x1p-5; value.sector_slack = 0x1p+2; value.budget_slack = 0x1p+1;
+    value.sector_linear = 0x1p-1; value.sector_quadratic = 0x1p-2;
+    value.budget_linear = 0x1.8p-1; value.budget_quadratic = 0x1p-3;
+  }
+  return value;
+}
+
+static void synthetic_control(std::uint32_t* positions, double* offsets) {
+  // Chosen so every downstream rule is load-bearing: 40/41 tie inside
+  // segment 0 (segment-local strict '<'); 1064 and 20000 tie from segments 1
+  // and 19 (fixed-order ascending merge); flagged entries land in compaction
+  // chunks 0, 1, 2, 4 and 24 (per-chunk prefix and ascending write order).
+  const std::uint32_t control_positions[kControlCount] =
+      {40u, 41u, 100u, 101u, 200u, 201u, 1064u, 5000u, 9000u, 20000u, 100000u};
+  // [row][encoding][slot]
+  const double table[kRowCount][kEncodingCount][kControlCount] = {
+      {{0x0p+0, 0x0p+0, 0x1p-43, 0x1p-42, 0x1p-41, 0x1p-40, 0x0p+0, 0x1p-43, 0x1p-42, 0x0p+0, 0x1p-41},
+       {0x0p+0, 0x0p+0, 0x1p-47, 0x1p-46, 0x1p-45, 0x1p-44, 0x0p+0, 0x1p-47, 0x1p-46, 0x0p+0, 0x1p-45}},
+      {{0x0p+0, 0x0p+0, 0x1p-44, 0x1p-43, 0x1p-42, 0x1p-41, 0x0p+0, 0x1p-44, 0x1p-43, 0x0p+0, 0x1p-42},
+       {0x0p+0, 0x0p+0, 0x1p-47, 0x1p-46, 0x1p-45, 0x1p-44, 0x0p+0, 0x1p-47, 0x1p-46, 0x0p+0, 0x1p-45}}};
+  for (std::uint32_t slot = 0; slot < kControlCount; ++slot) positions[slot] = control_positions[slot];
+  for (std::uint32_t r = 0; r < kRowCount; ++r) {
+    for (std::uint32_t e = 0; e < kEncodingCount; ++e) {
+      for (std::uint32_t slot = 0; slot < kControlCount; ++slot) {
+        offsets[(r * kEncodingCount + e) * kControlCount + slot] = table[r][e][slot];
+      }
+    }
+  }
+}
+
+// Host-side buffers live in static storage: 2^20-entry arrays would overflow
+// the stack, and no scientific value is ever placed in them.
+static double g_objective[kStateCount];
+static double g_card_square[kStateCount];
+static std::uint32_t g_lift_counts[kStateCount];
+static std::uint32_t g_invalid[kStateCount];
+static std::uint64_t g_offsets[kStateCount + 1];
+
+struct ScanResult {
+  std::uint64_t natural_checksum;
+  std::uint64_t controlled_checksum;
+  std::uint64_t flags_checksum;
+  std::uint64_t minimum_checksum;
+  std::uint64_t word_count;
+  std::uint64_t per_ch[kCHCount];
+  std::uint32_t illegal;
+  std::uint32_t nesting;
+  std::uint32_t nonfinite;
+  std::uint32_t disagreements;
+  std::uint64_t compacted_count;
+  std::uint64_t compaction_checksum;
+  std::uint32_t compaction_chunks;
+  std::uint32_t order_violations;
+  std::uint32_t compaction_mismatches;
+  std::uint32_t compaction_overflows;
+  std::uint64_t natural_minimum_checksum;
+  // Returned so a later record builder can reconstruct D016 labels from this
+  // API alone: the actual minimum, its canonical first-seen index, and the
+  // compacted tie entries, bounded by the declared hard cap.
+  double minimum;
+  std::uint64_t minimum_index;
+  std::uint64_t entries[kMaxCompactedEntries];
+};
+
+// Bounded result of one generic core run: no full energy or flag stream.
+struct CoreOutput {
+  ScanResult results[kRowCount][kEncodingCount];
+  std::uint64_t lift_total;
+  std::uint32_t invalid_registers;
+  std::uint32_t row_count;
+};
+
+// DECLARED CONTRACT (B1, resolution B), checked BEFORE any allocation or
+// launch.  C must be integral: with integral C every sector residual is an
+// integer, so each sector register has exactly one minimizer and the lift
+// multiplicity is carried by the budget register alone.  A fractional C would
+// tie a sector register and multiply the multiplicity, while the energy stage
+// enumerates only the budget alternatives -- leaving allocated slack offset
+// ranges unwritten.  That partial state is refused here rather than supported.
+static bool validate_payload_contract(const PayloadData& payload) {
+  if (value_is_nonfinite(payload.c_value) || value_is_nonfinite(payload.b) ||
+      value_is_nonfinite(payload.k_value) || value_is_nonfinite(payload.kappa_risk)) return false;
+  if (payload.c_value < 0.0) return false;
+  if (static_cast<double>(static_cast<long long>(payload.c_value)) != payload.c_value) return false;
+  if (value_is_nonfinite(payload.lambda_ref) || !(payload.lambda_ref > 0.0)) return false;
+  if (payload.k_value < 0.0 || payload.k_value > static_cast<double>(kAssetCount)) return false;
+  if (static_cast<double>(static_cast<long long>(payload.k_value)) != payload.k_value) return false;
+  for (std::uint32_t asset = 0; asset < kAssetCount; ++asset) {
+    if (value_is_nonfinite(payload.mu[asset]) || value_is_nonfinite(payload.prices[asset])) return false;
+    if (!(payload.prices[asset] > 0.0)) return false;
+    for (std::uint32_t column = 0; column < kAssetCount; ++column) {
+      if (value_is_nonfinite(payload.sigma[asset * kAssetCount + column])) return false;
+    }
+  }
+  // Arbitrary membership, but it must be a sorted 4x5 partition of all assets.
+  std::uint32_t seen[kAssetCount] = {0u};
+  for (std::uint32_t s = 0; s < kSectorCount; ++s) {
+    for (std::uint32_t m = 0; m < kSectorSize; ++m) {
+      const std::uint32_t member = payload.membership[s][m];
+      if (member >= kAssetCount) return false;
+      if (m > 0u && !(member > payload.membership[s][m - 1u])) return false;
+      seen[member] += 1u;
+    }
+  }
+  for (std::uint32_t asset = 0; asset < kAssetCount; ++asset) {
+    if (seen[asset] != 1u) return false;
+  }
+  return true;
+}
+
+// Generic in-memory core.  No parser, ledger reader, generator, writer, real
+// input or instance: a validated payload and explicit coefficient records in,
+// bounded summaries out.  `control_positions == nullptr` selects the GENERIC
+// mode, which applies no synthetic control offsets, keeps the full energy and
+// flag streams device-side, and returns only minima, bounded counters and the
+// compacted canonical tie entries.
+static bool run_core(const PayloadData& payload, const CoefficientData* rows,
+                     const std::uint32_t row_count,
+                     const std::uint32_t* control_positions,
+                     const double* control_offsets,
+                     CoreOutput* out) {
+  if (out == nullptr || rows == nullptr || row_count == 0u || row_count > kRowCount) return false;
+  if (!validate_payload_contract(payload)) return false;
+  const bool qualification = (control_positions != nullptr && control_offsets != nullptr);
+
+  PayloadData* device_payload = nullptr;
+  CoefficientData* device_row = nullptr;
+  double* device_objective = nullptr;
+  double* device_card_square = nullptr;
+  std::uint32_t* device_lift_counts = nullptr;
+  std::uint32_t* device_invalid = nullptr;
+  std::uint64_t* device_offsets = nullptr;
+  double* device_energies = nullptr;
+  double* device_segment_value = nullptr;
+  std::uint64_t* device_segment_index = nullptr;
+  std::uint32_t* device_segment_nonfinite = nullptr;
+  std::uint64_t* device_per_ch = nullptr;
+  std::uint32_t* device_illegal = nullptr;
+  std::uint32_t* device_nesting = nullptr;
+
+  bool ok = cudaMalloc(&device_payload, sizeof(PayloadData)) == cudaSuccess &&
+            cudaMalloc(&device_row, sizeof(CoefficientData)) == cudaSuccess &&
+            cudaMalloc(&device_objective, sizeof(double) * kStateCount) == cudaSuccess &&
+            cudaMalloc(&device_card_square, sizeof(double) * kStateCount) == cudaSuccess &&
+            cudaMalloc(&device_lift_counts, sizeof(std::uint32_t) * kStateCount) == cudaSuccess &&
+            cudaMalloc(&device_invalid, sizeof(std::uint32_t) * kStateCount) == cudaSuccess &&
+            cudaMalloc(&device_offsets, sizeof(std::uint64_t) * (kStateCount + 1ULL)) == cudaSuccess;
+  ok = ok && cudaMemcpy(device_payload, &payload, sizeof(PayloadData), cudaMemcpyHostToDevice) == cudaSuccess;
+
+  const dim3 state_grid(static_cast<unsigned>((kStateCount + kBlockSize - 1u) / kBlockSize));
+  if (ok) G9_CORE_LAUNCH(terms_kernel, state_grid, dim3(kBlockSize), device_payload, device_objective,
+                           device_card_square, device_lift_counts, device_invalid);
+  ok = ok && cudaGetLastError() == cudaSuccess && cudaDeviceSynchronize() == cudaSuccess;
+  ok = ok && cudaMemcpy(g_objective, device_objective, sizeof(double) * kStateCount, cudaMemcpyDeviceToHost) == cudaSuccess &&
+       cudaMemcpy(g_card_square, device_card_square, sizeof(double) * kStateCount, cudaMemcpyDeviceToHost) == cudaSuccess &&
+       cudaMemcpy(g_lift_counts, device_lift_counts, sizeof(std::uint32_t) * kStateCount, cudaMemcpyDeviceToHost) == cudaSuccess &&
+       cudaMemcpy(g_invalid, device_invalid, sizeof(std::uint32_t) * kStateCount, cudaMemcpyDeviceToHost) == cudaSuccess;
+
+  std::uint64_t lift_total = 0;
+  std::uint32_t invalid_registers = 0;
+  if (ok) {
+    g_offsets[0] = 0ULL;
+    for (std::uint64_t index = 0; index < kStateCount; ++index) {
+      invalid_registers += g_invalid[index];
+      const std::uint64_t multiplicity = g_lift_counts[index];
+      if (multiplicity == 0ULL || multiplicity > kMaxLiftsPerState) { ok = false; break; }
+      if (lift_total > kUint64Max - multiplicity) { ok = false; break; }
+      lift_total += multiplicity;
+      g_offsets[index + 1ULL] = lift_total;
+    }
+    ok = ok && invalid_registers == 0u && lift_total <= kCacheCapacity;
+  }
+  ok = ok && cudaMemcpy(device_offsets, g_offsets, sizeof(std::uint64_t) * (kStateCount + 1ULL), cudaMemcpyHostToDevice) == cudaSuccess;
+
+  const std::uint64_t max_words = lift_total > kStateCount ? lift_total : kStateCount;
+  const std::uint32_t max_segment_count = static_cast<std::uint32_t>((max_words + kSegmentSize - 1ULL) / kSegmentSize);
+  if (ok) ok = cudaMalloc(&device_energies, sizeof(double) * static_cast<std::size_t>(max_words)) == cudaSuccess &&
+               cudaMalloc(&device_segment_value, sizeof(double) * max_segment_count) == cudaSuccess &&
+               cudaMalloc(&device_segment_index, sizeof(std::uint64_t) * max_segment_count) == cudaSuccess &&
+               cudaMalloc(&device_segment_nonfinite, sizeof(std::uint32_t) * max_segment_count) == cudaSuccess &&
+               cudaMalloc(&device_per_ch, sizeof(std::uint64_t) * max_segment_count * kCHCount) == cudaSuccess &&
+               cudaMalloc(&device_illegal, sizeof(std::uint32_t) * max_segment_count) == cudaSuccess &&
+               cudaMalloc(&device_nesting, sizeof(std::uint32_t) * max_segment_count) == cudaSuccess;
+  const std::uint32_t max_chunk_count = static_cast<std::uint32_t>(
+      (max_words + kCompactionChunkSize - 1ULL) / kCompactionChunkSize);
+  std::uint8_t* device_flag_bytes = nullptr;
+  std::uint32_t* device_chunk_counts = nullptr;
+  std::uint32_t* device_chunk_illegal = nullptr;
+  std::uint32_t* device_chunk_refused = nullptr;
+  std::uint64_t* device_chunk_prefix = nullptr;
+  std::uint64_t* device_entries = nullptr;
+  if (ok) ok = cudaMalloc(&device_flag_bytes, sizeof(std::uint8_t) * static_cast<std::size_t>(max_words)) == cudaSuccess &&
+               cudaMalloc(&device_chunk_counts, sizeof(std::uint32_t) * max_chunk_count) == cudaSuccess &&
+               cudaMalloc(&device_chunk_illegal, sizeof(std::uint32_t) * max_chunk_count) == cudaSuccess &&
+               cudaMalloc(&device_chunk_refused, sizeof(std::uint32_t) * max_chunk_count) == cudaSuccess &&
+               cudaMalloc(&device_chunk_prefix, sizeof(std::uint64_t) * (max_chunk_count + 1u)) == cudaSuccess &&
+               cudaMalloc(&device_entries, sizeof(std::uint64_t) * kMaxCompactedEntries) == cudaSuccess;
+
+  double* host_energies = nullptr;
+  double* host_segment_value = nullptr;
+  std::uint64_t* host_segment_index = nullptr;
+  std::uint32_t* host_segment_nonfinite = nullptr;
+  std::uint64_t* host_per_ch = nullptr;
+  std::uint32_t* host_illegal = nullptr;
+  std::uint32_t* host_nesting = nullptr;
+  std::uint8_t* host_flag_bytes = nullptr;
+  std::uint32_t* host_chunk_counts = nullptr;
+  std::uint32_t* host_chunk_illegal = nullptr;
+  std::uint32_t* host_chunk_refused = nullptr;
+  std::uint64_t* host_chunk_prefix = nullptr;
+  std::uint64_t* host_entries = nullptr;
+  if (ok) {
+    host_energies = static_cast<double*>(std::malloc(sizeof(double) * static_cast<std::size_t>(max_words)));
+    host_segment_value = static_cast<double*>(std::malloc(sizeof(double) * max_segment_count));
+    host_segment_index = static_cast<std::uint64_t*>(std::malloc(sizeof(std::uint64_t) * max_segment_count));
+    host_segment_nonfinite = static_cast<std::uint32_t*>(std::malloc(sizeof(std::uint32_t) * max_segment_count));
+    host_per_ch = static_cast<std::uint64_t*>(std::malloc(sizeof(std::uint64_t) * max_segment_count * kCHCount));
+    host_illegal = static_cast<std::uint32_t*>(std::malloc(sizeof(std::uint32_t) * max_segment_count));
+    host_nesting = static_cast<std::uint32_t*>(std::malloc(sizeof(std::uint32_t) * max_segment_count));
+    host_flag_bytes = static_cast<std::uint8_t*>(std::malloc(sizeof(std::uint8_t) * static_cast<std::size_t>(max_words)));
+    host_chunk_counts = static_cast<std::uint32_t*>(std::malloc(sizeof(std::uint32_t) * max_chunk_count));
+    host_chunk_illegal = static_cast<std::uint32_t*>(std::malloc(sizeof(std::uint32_t) * max_chunk_count));
+    host_chunk_refused = static_cast<std::uint32_t*>(std::malloc(sizeof(std::uint32_t) * max_chunk_count));
+    host_chunk_prefix = static_cast<std::uint64_t*>(std::malloc(sizeof(std::uint64_t) * (max_chunk_count + 1u)));
+    host_entries = static_cast<std::uint64_t*>(std::malloc(sizeof(std::uint64_t) * kMaxCompactedEntries));
+    ok = host_energies && host_segment_value && host_segment_index && host_segment_nonfinite &&
+         host_per_ch && host_illegal && host_nesting && host_flag_bytes && host_chunk_counts &&
+         host_chunk_illegal && host_chunk_refused && host_chunk_prefix && host_entries;
+  }
+
+  // Static: ScanResult now carries the bounded entry array, which is far too
+  // large for the stack.  Cleared on entry because run_core is re-entrant
+  // across calls but never concurrent.
+  static ScanResult results[kRowCount][kEncodingCount];
+  for (std::uint32_t r = 0; r < kRowCount; ++r) {
+    for (std::uint32_t e = 0; e < kEncodingCount; ++e) results[r][e] = ScanResult{};
+  }
+  for (std::uint32_t row = 0; ok && row < row_count; ++row) {
+    const CoefficientData host_row = rows[row];
+    ok = ok && cudaMemcpy(device_row, &host_row, sizeof(host_row), cudaMemcpyHostToDevice) == cudaSuccess;
+    for (std::uint32_t encoding = 0; ok && encoding < kEncodingCount; ++encoding) {
+      const std::uint64_t word_count = encoding == 0u ? kStateCount : lift_total;
+      const std::uint32_t segment_count = static_cast<std::uint32_t>((word_count + kSegmentSize - 1ULL) / kSegmentSize);
+      if (ok) G9_CORE_LAUNCH(energy_kernel, state_grid, dim3(kBlockSize), device_payload, device_row,
+                               device_objective, device_card_square, device_offsets, encoding, device_energies);
+      ok = ok && cudaGetLastError() == cudaSuccess && cudaDeviceSynchronize() == cudaSuccess;
+      ScanResult* result = &results[row][encoding];
+      result->word_count = word_count;
+      std::uint32_t nonfinite = 0u;
+      double natural_minimum = 0.0;
+      std::uint64_t natural_index = 0ULL;
+      if (qualification) {
+        // ---- BEGIN QUALIFICATION-ONLY HOST ROUND-TRIP ----
+        // Synthetic qualification harness ONLY.  It pulls the whole energy
+        // stream to the host so the declared synthetic control offsets can be
+        // seated and the whole-stream checksums replayed.  The GENERIC path
+        // never enters this region and never copies a full energy or flag
+        // buffer to the host.
+        ok = ok && cudaMemcpy(host_energies, device_energies, sizeof(double) * static_cast<std::size_t>(word_count),
+                              cudaMemcpyDeviceToHost) == cudaSuccess;
+        if (!ok) break;
+        result->natural_checksum = kFNVOffset;
+        bool have = false;
+        for (std::uint64_t position = 0; position < word_count; ++position) {
+          const double value = host_energies[position];
+          result->natural_checksum = fnv_step(result->natural_checksum, double_to_word(value));
+          if (value_is_nonfinite(value)) { nonfinite += 1u; continue; }
+          if (!have || value < natural_minimum) {
+            natural_minimum = value; natural_index = position; have = true;
+          }
+        }
+        if (!have) { ok = false; break; }
+        result->natural_minimum_checksum =
+            fnv_step(fnv_step(kFNVOffset, double_to_word(natural_minimum)), natural_index);
+        const double* offsets_row = &control_offsets[(row * kEncodingCount + encoding) * kControlCount];
+        for (std::uint32_t slot = 0; slot < kControlCount; ++slot) {
+          const std::uint64_t position = control_positions[slot];
+          if (position < word_count) host_energies[position] = natural_minimum + offsets_row[slot];
+        }
+        ok = ok && cudaMemcpy(device_energies, host_energies, sizeof(double) * static_cast<std::size_t>(word_count),
+                              cudaMemcpyHostToDevice) == cudaSuccess;
+        if (!ok) break;
+        result->controlled_checksum = kFNVOffset;
+        for (std::uint64_t position = 0; position < word_count; ++position) {
+          result->controlled_checksum = fnv_step(result->controlled_checksum, double_to_word(host_energies[position]));
+        }
+        // ---- END QUALIFICATION-ONLY HOST ROUND-TRIP ----
+      }
+
+      const dim3 segment_grid((segment_count + kBlockSize - 1u) / kBlockSize);
+      if (ok) G9_CORE_LAUNCH(segment_kernel, segment_grid, dim3(kBlockSize), device_energies, word_count,
+                               segment_count, device_segment_value, device_segment_index, device_segment_nonfinite);
+      ok = ok && cudaGetLastError() == cudaSuccess && cudaDeviceSynchronize() == cudaSuccess;
+      ok = ok && cudaMemcpy(host_segment_value, device_segment_value, sizeof(double) * segment_count, cudaMemcpyDeviceToHost) == cudaSuccess &&
+           cudaMemcpy(host_segment_index, device_segment_index, sizeof(std::uint64_t) * segment_count, cudaMemcpyDeviceToHost) == cudaSuccess &&
+           cudaMemcpy(host_segment_nonfinite, device_segment_nonfinite, sizeof(std::uint32_t) * segment_count, cudaMemcpyDeviceToHost) == cudaSuccess;
+      if (!ok) break;
+
+      // Fixed-order host merge in ascending segment order with strict '<'.
+      double minimum = 0.0; std::uint64_t minimum_index = kUint64Max; bool merged = false;
+      for (std::uint32_t segment = 0; segment < segment_count; ++segment) {
+        nonfinite += host_segment_nonfinite[segment];
+        if (host_segment_index[segment] == kUint64Max) continue;
+        if (!merged || host_segment_value[segment] < minimum) {
+          minimum = host_segment_value[segment];
+          minimum_index = host_segment_index[segment];
+          merged = true;
+        }
+      }
+      if (!merged) { ok = false; break; }
+      result->nonfinite = nonfinite;
+      result->disagreements = (!qualification || minimum == natural_minimum) ? 0u : 1u;
+      result->minimum_checksum = fnv_step(fnv_step(kFNVOffset, double_to_word(minimum)), minimum_index);
+
+      if (ok) G9_CORE_LAUNCH(flags_kernel, segment_grid, dim3(kBlockSize), device_energies, word_count,
+                               minimum, payload.lambda_ref, segment_count, device_per_ch,
+                               device_illegal, device_nesting, device_flag_bytes);
+      ok = ok && cudaGetLastError() == cudaSuccess && cudaDeviceSynchronize() == cudaSuccess;
+      ok = ok && cudaMemcpy(host_per_ch, device_per_ch, sizeof(std::uint64_t) * segment_count * kCHCount, cudaMemcpyDeviceToHost) == cudaSuccess &&
+           cudaMemcpy(host_illegal, device_illegal, sizeof(std::uint32_t) * segment_count, cudaMemcpyDeviceToHost) == cudaSuccess &&
+           cudaMemcpy(host_nesting, device_nesting, sizeof(std::uint32_t) * segment_count, cudaMemcpyDeviceToHost) == cudaSuccess;
+      if (!ok) break;
+      if (qualification) {
+        // ---- BEGIN QUALIFICATION-ONLY HOST ROUND-TRIP ----
+        // One FNV chain over the whole stream in canonical order, which no
+        // per-segment digest can recombine, so the harness replays it from the
+        // host copy taken above.  The generic path does not compute it.
+        result->flags_checksum = kFNVOffset;
+        for (std::uint64_t position = 0; position < word_count; ++position) {
+          result->flags_checksum = fnv_step(result->flags_checksum,
+              tie_flags(host_energies[position], minimum, payload.lambda_ref));
+        }
+        // ---- END QUALIFICATION-ONLY HOST ROUND-TRIP ----
+      }
+      for (std::uint32_t bit = 0; bit < kCHCount; ++bit) result->per_ch[bit] = 0ULL;
+      result->illegal = 0u; result->nesting = 0u;
+      for (std::uint32_t segment = 0; segment < segment_count; ++segment) {
+        for (std::uint32_t bit = 0; bit < kCHCount; ++bit) result->per_ch[bit] += host_per_ch[segment * kCHCount + bit];
+        result->illegal += host_illegal[segment];
+        result->nesting += host_nesting[segment];
+      }
+
+      // Deterministic stable compaction: fixed chunk count, exclusive prefix
+      // on the host, then one independent ascending write per chunk.
+      const std::uint32_t chunk_count = static_cast<std::uint32_t>(
+          (word_count + kCompactionChunkSize - 1ULL) / kCompactionChunkSize);
+      const dim3 chunk_grid((chunk_count + kBlockSize - 1u) / kBlockSize);
+      if (ok) G9_CORE_LAUNCH(compaction_count_kernel, chunk_grid, dim3(kBlockSize), device_flag_bytes,
+                             word_count, chunk_count, device_chunk_counts, device_chunk_illegal);
+      ok = ok && cudaGetLastError() == cudaSuccess && cudaDeviceSynchronize() == cudaSuccess;
+      ok = ok && cudaMemcpy(host_chunk_counts, device_chunk_counts, sizeof(std::uint32_t) * chunk_count, cudaMemcpyDeviceToHost) == cudaSuccess &&
+           cudaMemcpy(host_chunk_illegal, device_chunk_illegal, sizeof(std::uint32_t) * chunk_count, cudaMemcpyDeviceToHost) == cudaSuccess;
+      if (qualification) {
+        // ---- BEGIN QUALIFICATION-ONLY HOST ROUND-TRIP ----
+        ok = ok && cudaMemcpy(host_flag_bytes, device_flag_bytes, sizeof(std::uint8_t) * static_cast<std::size_t>(word_count), cudaMemcpyDeviceToHost) == cudaSuccess;
+        // ---- END QUALIFICATION-ONLY HOST ROUND-TRIP ----
+      }
+      if (!ok) break;
+      std::uint32_t illegal_entries = 0u;
+      for (std::uint32_t chunk = 0; chunk < chunk_count; ++chunk) illegal_entries += host_chunk_illegal[chunk];
+      result->illegal += illegal_entries;
+
+      host_chunk_prefix[0] = 0ULL;
+      for (std::uint32_t chunk = 0; chunk < chunk_count; ++chunk) {
+        host_chunk_prefix[chunk + 1u] = host_chunk_prefix[chunk] +
+            static_cast<std::uint64_t>(host_chunk_counts[chunk]);
+      }
+      const std::uint64_t produced = host_chunk_prefix[chunk_count];
+      if (produced > kMaxCompactedEntries) {
+        // Fail closed: never write past the declared hard cap.
+        result->compaction_overflows = 1u;
+        ok = false;
+        break;
+      }
+      ok = ok && cudaMemcpy(device_chunk_prefix, host_chunk_prefix,
+                            sizeof(std::uint64_t) * (chunk_count + 1u), cudaMemcpyHostToDevice) == cudaSuccess;
+      if (!ok) break;
+      if (ok) G9_CORE_LAUNCH(compaction_write_kernel, chunk_grid, dim3(kBlockSize), device_flag_bytes,
+                             word_count, chunk_count, device_chunk_prefix, kMaxCompactedEntries,
+                             device_entries, device_chunk_refused);
+      ok = ok && cudaGetLastError() == cudaSuccess && cudaDeviceSynchronize() == cudaSuccess;
+      ok = ok && cudaMemcpy(host_chunk_refused, device_chunk_refused, sizeof(std::uint32_t) * chunk_count, cudaMemcpyDeviceToHost) == cudaSuccess;
+      if (produced > 0ULL) {
+        ok = ok && cudaMemcpy(host_entries, device_entries,
+                              sizeof(std::uint64_t) * static_cast<std::size_t>(produced), cudaMemcpyDeviceToHost) == cudaSuccess;
+      }
+      if (!ok) break;
+      for (std::uint32_t chunk = 0; chunk < chunk_count; ++chunk) {
+        result->compaction_overflows += host_chunk_refused[chunk];
+      }
+
+      // Audit: the compacted stream must BE the flagged subsequence, strictly
+      // ascending in canonical index.
+      if (qualification) {
+        // ---- BEGIN QUALIFICATION-ONLY HOST ROUND-TRIP ----
+        // The strongest audit: the compacted stream must BE the flagged
+        // subsequence.  It needs the whole flag buffer, so it is harness-only.
+        std::uint64_t seen = 0ULL, previous = 0ULL;
+        bool have_previous = false;
+        for (std::uint64_t position = 0; position < word_count; ++position) {
+          const std::uint64_t flags = host_flag_bytes[position];
+          if (flags == 0ULL) continue;
+          if (seen >= produced) { result->compaction_mismatches += 1u; break; }
+          if (host_entries[seen] != ((flags << 32) | position)) result->compaction_mismatches += 1u;
+          if (have_previous && !(position > previous)) result->order_violations += 1u;
+          previous = position;
+          have_previous = true;
+          seen += 1ULL;
+        }
+        if (seen != produced) result->compaction_mismatches += 1u;
+        // ---- END QUALIFICATION-ONLY HOST ROUND-TRIP ----
+      } else {
+        // Generic mode reconstructs from the returned compact entries ALONE:
+        // every entry must carry a legal flag word, and the ascending check
+        // below uses only those entries.  Nothing unbounded is transferred.
+        for (std::uint64_t slot = 0; slot < produced; ++slot) {
+          const std::uint64_t flags = host_entries[slot] >> 32;
+          if (!(flags == 4ULL || flags == 6ULL || flags == 7ULL)) result->compaction_mismatches += 1u;
+        }
+      }
+      for (std::uint64_t slot = 1; slot < produced; ++slot) {
+        if (!((host_entries[slot] & 0xFFFFFFFFULL) > (host_entries[slot - 1ULL] & 0xFFFFFFFFULL))) {
+          result->order_violations += 1u;
+        }
+      }
+      result->compacted_count = produced;
+      result->compaction_chunks = chunk_count;
+      result->minimum = minimum;
+      result->minimum_index = minimum_index;
+      for (std::uint64_t slot = 0; slot < produced; ++slot) {
+        result->entries[slot] = host_entries[slot];
+      }
+      result->compaction_checksum = kFNVOffset;
+      for (std::uint64_t slot = 0; slot < produced; ++slot) {
+        result->compaction_checksum = fnv_step(result->compaction_checksum, host_entries[slot]);
+      }
+    }
+  }
+
+  std::free(host_energies); std::free(host_segment_value); std::free(host_segment_index);
+  std::free(host_segment_nonfinite); std::free(host_per_ch);
+  std::free(host_illegal); std::free(host_nesting);
+  std::free(host_flag_bytes); std::free(host_chunk_counts); std::free(host_chunk_illegal);
+  std::free(host_chunk_refused); std::free(host_chunk_prefix); std::free(host_entries);
+  cudaFree(device_payload); cudaFree(device_row); cudaFree(device_objective); cudaFree(device_card_square);
+  cudaFree(device_lift_counts); cudaFree(device_invalid); cudaFree(device_offsets); cudaFree(device_energies);
+  cudaFree(device_segment_value); cudaFree(device_segment_index); cudaFree(device_segment_nonfinite);
+  cudaFree(device_per_ch); cudaFree(device_illegal); cudaFree(device_nesting);
+  cudaFree(device_flag_bytes); cudaFree(device_chunk_counts); cudaFree(device_chunk_illegal);
+  cudaFree(device_chunk_refused); cudaFree(device_chunk_prefix); cudaFree(device_entries);
+  if (ok) {
+    for (std::uint32_t row = 0; row < kRowCount; ++row) {
+      for (std::uint32_t encoding = 0; encoding < kEncodingCount; ++encoding) {
+        out->results[row][encoding] = results[row][encoding];
+      }
+    }
+    out->lift_total = lift_total;
+    out->invalid_registers = invalid_registers;
+    out->row_count = row_count;
+  }
+  return ok;
+}
+
+static bool run_self_test() {
+  int device_count = 0;
+  if (cudaGetDeviceCount(&device_count) != cudaSuccess || device_count <= 0) return false;
+  int selected = -1;
+  cudaDeviceProp property{};
+  for (int device = 0; device < device_count; ++device) {
+    cudaDeviceProp candidate{};
+    if (cudaGetDeviceProperties(&candidate, device) == cudaSuccess && candidate.major > 0) {
+      selected = device; property = candidate; break;
+    }
+  }
+  if (selected < 0 || cudaSetDevice(selected) != cudaSuccess) return false;
+
+  // The harness constructs its own synthetic payload and rows, then drives the
+  // SAME generic entry point: once in qualification mode (declared synthetic
+  // controls) and once in generic mode (no controls at all).
+  const PayloadData host_payload = synthetic_payload();
+  CoefficientData host_rows[kRowCount];
+  for (std::uint32_t row = 0; row < kRowCount; ++row) host_rows[row] = synthetic_row(row);
+  std::uint32_t host_control_positions[kControlCount]{};
+  double host_control_offsets[kRowCount * kEncodingCount * kControlCount]{};
+  synthetic_control(host_control_positions, host_control_offsets);
+
+  // Static: each CoreOutput carries four bounded entry arrays.
+  static CoreOutput qualified{};
+  static CoreOutput generic{};
+  static CoreOutput single{};
+  bool ok = run_core(host_payload, host_rows, kRowCount,
+                     host_control_positions, host_control_offsets, &qualified);
+  ok = ok && run_core(host_payload, host_rows, kRowCount, nullptr, nullptr, &generic);
+  ok = ok && run_core(host_payload, host_rows, 1u, nullptr, nullptr, &single);
+  if (!ok) return false;
+
+  const ScanResult (&results)[kRowCount][kEncodingCount] = qualified.results;
+  const std::uint64_t lift_total = qualified.lift_total;
+  const std::uint32_t invalid_registers = qualified.invalid_registers;
+
+  // Reconstruct from the RETURNED interface alone -- the bounded minima and
+  // compacted entries -- exactly as a later record builder would have to.  If
+  // this reproduces each stream's own checksums, the API really does carry
+  // enough to rebuild D016 labels; nothing is read back from the device here.
+  std::uint32_t reconstruction_mismatches = 0u;
+  for (std::uint32_t pass = 0; pass < 2u; ++pass) {
+    const CoreOutput* source = (pass == 0u) ? &qualified : &generic;
+    for (std::uint32_t row = 0; row < kRowCount; ++row) {
+      for (std::uint32_t encoding = 0; encoding < kEncodingCount; ++encoding) {
+        const ScanResult* r = &source->results[row][encoding];
+        if (r->compacted_count > kMaxCompactedEntries) { reconstruction_mismatches += 1u; continue; }
+        if (fnv_step(fnv_step(kFNVOffset, double_to_word(r->minimum)), r->minimum_index)
+            != r->minimum_checksum) {
+          reconstruction_mismatches += 1u;
+        }
+        std::uint64_t rebuilt = kFNVOffset;
+        bool ordered = true;
+        for (std::uint64_t slot = 0; slot < r->compacted_count; ++slot) {
+          const std::uint64_t entry = r->entries[slot];
+          const std::uint64_t flags = entry >> 32;
+          if (!(flags == 4ULL || flags == 6ULL || flags == 7ULL)) ordered = false;
+          if (slot > 0ULL && !((entry & 0xFFFFFFFFULL) > (r->entries[slot - 1ULL] & 0xFFFFFFFFULL))) {
+            ordered = false;
+          }
+          rebuilt = fnv_step(rebuilt, entry);
+        }
+        if (!ordered || rebuilt != r->compaction_checksum) reconstruction_mismatches += 1u;
+      }
+    }
+  }
+
+  // The control-free generic run must land on the pre-control natural minimum.
+  std::uint32_t generic_disagreements = 0u;
+  for (std::uint32_t row = 0; row < kRowCount; ++row) {
+    for (std::uint32_t encoding = 0; encoding < kEncodingCount; ++encoding) {
+      if (generic.results[row][encoding].minimum_checksum !=
+          qualified.results[row][encoding].natural_minimum_checksum) {
+        generic_disagreements += 1u;
+      }
+    }
+  }
+  // A one-row tail must reproduce row zero of the two-row generic call
+  // exactly, while leaving the unused result slot cleared.  This exercises
+  // the same numerical path without padding the tail with a fake record.
+  if (single.row_count != 1u || generic.row_count != kRowCount ||
+      single.lift_total != generic.lift_total ||
+      single.invalid_registers != generic.invalid_registers) generic_disagreements += 1u;
+  for (std::uint32_t encoding = 0; encoding < kEncodingCount; ++encoding) {
+    const ScanResult& one = single.results[0][encoding];
+    const ScanResult& two = generic.results[0][encoding];
+    bool same = one.word_count == two.word_count &&
+                double_to_word(one.minimum) == double_to_word(two.minimum) &&
+                one.minimum_index == two.minimum_index &&
+                one.compacted_count == two.compacted_count &&
+                one.compaction_chunks == two.compaction_chunks &&
+                one.compaction_checksum == two.compaction_checksum &&
+                one.illegal == two.illegal && one.nesting == two.nesting;
+    for (std::uint32_t bit = 0; bit < kCHCount; ++bit) {
+      same = same && one.per_ch[bit] == two.per_ch[bit];
+    }
+    if (one.compacted_count > kMaxCompactedEntries) same = false;
+    for (std::uint64_t slot = 0; same && slot < one.compacted_count; ++slot) {
+      same = one.entries[slot] == two.entries[slot];
+    }
+    const ScanResult& unused = single.results[1][encoding];
+    same = same && unused.word_count == 0ULL && unused.compacted_count == 0ULL;
+    if (!same) generic_disagreements += 1u;
+  }
+  if (run_core(host_payload, host_rows, 0u, nullptr, nullptr, &single) ||
+      run_core(host_payload, host_rows, kRowCount + 1u, nullptr, nullptr, &single)) {
+    generic_disagreements += 1u;
+  }
+
+  if (ok) {
+    // Every lift's packed word in frozen cache order: the layout stays
+    // load-bearing even though the energies consume register penalties.
+    std::uint64_t lift_digest = kFNVOffset;
+    for (std::uint64_t index = 0; index < kStateCount; ++index) {
+      double sector[kSectorCount], budget;
+      residuals_of(&host_payload, static_cast<std::uint32_t>(index), sector, &budget);
+      std::uint32_t sector_bits = 0u;
+      for (std::uint32_t s = 0; s < kSectorCount; ++s) {
+        std::uint32_t values[2]; double penalties[2];
+        register_minimizers(sector[s], register_maximum(s), values, penalties);
+        sector_bits |= values[0] << register_offset(s);
+      }
+      std::uint32_t values[2]; double penalties[2];
+      const std::uint32_t count = register_minimizers(budget, register_maximum(kSectorCount), values, penalties);
+      for (std::uint32_t lift = 0; lift < count; ++lift) {
+        lift_digest = fnv_step(lift_digest, sector_bits | (values[lift] << register_offset(kSectorCount)));
+      }
+    }
+    std::uint64_t membership_digest = kFNVOffset;
+    for (std::uint32_t s = 0; s < kSectorCount; ++s) {
+      for (std::uint32_t m = 0; m < kSectorSize; ++m) {
+        const std::uint32_t member = host_payload.membership[s][m];
+        for (std::uint32_t shift = 0; shift < 32u; shift += 8u) {
+          membership_digest = fnv_step(membership_digest, (member >> shift) & 0xFFu);
+        }
+      }
+    }
+    std::uint64_t coefficient_digest = kFNVOffset;
+    for (std::uint32_t row = 0; row < kRowCount; ++row) {
+      const CoefficientData r = synthetic_row(row);
+      const double fields[7] = {r.alpha, r.sector_slack, r.budget_slack, r.sector_linear,
+                                r.sector_quadratic, r.budget_linear, r.budget_quadratic};
+      for (std::uint32_t field = 0; field < 7u; ++field) {
+        coefficient_digest = fnv_step(coefficient_digest, double_to_word(fields[field]));
+      }
+    }
+    std::uint64_t control_digest = kFNVOffset;
+    for (std::uint32_t row = 0; row < kRowCount; ++row) {
+      for (std::uint32_t encoding = 0; encoding < kEncodingCount; ++encoding) {
+        for (std::uint32_t slot = 0; slot < kControlCount; ++slot) {
+          control_digest = fnv_step(control_digest, host_control_positions[slot]);
+          control_digest = fnv_step(control_digest,
+              double_to_word(host_control_offsets[(row * kEncodingCount + encoding) * kControlCount + slot]));
+        }
+      }
+    }
+    std::uint64_t exact_registers = 0, clamped_registers = 0, tied_registers = 0;
+    for (std::uint64_t index = 0; index < kStateCount; ++index) {
+      double sector[kSectorCount], budget;
+      residuals_of(&host_payload, static_cast<std::uint32_t>(index), sector, &budget);
+      for (std::uint32_t reg = 0; reg < kRegisterCount; ++reg) {
+        const double residual = reg < kSectorCount ? sector[reg] : budget;
+        const std::uint32_t maximum = register_maximum(reg);
+        std::uint32_t values[2]; double penalties[2];
+        const std::uint32_t count = register_minimizers(residual, maximum, values, penalties);
+        if (count > 1u) tied_registers += 1ULL;
+        const bool exact = residual >= 0.0 && residual <= static_cast<double>(maximum) &&
+                           residual == static_cast<double>(static_cast<long long>(residual));
+        if (exact) exact_registers += 1ULL; else clamped_registers += 1ULL;
+      }
+    }
+    std::uint32_t nonfinite_total = 0, disagreements = 0, illegal_total = 0, nesting_total = 0;
+    std::uint32_t order_total = 0, mismatch_total = 0, overflow_total = 0;
+    for (std::uint32_t row = 0; row < kRowCount; ++row) {
+      for (std::uint32_t encoding = 0; encoding < kEncodingCount; ++encoding) {
+        nonfinite_total += results[row][encoding].nonfinite;
+        disagreements += results[row][encoding].disagreements;
+        illegal_total += results[row][encoding].illegal;
+        nesting_total += results[row][encoding].nesting;
+        order_total += results[row][encoding].order_violations;
+        mismatch_total += results[row][encoding].compaction_mismatches;
+        overflow_total += results[row][encoding].compaction_overflows;
+      }
+    }
+    const bool pass = nonfinite_total == 0u && disagreements == 0u && illegal_total == 0u &&
+                      nesting_total == 0u && invalid_registers == 0u && lift_total > kStateCount &&
+                      order_total == 0u && mismatch_total == 0u && overflow_total == 0u &&
+                      generic_disagreements == 0u && reconstruction_mismatches == 0u;
+    std::printf("{\"schema\":\"decisions_os/g9_cuda_core_stream_engine_self_test/v1\",\"device_index\":%d,\"device_name\":\"%s\",\"decoded_width\":%u,\"state_count\":%llu,\"segment_size\":%u,\"segment_count\":%llu,\"register_count\":%u,\"auxiliary_bits\":%u,\"row_count\":%u,\"lift_total\":%llu,\"cache_capacity\":%llu,\"lift_digest\":\"%016llx\",\"membership_digest\":\"%016llx\",\"coefficient_digest\":\"%016llx\",\"control_digest\":\"%016llx\",\"exact_registers\":%llu,\"clamped_registers\":%llu,\"tied_registers\":%llu,\"compaction_chunk_size\":%llu,\"max_compacted_entries\":%llu,\"compaction_order_violations\":%u,\"compaction_mismatches\":%u,\"compaction_overflows\":%u,\"generic_disagreements\":%u,\"reconstruction_mismatches\":%u,\"lambda_ref_checksum\":\"%016llx\",\"nonfinite_energies\":%u,\"reduction_disagreements\":%u,\"illegal_flag_entries\":%u,\"nesting_violations\":%u,\"scientific_outputs\":\"intentionally absent\"",
+                selected, property.name, kDecodedWidth, static_cast<unsigned long long>(kStateCount),
+                kSegmentSize, static_cast<unsigned long long>(kStateCount / kSegmentSize),
+                kRegisterCount, kAuxiliaryBits, kRowCount,
+                static_cast<unsigned long long>(lift_total),
+                static_cast<unsigned long long>(kCacheCapacity),
+                static_cast<unsigned long long>(lift_digest),
+                static_cast<unsigned long long>(membership_digest),
+                static_cast<unsigned long long>(coefficient_digest),
+                static_cast<unsigned long long>(control_digest),
+                static_cast<unsigned long long>(exact_registers),
+                static_cast<unsigned long long>(clamped_registers),
+                static_cast<unsigned long long>(tied_registers),
+                static_cast<unsigned long long>(kCompactionChunkSize),
+                static_cast<unsigned long long>(kMaxCompactedEntries),
+                order_total, mismatch_total, overflow_total, generic_disagreements,
+                reconstruction_mismatches,
+                static_cast<unsigned long long>(fnv_step(kFNVOffset, double_to_word(host_payload.lambda_ref))),
+                nonfinite_total, disagreements, illegal_total, nesting_total);
+    const char* row_names[kRowCount] = {"row0", "row1"};
+    const char* encoding_names[kEncodingCount] = {"unbalanced", "slack"};
+    for (std::uint32_t row = 0; row < kRowCount; ++row) {
+      for (std::uint32_t encoding = 0; encoding < kEncodingCount; ++encoding) {
+        const ScanResult* r = &results[row][encoding];
+        std::printf(",\"natural_energy_checksum_%s_%s\":\"%016llx\",\"controlled_energy_checksum_%s_%s\":\"%016llx\",\"flags_checksum_%s_%s\":\"%016llx\",\"minimum_checksum_%s_%s\":\"%016llx\",\"word_count_%s_%s\":%llu,\"count_c_h_1024_%s_%s\":%llu,\"count_c_h_2048_%s_%s\":%llu,\"count_c_h_4096_%s_%s\":%llu,\"compacted_count_%s_%s\":%llu,\"compaction_chunks_%s_%s\":%llu,\"compaction_checksum_%s_%s\":\"%016llx\",\"generic_minimum_checksum_%s_%s\":\"%016llx\",\"generic_compacted_count_%s_%s\":%llu,\"generic_compaction_checksum_%s_%s\":\"%016llx\"",
+                    row_names[row], encoding_names[encoding], static_cast<unsigned long long>(r->natural_checksum),
+                    row_names[row], encoding_names[encoding], static_cast<unsigned long long>(r->controlled_checksum),
+                    row_names[row], encoding_names[encoding], static_cast<unsigned long long>(r->flags_checksum),
+                    row_names[row], encoding_names[encoding], static_cast<unsigned long long>(r->minimum_checksum),
+                    row_names[row], encoding_names[encoding], static_cast<unsigned long long>(r->word_count),
+                    row_names[row], encoding_names[encoding], static_cast<unsigned long long>(r->per_ch[0]),
+                    row_names[row], encoding_names[encoding], static_cast<unsigned long long>(r->per_ch[1]),
+                    row_names[row], encoding_names[encoding], static_cast<unsigned long long>(r->per_ch[2]),
+                    row_names[row], encoding_names[encoding], static_cast<unsigned long long>(r->compacted_count),
+                    row_names[row], encoding_names[encoding], static_cast<unsigned long long>(r->compaction_chunks),
+                    row_names[row], encoding_names[encoding], static_cast<unsigned long long>(r->compaction_checksum),
+                    row_names[row], encoding_names[encoding],
+                    static_cast<unsigned long long>(generic.results[row][encoding].minimum_checksum),
+                    row_names[row], encoding_names[encoding],
+                    static_cast<unsigned long long>(generic.results[row][encoding].compacted_count),
+                    row_names[row], encoding_names[encoding],
+                    static_cast<unsigned long long>(generic.results[row][encoding].compaction_checksum));
+      }
+    }
+    std::printf(",\"verdict\":\"%s\"}\n", pass ? "pass" : "fail");
+    ok = ok && pass;
+  }
+  return ok;
+}
+
+int main(int argc, char** argv) {
+  if (argc != 2 || std::strcmp(argv[1], "--self-test") != 0) {
+    std::fprintf(stderr, "usage: stage2_cuda_core_stream_engine --self-test\n");
+    return 2;
+  }
+  if (!run_self_test()) {
+    std::fprintf(stderr, "FAIL Stage-2 full-domain energy self-test\n");
+    return 1;
+  }
+  return 0;
+}

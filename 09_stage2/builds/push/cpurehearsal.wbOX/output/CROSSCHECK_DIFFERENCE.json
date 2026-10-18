@@ -1,0 +1,18 @@
+{
+  "schema": "decisions_os/g9_b2_wp3_crosscheck_difference/v1",
+  "status": "REFUSED_CROSSCHECK_DIFFERENCE_OR_REFUSAL",
+  "scope": "actual_instance_b2_wp3_crosscheck_only_no_scientific_write",
+  "slot": 1,
+  "kernel_id": "shivanshsrivastava06/g9-real-xcheck-slot-1-9b9596a5-xcheck2b",
+  "instance_id": "stage2_01",
+  "prepared_record_sha256": "6efcab02e93ac5afd0328ba28c250f5274c134bed4990bb3ddcc6c41d7f0cd47",
+  "plan_sha256": "3ee7424ffe6d5e8eedbcbbd51bec8bf41cd89373f677169a95bf70e888389f3d",
+  "stage": "child_exception",
+  "detail": "GpuUnavailable: Actual live platform probe failed",
+  "differences": [],
+  "comparisons_completed": 0,
+  "gpu": {},
+  "receipt_written": false,
+  "scientific_writes": [],
+  "content_sha256": "012df7bd6ac5c39da17342386444997c771fcdc5a058e2b72632795dc08df098"
+}

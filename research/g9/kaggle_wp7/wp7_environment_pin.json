@@ -1,0 +1,106 @@
+{
+  "schema": "decisions_os/g9_wp7_environment_pin/v1",
+  "status": "DRAFT",
+  "authorization": {
+    "package_state": "draft_not_approved_for_push",
+    "push_authorized": false,
+    "gpu_allocation_authorized": false,
+    "run_authorized": false,
+    "owner_instruction_verbatim": "Build the WP7 session script, environment-pinning configuration and push manifest offline. Treat them as drafts until all dependency hashes and reviews are final. No API push, GPU allocation or run is authorized. Changes to dependencies must invalidate the package and trigger revalidation."
+  },
+  "provenance_label": "PLATFORM-REPORTED",
+  "provenance_note": "Every value under platform_reported and image_reported is a value reported by the Kaggle platform, not an independently proven property of the executing container. Per the provider-trust amendment section 3 these values are never called proof. A change in any reported value forces requalification.",
+  "authority": {
+    "accepted_platform_record": "research/decisions/GATE_9_CUDA_CORE_A_VERSION1_OWNER_ACCEPTANCE.md",
+    "accepted_outcome_record": "research/g9/kaggle_dry_run/GATE_9_KAGGLE_CORE_A_VERSION1_OUTCOME.md",
+    "provider_trust_amendment": "research/decisions/GATE_9_SECTION_B_KAGGLE_PROVIDER_TRUST_AMENDMENT_DRAFT.md",
+    "closure_plan": "research/g9/GATE_9_SECTION_B_CLOSURE_PLAN_DRAFT.md"
+  },
+  "platform_reported": {
+    "gpu_name": "Tesla T4",
+    "compute_capability": "7.5",
+    "cuda_driver_version": "13000",
+    "cuda_runtime_version": "12080",
+    "nvcc_version_release": "12.8, V12.8.93",
+    "python_version": "3.12.13",
+    "numpy_version": "2.0.2"
+  },
+  "platform_reported_fields": {
+    "gpu_name": "PLATFORM-REPORTED",
+    "compute_capability": "PLATFORM-REPORTED",
+    "cuda_driver_version": "PLATFORM-REPORTED",
+    "cuda_runtime_version": "PLATFORM-REPORTED",
+    "nvcc_version_release": "PLATFORM-REPORTED",
+    "python_version": "PLATFORM-REPORTED",
+    "numpy_version": "PLATFORM-REPORTED"
+  },
+  "image_reported": {
+    "kaggle_image": "gcr.io/kaggle-private-byod/python@sha256:37c64f7dd9c54116ecd1bcc88817c5469b88387388fade02bfa8bf3fc647d461",
+    "image_manifest_sha256": "37c64f7dd9c54116ecd1bcc88817c5469b88387388fade02bfa8bf3fc647d461",
+    "image_config_id": "sha256:c72831376c5485ec652a6f4a771bf091ae0726310e1b9db3db064387e173e941",
+    "image_name": "gcr.io/kaggle-gpu-images/python",
+    "build_env": {
+      "BUILD_DATE": "20260629-122508",
+      "COLAB_IMAGE_TYPE": "gpu",
+      "CUDA_VERSION": "12.8.1",
+      "GIT_COMMIT": "fc61d5cda7da39530055bae9bd0e92865f995cd9"
+    },
+    "cuda_home": "/usr/local/cuda",
+    "nvcc_path": "/usr/local/cuda/bin/nvcc"
+  },
+  "image_reported_fields": {
+    "kaggle_image": "PLATFORM-REPORTED",
+    "image_manifest_sha256": "PLATFORM-REPORTED",
+    "image_config_id": "PLATFORM-REPORTED",
+    "image_name": "PLATFORM-REPORTED",
+    "build_env.BUILD_DATE": "PLATFORM-REPORTED",
+    "build_env.COLAB_IMAGE_TYPE": "PLATFORM-REPORTED",
+    "build_env.CUDA_VERSION": "PLATFORM-REPORTED",
+    "build_env.GIT_COMMIT": "PLATFORM-REPORTED",
+    "cuda_home": "PLATFORM-REPORTED",
+    "nvcc_path": "PLATFORM-REPORTED"
+  },
+  "compiler_flags": [
+    "-std=c++17",
+    "-O0",
+    "--fmad=false",
+    "--ftz=false",
+    "-prec-div=true",
+    "-prec-sqrt=true",
+    "-Xcompiler",
+    "-O0,-ffp-contract=off,-fno-fast-math,-fPIC"
+  ],
+  "compiler_flags_fields": {
+    "compiler_flags": "REVIEWED-BOUND, NOT PLATFORM-REPORTED"
+  },
+  "kaggle_environment_pinning_request": {
+    "machine_shape": "NvidiaTeslaT4",
+    "enable_gpu": true,
+    "enable_internet": false,
+    "enable_tpu": false,
+    "is_private": true,
+    "kernel_type": "script",
+    "language": "python",
+    "docker_image_pinning": "REQUEST_PIN_TO_ACCEPTED_IMAGE_DIGEST",
+    "requested_docker_image": "gcr.io/kaggle-gpu-images/python@sha256:37c64f7dd9c54116ecd1bcc88817c5469b88387388fade02bfa8bf3fc647d461",
+    "pinning_rationale": "The provider-trust amendment accepts platform-reported image values but requires that a reported change force requalification. An unpinned notebook can silently move to a new image and invalidate the qualification identity, so WP1 makes pinning an operational requirement. The dry run v1 postmortem shows an unpinned CPU image and dry run v2 shows a submitted pin that still ran a CPU environment, so the pin is requested and then VERIFIED BY COMPARISON at session start; it is never assumed to have taken effect."
+  },
+  "comparison_rule": {
+    "mode": "fail_closed",
+    "timing": "first_action_of_session_before_any_computation",
+    "rule": "The session captures the platform-reported identity, compares every field against this pin, and aborts before any compilation, GPU probe, NumPy import, qualification run or scientific computation if any single field differs in value, type or presence.",
+    "on_difference": "abort, emit a non-scientific difference record naming each differing field, and force requalification of the production identity",
+    "on_absence": "an absent field is a difference, never a pass",
+    "extra_reported_fields": "a reported field absent from this pin is a difference, never a pass",
+    "failures_do_not_repair": "A failed session is not repaired by changing numerical flags, code, coordinates or thresholds after seeing the failure; such a change requires a new reviewed amendment."
+  },
+  "accepted_evidence_hashes": {
+    "accepted_cuda_amendment": "589fdc29d71cd5f70c0734e927d109dc00b389b40cc7c485e56a655f41fd57cf",
+    "section_A_execution_release": "585da5d87908738e34c9b9858a0ef6d1c5e5cf4311dd1f6e3ba00a9d0ce6bfb9",
+    "accepted_outcome_file": "fe42a38170e1dbda433974990236353900c6217031afdc880d58fb7741c7ea59",
+    "version1_receipt_file": "e6f18e4a9b198b1e8dfd61a09e79588f1ca0c7e425cd62ee7388500731ee0217",
+    "sanitized_image_attestation": "04baf3acb4ca8be20cd015047ad5543e1f48d16cb68a7b382c94abc139857b85",
+    "core_dry_run_release": "50f25827ef07b8fcbf3f19223f3982b486f1b11c5d71a7d0c037fd1c6f5328a9"
+  },
+  "accepted_platform_scope_limit": "The owner acceptance covers the exact 12-file v1 source map, the eight numerical compiler flags and the platform and image values above. It issues no production qualification identity. WP7 qualifies the WP1 production identity; it does not extend this acceptance."
+}

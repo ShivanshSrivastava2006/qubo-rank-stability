@@ -1,0 +1,1506 @@
+{
+  "authority": "DECISIONS.md \u2014 Process Approval \u2014 Gate 4 bounded encoding formulation and conformance",
+  "coefficient_ledger": {
+    "budget": [
+      {
+        "a_r_hex": "0x1.a368d07139b98p-14",
+        "index": 0,
+        "lambda_1_hex": "0x1.88a473fd45266p-23",
+        "lambda_2_hex": "0x1.014f2b572c2cdp-39",
+        "lambda_slack_hex": "0x1.3a212ed417e1dp-25"
+      },
+      {
+        "a_r_hex": "0x1.07ffca1dcd3b1p-13",
+        "index": 1,
+        "lambda_1_hex": "0x1.ee4d144154efbp-23",
+        "lambda_2_hex": "0x1.97cc10ad53753p-39",
+        "lambda_slack_hex": "0x1.8b773c3153752p-25"
+      },
+      {
+        "a_r_hex": "0x1.4c59904abf9d1p-13",
+        "index": 2,
+        "lambda_1_hex": "0x1.37239796cd59ep-22",
+        "lambda_2_hex": "0x1.43259c44e9bf5p-38",
+        "lambda_slack_hex": "0x1.f1dca5515dea6p-25"
+      },
+      {
+        "a_r_hex": "0x1.a2652538a1ff0p-13",
+        "index": 3,
+        "lambda_1_hex": "0x1.87b15b44be395p-22",
+        "lambda_2_hex": "0x1.0010f06103d41p-37",
+        "lambda_slack_hex": "0x1.3962aff1b4cf8p-24"
+      },
+      {
+        "a_r_hex": "0x1.075b78b5f8b37p-12",
+        "index": 4,
+        "lambda_1_hex": "0x1.ed196abcde11ap-22",
+        "lambda_2_hex": "0x1.95d10a8f8441dp-37",
+        "lambda_slack_hex": "0x1.8a876a529fbd6p-24"
+      },
+      {
+        "a_r_hex": "0x1.4b8953b8ec4b7p-12",
+        "index": 5,
+        "lambda_1_hex": "0x1.3660a536b9c61p-21",
+        "lambda_2_hex": "0x1.41912a462b33ap-36",
+        "lambda_slack_hex": "0x1.f0aebb03cd9fap-24"
+      },
+      {
+        "a_r_hex": "0x1.a15cd0f5eb009p-12",
+        "index": 6,
+        "lambda_1_hex": "0x1.86b9e5a61da02p-21",
+        "lambda_2_hex": "0x1.fd9b93d9ff4e3p-36",
+        "lambda_slack_hex": "0x1.38a4a494b6835p-23"
+      },
+      {
+        "a_r_hex": "0x1.06b35cfe870e7p-11",
+        "index": 7,
+        "lambda_1_hex": "0x1.ebdea87349d1bp-21",
+        "lambda_2_hex": "0x1.93cb9968aa7cdp-35",
+        "lambda_slack_hex": "0x1.899829e29e65ap-23"
+      },
+      {
+        "a_r_hex": "0x1.4ab2f6291c02ep-11",
+        "index": 8,
+        "lambda_1_hex": "0x1.3597f5fb0a8d2p-20",
+        "lambda_2_hex": "0x1.3ff1d9f38163fp-34",
+        "lambda_slack_hex": "0x1.ef8187cce8eb8p-23"
+      },
+      {
+        "a_r_hex": "0x1.a04a9f291cb18p-11",
+        "index": 9,
+        "lambda_1_hex": "0x1.85b933abf5eaep-20",
+        "lambda_2_hex": "0x1.fafed7d7309b7p-34",
+        "lambda_slack_hex": "0x1.37e70c770efbbp-22"
+      },
+      {
+        "a_r_hex": "0x1.060357d42073dp-10",
+        "index": 10,
+        "lambda_1_hex": "0x1.ea9515cbd9af0p-20",
+        "lambda_2_hex": "0x1.91af304a71c94p-33",
+        "lambda_slack_hex": "0x1.88a97a891dda4p-22"
+      },
+      {
+        "a_r_hex": "0x1.49cff0ded4586p-10",
+        "index": 11,
+        "lambda_1_hex": "0x1.34c36dc7f53cap-19",
+        "lambda_2_hex": "0x1.3e3b2a195f7c4p-32",
+        "lambda_slack_hex": "0x1.ee550b3da8526p-22"
+      },
+      {
+        "a_r_hex": "0x1.9f243ae80fd9bp-10",
+        "index": 12,
+        "lambda_1_hex": "0x1.84a599390e039p-19",
+        "lambda_2_hex": "0x1.f832c348b0796p-32",
+        "lambda_slack_hex": "0x1.3729e752dab28p-21"
+      },
+      {
+        "a_r_hex": "0x1.05433c3cebd40p-9",
+        "index": 13,
+        "lambda_1_hex": "0x1.e92d63f97022dp-19",
+        "lambda_2_hex": "0x1.8f6300bad1d92p-31",
+        "lambda_slack_hex": "0x1.87bb5bee22037p-21"
+      },
+      {
+        "a_r_hex": "0x1.48d35498632e6p-9",
+        "index": 14,
+        "lambda_1_hex": "0x1.33d6f0af7c0cbp-18",
+        "lambda_2_hex": "0x1.3c5469cf31264p-30",
+        "lambda_slack_hex": "0x1.ed2944e747accp-21"
+      },
+      {
+        "a_r_hex": "0x1.9dd52fdfb8e7fp-9",
+        "index": 15,
+        "lambda_1_hex": "0x1.836bf02a0b21ep-18",
+        "lambda_2_hex": "0x1.f506362b3be93p-30",
+        "lambda_slack_hex": "0x1.366d34e26083cp-20"
+      },
+      {
+        "a_r_hex": "0x1.0462e0485d2bdp-8",
+        "index": 16,
+        "lambda_1_hex": "0x1.e7894f4741d65p-18",
+        "lambda_2_hex": "0x1.8cb634f88adb2p-29",
+        "lambda_slack_hex": "0x1.86cdcdb9e4243p-20"
+      },
+      {
+        "a_r_hex": "0x1.47a39a188cfd3p-8",
+        "index": 17,
+        "lambda_1_hex": "0x1.32ba9889e7472p-17",
+        "lambda_2_hex": "0x1.3a0d183a59ed6p-28",
+        "lambda_slack_hex": "0x1.ebfe345b45fefp-20"
+      },
+      {
+        "a_r_hex": "0x1.9c3535f087027p-8",
+        "index": 18,
+        "lambda_1_hex": "0x1.81e682800ec3ap-17",
+        "lambda_2_hex": "0x1.f118f33eba540p-28",
+        "lambda_slack_hex": "0x1.35b0f4e011934p-19"
+      },
+      {
+        "a_r_hex": "0x1.03428548c5ebap-7",
+        "index": 19,
+        "lambda_1_hex": "0x1.e56d67a738acdp-17",
+        "lambda_2_hex": "0x1.89497572304bap-27",
+        "lambda_slack_hex": "0x1.85e0cf94d2baap-19"
+      },
+      {
+        "a_r_hex": "0x1.460ecacd830ecp-7",
+        "index": 20,
+        "lambda_1_hex": "0x1.313f9f1340db2p-16",
+        "lambda_2_hex": "0x1.3706ecb1f91aap-26",
+        "lambda_slack_hex": "0x1.ead3d92b6550dp-19"
+      },
+      {
+        "a_r_hex": "0x1.99f5ce038ebe1p-7",
+        "index": 21,
+        "lambda_1_hex": "0x1.7fcbd3a023c54p-16",
+        "lambda_2_hex": "0x1.ebb0ecd2fc123p-26",
+        "lambda_slack_hex": "0x1.34f5270689338p-18"
+      },
+      {
+        "a_r_hex": "0x1.01a4a517ffea3p-6",
+        "index": 22,
+        "lambda_1_hex": "0x1.e2667b2ca5b36p-16",
+        "lambda_2_hex": "0x1.8465b520016e0p-25",
+        "lambda_slack_hex": "0x1.84f46127915f2p-18"
+      },
+      {
+        "a_r_hex": "0x1.43b4badb34e16p-6",
+        "index": 23,
+        "lambda_1_hex": "0x1.2f0bfbb1a9e89p-15",
+        "lambda_2_hex": "0x1.328e7359dd9d4p-24",
+        "lambda_slack_hex": "0x1.e9aa32e9aa843p-18"
+      },
+      {
+        "a_r_hex": "0x1.96812b42f46ddp-6",
+        "index": 24,
+        "lambda_1_hex": "0x1.7c8fa6284381ap-15",
+        "lambda_2_hex": "0x1.e36fde91cbb92p-24",
+        "lambda_slack_hex": "0x1.3439cb108ccbfp-17"
+      },
+      {
+        "a_r_hex": "0x1.fe2a318b508dbp-6",
+        "index": 25,
+        "lambda_1_hex": "0x1.dd9b0f60b348dp-15",
+        "lambda_2_hex": "0x1.7cb70d00b42e8p-23",
+        "lambda_slack_hex": "0x1.8408821af8a4ap-17"
+      },
+      {
+        "a_r_hex": "0x1.3fe249109cafep-5",
+        "index": 26,
+        "lambda_1_hex": "0x1.2b77fbd85be7cp-14",
+        "lambda_2_hex": "0x1.2b5c2cf9441b6p-22",
+        "lambda_slack_hex": "0x1.e88141285d2d3p-17"
+      },
+      {
+        "a_r_hex": "0x1.90c4f46afd5afp-5",
+        "index": 27,
+        "lambda_1_hex": "0x1.7731232c209f6p-14",
+        "lambda_2_hex": "0x1.d5e458a2cff46p-22",
+        "lambda_slack_hex": "0x1.337ee0b90bbf6p-16"
+      },
+      {
+        "a_r_hex": "0x1.f5872eeafc313p-5",
+        "index": 28,
+        "lambda_1_hex": "0x1.d585287ffc855p-14",
+        "lambda_2_hex": "0x1.6fef03031815bp-21",
+        "lambda_slack_hex": "0x1.831d321815f81p-16"
+      },
+      {
+        "a_r_hex": "0x1.395e96b4e5444p-4",
+        "index": 29,
+        "lambda_1_hex": "0x1.255eb88399030p-13",
+        "lambda_2_hex": "0x1.1f4a90ddf647bp-20",
+        "lambda_slack_hex": "0x1.e759037a07694p-16"
+      },
+      {
+        "a_r_hex": "0x1.86f174f884726p-4",
+        "index": 30,
+        "lambda_1_hex": "0x1.6dfe2e3a5fcbbp-13",
+        "lambda_2_hex": "0x1.bf21f18d89251p-20",
+        "lambda_slack_hex": "0x1.32c467bb1f528p-15"
+      },
+      {
+        "a_r_hex": "0x1.e6bc66aea0816p-4",
+        "index": 31,
+        "lambda_1_hex": "0x1.c7ac0d2959f83p-13",
+        "lambda_2_hex": "0x1.5a8cca716b9e9p-19",
+        "lambda_slack_hex": "0x1.823270c82b806p-15"
+      },
+      {
+        "a_r_hex": "0x1.2e4748342834ep-3",
+        "index": 32,
+        "lambda_1_hex": "0x1.1afc9ef0dadb6p-12",
+        "lambda_2_hex": "0x1.0b50a5e722c12p-18",
+        "lambda_slack_hex": "0x1.e631797175b6fp-15"
+      },
+      {
+        "a_r_hex": "0x1.7667f68ddc11fp-3",
+        "index": 33,
+        "lambda_1_hex": "0x1.5e82df22fee2fp-12",
+        "lambda_2_hex": "0x1.9a1ad4fa51049p-18",
+        "lambda_slack_hex": "0x1.320a5fd20a92ap-14"
+      },
+      {
+        "a_r_hex": "0x1.ce43abd9375bap-3",
+        "index": 34,
+        "lambda_1_hex": "0x1.b0c3243a8219ep-12",
+        "lambda_2_hex": "0x1.389439fbd8eb6p-17",
+        "lambda_slack_hex": "0x1.81483dd4affefp-14"
+      },
+      {
+        "a_r_hex": "0x1.1c570da7b790ap-2",
+        "index": 35,
+        "lambda_1_hex": "0x1.0a3178c5565bep-11",
+        "lambda_2_hex": "0x1.d90f0b2fcb6fcp-17",
+        "lambda_slack_hex": "0x1.e50aa2a1b6cddp-14"
+      },
+      {
+        "a_r_hex": "0x1.5c650bed5b1a5p-2",
+        "index": 36,
+        "lambda_1_hex": "0x1.4628eeadefebdp-11",
+        "lambda_2_hex": "0x1.6319e7d70596fp-16",
+        "lambda_slack_hex": "0x1.3150c8b93a3c4p-13"
+      },
+      {
+        "a_r_hex": "0x1.a9039ade1a18dp-2",
+        "index": 37,
+        "lambda_1_hex": "0x1.8de3aca218f52p-11",
+        "lambda_2_hex": "0x1.083b6e635145bp-15",
+        "lambda_slack_hex": "0x1.805e98e74eaf3p-13"
+      },
+      {
+        "a_r_hex": "0x1.0207df95903c3p-1",
+        "index": 38,
+        "lambda_1_hex": "0x1.e32045bdf47e2p-11",
+        "lambda_2_hex": "0x1.85911b4bc5de1p-15",
+        "lambda_slack_hex": "0x1.e3e47e9e1b760p-13"
+      },
+      {
+        "a_r_hex": "0x1.37c5b3d541b64p-1",
+        "index": 39,
+        "lambda_1_hex": "0x1.23dfee127d437p-10",
+        "lambda_2_hex": "0x1.1c5ec20f81af3p-14",
+        "lambda_slack_hex": "0x1.3097a22c44a1cp-12"
+      },
+      {
+        "a_r_hex": "0x1.76cf5d0b09955p-1",
+        "index": 40,
+        "lambda_1_hex": "0x1.5ee3ac422d5e7p-10",
+        "lambda_2_hex": "0x1.9afd79070b6e4p-14",
+        "lambda_slack_hex": "0x1.7f7581a9e7272p-12"
+      },
+      {
+        "a_r_hex": "0x1.c04dc92e53127p-1",
+        "index": 41,
+        "lambda_1_hex": "0x1.a3b158203cdbep-10",
+        "lambda_2_hex": "0x1.25fbf35a71c79p-13",
+        "lambda_slack_hex": "0x1.e2bf0cfa36608p-12"
+      },
+      {
+        "a_r_hex": "0x1.0ac0df07a9414p+0",
+        "index": 42,
+        "lambda_1_hex": "0x1.f3753eaa471edp-10",
+        "lambda_2_hex": "0x1.a059b1be67b1bp-13",
+        "lambda_slack_hex": "0x1.2fdeebe6e9925p-11"
+      },
+      {
+        "a_r_hex": "0x1.3be407beeaa7bp+0",
+        "index": 43,
+        "lambda_1_hex": "0x1.27baf840943e6p-9",
+        "lambda_2_hex": "0x1.23eec8bf60713p-12",
+        "lambda_slack_hex": "0x1.7e8cf7c68d374p-11"
+      },
+      {
+        "a_r_hex": "0x1.744f7765900bbp+0",
+        "index": 44,
+        "lambda_1_hex": "0x1.5c8c9d5388d39p-9",
+        "lambda_2_hex": "0x1.9586d20e10448p-12",
+        "lambda_slack_hex": "0x1.e19a4d49dbfeap-11"
+      },
+      {
+        "a_r_hex": "0x1.b4d613eb85173p+0",
+        "index": 45,
+        "lambda_1_hex": "0x1.98f4fecfe998ep-9",
+        "lambda_2_hex": "0x1.1722e5d7033a2p-11",
+        "lambda_slack_hex": "0x1.2f26a5a51240ap-10"
+      },
+      {
+        "a_r_hex": "0x1.fe6211c1ac1b9p+0",
+        "index": 46,
+        "lambda_1_hex": "0x1.ddcf5eaf22d62p-9",
+        "lambda_2_hex": "0x1.7d0a76dc8f51dp-11",
+        "lambda_slack_hex": "0x1.7da4fae788cb6p-10"
+      },
+      {
+        "a_r_hex": "0x1.28fc654aff962p+1",
+        "index": 47,
+        "lambda_1_hex": "0x1.160834531ded0p-8",
+        "lambda_2_hex": "0x1.020948783d9d5p-10",
+        "lambda_slack_hex": "0x1.e0763f21225b1p-10"
+      },
+      {
+        "a_r_hex": "0x1.585f72a09f183p+1",
+        "index": 48,
+        "lambda_1_hex": "0x1.42650b167717ep-8",
+        "lambda_2_hex": "0x1.5af32f0076406p-10",
+        "lambda_slack_hex": "0x1.2e6ecf22d129cp-9"
+      },
+      {
+        "a_r_hex": "0x1.8dfe699267857p+1",
+        "index": 49,
+        "lambda_1_hex": "0x1.7497f1408430ap-8",
+        "lambda_2_hex": "0x1.cf67ee07db6dap-10",
+        "lambda_slack_hex": "0x1.7cbd8ab755ca4p-9"
+      },
+      {
+        "a_r_hex": "0x1.ca91d722a3d0bp+1",
+        "index": 50,
+        "lambda_1_hex": "0x1.ad4dac9cfd49dp-8",
+        "lambda_2_hex": "0x1.339a36a26206bp-9",
+        "lambda_slack_hex": "0x1.df52e21460f0ep-9"
+      },
+      {
+        "a_r_hex": "0x1.0774a22d88990p+2",
+        "index": 51,
+        "lambda_1_hex": "0x1.ed4887791538ap-8",
+        "lambda_2_hex": "0x1.961e9a0855153p-9",
+        "lambda_slack_hex": "0x1.2db7681c61fc5p-8"
+      },
+      {
+        "a_r_hex": "0x1.2df7106d5fe1bp+2",
+        "index": 52,
+        "lambda_1_hex": "0x1.1ab185c607cb5p-7",
+        "lambda_2_hex": "0x1.0ac2d7c4a0d8dp-8",
+        "lambda_slack_hex": "0x1.7bd6a6e0a3f6fp-8"
+      },
+      {
+        "a_r_hex": "0x1.59537de84d92bp+2",
+        "index": 53,
+        "lambda_1_hex": "0x1.4349832597ffcp-7",
+        "lambda_2_hex": "0x1.5cdf9adc5a1edp-8",
+        "lambda_slack_hex": "0x1.de3035b830852p-8"
+      },
+      {
+        "a_r_hex": "0x1.8a1d8c0d79ecap+2",
+        "index": 54,
+        "lambda_1_hex": "0x1.70f67148c451dp-7",
+        "lambda_2_hex": "0x1.c66b19b26addcp-8",
+        "lambda_slack_hex": "0x1.2d00704e297f3p-7"
+      },
+      {
+        "a_r_hex": "0x1.c0fb34ac72518p+2",
+        "index": 55,
+        "lambda_1_hex": "0x1.a453b24385a42p-7",
+        "lambda_2_hex": "0x1.26df91cda27cbp-7",
+        "lambda_slack_hex": "0x1.7af04f0e56d0dp-7"
+      },
+      {
+        "a_r_hex": "0x1.fea70471bf09ep+2",
+        "index": 56,
+        "lambda_1_hex": "0x1.de0feae42c9d5p-7",
+        "lambda_2_hex": "0x1.7d71710d62120p-7",
+        "lambda_slack_hex": "0x1.dd0e39a16afe3p-7"
+      },
+      {
+        "a_r_hex": "0x1.21f94cbe746d4p+3",
+        "index": 57,
+        "lambda_1_hex": "0x1.0f77ac440df12p-6",
+        "lambda_2_hex": "0x1.ebfd8a01655e4p-7",
+        "lambda_slack_hex": "0x1.2c49e774b578ep-6"
+      },
+      {
+        "a_r_hex": "0x1.48e4b77ed736ap+3",
+        "index": 58,
+        "lambda_1_hex": "0x1.33e7378699dbep-6",
+        "lambda_2_hex": "0x1.3c75de3700483p-6",
+        "lambda_slack_hex": "0x1.7a0a82eb85743p-6"
+      },
+      {
+        "a_r_hex": "0x1.7499ffd87c1a9p+3",
+        "index": 59,
+        "lambda_1_hex": "0x1.5cd2640bd0457p-6",
+        "lambda_2_hex": "0x1.96293fc934c89p-6",
+        "lambda_slack_hex": "0x1.dbeced652b3cdp-6"
+      },
+      {
+        "a_r_hex": "0x1.a5ada513a1593p+3",
+        "index": 60,
+        "lambda_1_hex": "0x1.8ac436f1bc14ep-6",
+        "lambda_2_hex": "0x1.0419c7ce29c7bp-5",
+        "lambda_slack_hex": "0x1.2b93cd4cbc969p-5"
+      }
+    ],
+    "cardinality": [
+      {
+        "alpha_hex": "0x1.ead3d92b6550dp-21",
+        "index": 0
+      },
+      {
+        "alpha_hex": "0x1.34f5270689338p-20",
+        "index": 1
+      },
+      {
+        "alpha_hex": "0x1.84f46127915f2p-20",
+        "index": 2
+      },
+      {
+        "alpha_hex": "0x1.e9aa32e9aa843p-20",
+        "index": 3
+      },
+      {
+        "alpha_hex": "0x1.3439cb108ccbfp-19",
+        "index": 4
+      },
+      {
+        "alpha_hex": "0x1.8408821af8a4bp-19",
+        "index": 5
+      },
+      {
+        "alpha_hex": "0x1.e88141285d2d3p-19",
+        "index": 6
+      },
+      {
+        "alpha_hex": "0x1.337ee0b90bbf6p-18",
+        "index": 7
+      },
+      {
+        "alpha_hex": "0x1.831d321815f80p-18",
+        "index": 8
+      },
+      {
+        "alpha_hex": "0x1.e759037a07694p-18",
+        "index": 9
+      },
+      {
+        "alpha_hex": "0x1.32c467bb1f528p-17",
+        "index": 10
+      },
+      {
+        "alpha_hex": "0x1.823270c82b806p-17",
+        "index": 11
+      },
+      {
+        "alpha_hex": "0x1.e631797175b6fp-17",
+        "index": 12
+      },
+      {
+        "alpha_hex": "0x1.320a5fd20a92bp-16",
+        "index": 13
+      },
+      {
+        "alpha_hex": "0x1.81483dd4affefp-16",
+        "index": 14
+      },
+      {
+        "alpha_hex": "0x1.e50aa2a1b6cddp-16",
+        "index": 15
+      },
+      {
+        "alpha_hex": "0x1.3150c8b93a3c4p-15",
+        "index": 16
+      },
+      {
+        "alpha_hex": "0x1.805e98e74eaf3p-15",
+        "index": 17
+      },
+      {
+        "alpha_hex": "0x1.e3e47e9e1b761p-15",
+        "index": 18
+      },
+      {
+        "alpha_hex": "0x1.3097a22c44a1dp-14",
+        "index": 19
+      },
+      {
+        "alpha_hex": "0x1.7f7581a9e7272p-14",
+        "index": 20
+      },
+      {
+        "alpha_hex": "0x1.e2bf0cfa36607p-14",
+        "index": 21
+      },
+      {
+        "alpha_hex": "0x1.2fdeebe6e9925p-13",
+        "index": 22
+      },
+      {
+        "alpha_hex": "0x1.7e8cf7c68d374p-13",
+        "index": 23
+      },
+      {
+        "alpha_hex": "0x1.e19a4d49dbfebp-13",
+        "index": 24
+      },
+      {
+        "alpha_hex": "0x1.2f26a5a51240ap-12",
+        "index": 25
+      },
+      {
+        "alpha_hex": "0x1.7da4fae788cb5p-12",
+        "index": 26
+      },
+      {
+        "alpha_hex": "0x1.e0763f21225b0p-12",
+        "index": 27
+      },
+      {
+        "alpha_hex": "0x1.2e6ecf22d129dp-11",
+        "index": 28
+      },
+      {
+        "alpha_hex": "0x1.7cbd8ab755ca4p-11",
+        "index": 29
+      },
+      {
+        "alpha_hex": "0x1.df52e21460f0fp-11",
+        "index": 30
+      },
+      {
+        "alpha_hex": "0x1.2db7681c61fc5p-10",
+        "index": 31
+      },
+      {
+        "alpha_hex": "0x1.7bd6a6e0a3f6fp-10",
+        "index": 32
+      },
+      {
+        "alpha_hex": "0x1.de3035b830852p-10",
+        "index": 33
+      },
+      {
+        "alpha_hex": "0x1.2d00704e297f3p-9",
+        "index": 34
+      },
+      {
+        "alpha_hex": "0x1.7af04f0e56d0dp-9",
+        "index": 35
+      },
+      {
+        "alpha_hex": "0x1.dd0e39a16afe2p-9",
+        "index": 36
+      },
+      {
+        "alpha_hex": "0x1.2c49e774b578ep-8",
+        "index": 37
+      },
+      {
+        "alpha_hex": "0x1.7a0a82eb85743p-8",
+        "index": 38
+      },
+      {
+        "alpha_hex": "0x1.dbeced652b3ccp-8",
+        "index": 39
+      },
+      {
+        "alpha_hex": "0x1.2b93cd4cbc969p-7",
+        "index": 40
+      },
+      {
+        "alpha_hex": "0x1.792542237a7b6p-7",
+        "index": 41
+      },
+      {
+        "alpha_hex": "0x1.dacc5098ccf4ap-7",
+        "index": 42
+      },
+      {
+        "alpha_hex": "0x1.2ade21931e533p-6",
+        "index": 43
+      },
+      {
+        "alpha_hex": "0x1.78408c61b3defp-6",
+        "index": 44
+      },
+      {
+        "alpha_hex": "0x1.d9ac62d1ec850p-6",
+        "index": 45
+      },
+      {
+        "alpha_hex": "0x1.2a28e404e2deep-5",
+        "index": 46
+      },
+      {
+        "alpha_hex": "0x1.775c6151e2d72p-5",
+        "index": 47
+      },
+      {
+        "alpha_hex": "0x1.d88d23a666d14p-5",
+        "index": 48
+      },
+      {
+        "alpha_hex": "0x1.2974145f3b060p-4",
+        "index": 49
+      },
+      {
+        "alpha_hex": "0x1.7678c09febbc3p-4",
+        "index": 50
+      },
+      {
+        "alpha_hex": "0x1.d76e92ac591a4p-4",
+        "index": 51
+      },
+      {
+        "alpha_hex": "0x1.28bfb25f8018fp-3",
+        "index": 52
+      },
+      {
+        "alpha_hex": "0x1.7595a9f7e5e80p-3",
+        "index": 53
+      },
+      {
+        "alpha_hex": "0x1.d650af7a20d6bp-3",
+        "index": 54
+      },
+      {
+        "alpha_hex": "0x1.280bbdc333d32p-2",
+        "index": 55
+      },
+      {
+        "alpha_hex": "0x1.74b31d061b969p-2",
+        "index": 56
+      },
+      {
+        "alpha_hex": "0x1.d53379a65b8cep-2",
+        "index": 57
+      },
+      {
+        "alpha_hex": "0x1.275836480042cp-1",
+        "index": 58
+      },
+      {
+        "alpha_hex": "0x1.73d1197709c78p-1",
+        "index": 59
+      },
+      {
+        "alpha_hex": "0x1.d416f0c7e6ab4p-1",
+        "index": 60
+      }
+    ],
+    "sector": [
+      {
+        "a_r_hex": "0x1.a368d07139b98p-14",
+        "index": 0,
+        "lambda_1_hex": "0x1.eacd90fc96700p-21",
+        "lambda_2_hex": "0x1.920bb3b835060p-35",
+        "lambda_slack_hex": "0x1.ead3d92b6550dp-21"
+      },
+      {
+        "a_r_hex": "0x1.07ffca1dcd3b1p-13",
+        "index": 1,
+        "lambda_1_hex": "0x1.34f02ca8d515dp-20",
+        "lambda_2_hex": "0x1.3e976d0769339p-34",
+        "lambda_slack_hex": "0x1.34f5270689338p-20"
+      },
+      {
+        "a_r_hex": "0x1.4c59904abf9d1p-13",
+        "index": 2,
+        "lambda_1_hex": "0x1.84ec7d7c80b06p-20",
+        "lambda_2_hex": "0x1.f8eac42bad3afp-34",
+        "lambda_slack_hex": "0x1.84f46127915f2p-20"
+      },
+      {
+        "a_r_hex": "0x1.a2652538a1ff0p-13",
+        "index": 3,
+        "lambda_1_hex": "0x1.e99db215edc7ap-20",
+        "lambda_2_hex": "0x1.901a779795fb6p-33",
+        "lambda_slack_hex": "0x1.e9aa32e9aa843p-20"
+      },
+      {
+        "a_r_hex": "0x1.075b78b5f8b37p-12",
+        "index": 4,
+        "lambda_1_hex": "0x1.342fe2b60acb0p-19",
+        "lambda_2_hex": "0x1.3d0b50401f537p-32",
+        "lambda_slack_hex": "0x1.3439cb108ccbfp-19"
+      },
+      {
+        "a_r_hex": "0x1.4b8953b8ec4b7p-12",
+        "index": 5,
+        "lambda_1_hex": "0x1.83f8ce8468379p-19",
+        "lambda_2_hex": "0x1.f672d20da380bp-32",
+        "lambda_slack_hex": "0x1.8408821af8a4bp-19"
+      },
+      {
+        "a_r_hex": "0x1.a15cd0f5eb009p-12",
+        "index": 6,
+        "lambda_1_hex": "0x1.e8685f0fa5083p-19",
+        "lambda_2_hex": "0x1.8e218b824f751p-31",
+        "lambda_slack_hex": "0x1.e88141285d2d3p-19"
+      },
+      {
+        "a_r_hex": "0x1.06b35cfe870e7p-11",
+        "index": 7,
+        "lambda_1_hex": "0x1.336b29480e231p-18",
+        "lambda_2_hex": "0x1.3b770fd9c5318p-30",
+        "lambda_slack_hex": "0x1.337ee0b90bbf6p-18"
+      },
+      {
+        "a_r_hex": "0x1.4ab2f6291c02ep-11",
+        "index": 8,
+        "lambda_1_hex": "0x1.82fdf379cd306p-18",
+        "lambda_2_hex": "0x1.f3e9e48c7a2c2p-30",
+        "lambda_slack_hex": "0x1.831d321815f80p-18"
+      },
+      {
+        "a_r_hex": "0x1.a04a9f291cb18p-11",
+        "index": 9,
+        "lambda_1_hex": "0x1.e7278096f365ap-18",
+        "lambda_2_hex": "0x1.8c1718a01df97p-29",
+        "lambda_slack_hex": "0x1.e759037a07694p-18"
+      },
+      {
+        "a_r_hex": "0x1.060357d42073dp-10",
+        "index": 10,
+        "lambda_1_hex": "0x1.329d2d9f680d6p-17",
+        "lambda_2_hex": "0x1.39d0ddba28e54p-28",
+        "lambda_slack_hex": "0x1.32c467bb1f528p-17"
+      },
+      {
+        "a_r_hex": "0x1.49cff0ded4586p-10",
+        "index": 11,
+        "lambda_1_hex": "0x1.81f44939f28bcp-17",
+        "lambda_2_hex": "0x1.f13c71c7a5322p-28",
+        "lambda_slack_hex": "0x1.823270c82b806p-17"
+      },
+      {
+        "a_r_hex": "0x1.9f243ae80fd9bp-10",
+        "index": 12,
+        "lambda_1_hex": "0x1.e5ceff8751847p-17",
+        "lambda_2_hex": "0x1.89e7a890c9dedp-27",
+        "lambda_slack_hex": "0x1.e631797175b6fp-17"
+      },
+      {
+        "a_r_hex": "0x1.05433c3cebd40p-9",
+        "index": 13,
+        "lambda_1_hex": "0x1.31bc5e7be615cp-16",
+        "lambda_2_hex": "0x1.38055891f3f1ap-26",
+        "lambda_slack_hex": "0x1.320a5fd20a92bp-16"
+      },
+      {
+        "a_r_hex": "0x1.48d35498632e6p-9",
+        "index": 14,
+        "lambda_1_hex": "0x1.80ccacdb5b0fep-16",
+        "lambda_2_hex": "0x1.ee43e553bccbdp-26",
+        "lambda_slack_hex": "0x1.81483dd4affefp-16"
+      },
+      {
+        "a_r_hex": "0x1.9dd52fdfb8e7fp-9",
+        "index": 15,
+        "lambda_1_hex": "0x1.e446ec348dea6p-16",
+        "lambda_2_hex": "0x1.876cda51c6ce3p-25",
+        "lambda_slack_hex": "0x1.e50aa2a1b6cddp-16"
+      },
+      {
+        "a_r_hex": "0x1.0462e0485d2bdp-8",
+        "index": 16,
+        "lambda_1_hex": "0x1.30b5d18c8925fp-15",
+        "lambda_2_hex": "0x1.35ee59622c7b3p-24",
+        "lambda_slack_hex": "0x1.3150c8b93a3c4p-15"
+      },
+      {
+        "a_r_hex": "0x1.47a39a188cfd3p-8",
+        "index": 17,
+        "lambda_1_hex": "0x1.7f693eac6118fp-15",
+        "lambda_2_hex": "0x1.eab475db2c82fp-24",
+        "lambda_slack_hex": "0x1.805e98e74eaf3p-15"
+      },
+      {
+        "a_r_hex": "0x1.9c3535f087027p-8",
+        "index": 18,
+        "lambda_1_hex": "0x1.e260232012748p-15",
+        "lambda_2_hex": "0x1.845b7e090191ap-23",
+        "lambda_slack_hex": "0x1.e3e47e9e1b761p-15"
+      },
+      {
+        "a_r_hex": "0x1.03428548c5ebap-7",
+        "index": 19,
+        "lambda_1_hex": "0x1.2f6460c8836c0p-14",
+        "lambda_2_hex": "0x1.334163c135bb1p-22",
+        "lambda_slack_hex": "0x1.3097a22c44a1dp-14"
+      },
+      {
+        "a_r_hex": "0x1.460ecacd830ecp-7",
+        "index": 20,
+        "lambda_1_hex": "0x1.7d8f86d81111ep-14",
+        "lambda_2_hex": "0x1.e5fad1d61539ap-22",
+        "lambda_slack_hex": "0x1.7f7581a9e7272p-14"
+      },
+      {
+        "a_r_hex": "0x1.99f5ce038ebe1p-7",
+        "index": 21,
+        "lambda_1_hex": "0x1.dfbec8882cb69p-14",
+        "lambda_2_hex": "0x1.80223904d4ee3p-21",
+        "lambda_slack_hex": "0x1.e2bf0cfa36607p-14"
+      },
+      {
+        "a_r_hex": "0x1.01a4a517ffea3p-6",
+        "index": 22,
+        "lambda_1_hex": "0x1.2d800cfbe7902p-13",
+        "lambda_2_hex": "0x1.2f6f7581011dfp-20",
+        "lambda_slack_hex": "0x1.2fdeebe6e9925p-13"
+      },
+      {
+        "a_r_hex": "0x1.43b4badb34e16p-6",
+        "index": 23,
+        "lambda_1_hex": "0x1.7acefa9e1462bp-13",
+        "lambda_2_hex": "0x1.defe943c6a45bp-20",
+        "lambda_slack_hex": "0x1.7e8cf7c68d374p-13"
+      },
+      {
+        "a_r_hex": "0x1.96812b42f46ddp-6",
+        "index": 24,
+        "lambda_1_hex": "0x1.dbb38fb254620p-13",
+        "lambda_2_hex": "0x1.79af65e1e728ap-19",
+        "lambda_slack_hex": "0x1.e19a4d49dbfebp-13"
+      },
+      {
+        "a_r_hex": "0x1.fe2a318b508dbp-6",
+        "index": 25,
+        "lambda_1_hex": "0x1.2a80e99c700d8p-12",
+        "lambda_2_hex": "0x1.296f02288cc45p-18",
+        "lambda_slack_hex": "0x1.2f26a5a51240ap-12"
+      },
+      {
+        "a_r_hex": "0x1.3fe249109cafep-5",
+        "index": 26,
+        "lambda_1_hex": "0x1.7655face72e1bp-12",
+        "lambda_2_hex": "0x1.d3c006457a6acp-18",
+        "lambda_slack_hex": "0x1.7da4fae788cb5p-12"
+      },
+      {
+        "a_r_hex": "0x1.90c4f46afd5afp-5",
+        "index": 27,
+        "lambda_1_hex": "0x1.d4fd6bf728c74p-12",
+        "lambda_2_hex": "0x1.6f1a653f3276fp-17",
+        "lambda_slack_hex": "0x1.e0763f21225b0p-12"
+      },
+      {
+        "a_r_hex": "0x1.f5872eeafc313p-5",
+        "index": 28,
+        "lambda_1_hex": "0x1.2573394ffdd35p-11",
+        "lambda_2_hex": "0x1.1f72ba5a6ad0fp-16",
+        "lambda_slack_hex": "0x1.2e6ecf22d129dp-11"
+      },
+      {
+        "a_r_hex": "0x1.395e96b4e5444p-4",
+        "index": 29,
+        "lambda_1_hex": "0x1.6eb666a47f43cp-11",
+        "lambda_2_hex": "0x1.c0e4825ad0d00p-16",
+        "lambda_slack_hex": "0x1.7cbd8ab755ca4p-11"
+      },
+      {
+        "a_r_hex": "0x1.86f174f884726p-4",
+        "index": 30,
+        "lambda_1_hex": "0x1.c97db9c8f7beap-11",
+        "lambda_2_hex": "0x1.5d5284b69324fp-15",
+        "lambda_slack_hex": "0x1.df52e21460f0fp-11"
+      },
+      {
+        "a_r_hex": "0x1.e6bc66aea0816p-4",
+        "index": 31,
+        "lambda_1_hex": "0x1.1ccb8839d83b2p-10",
+        "lambda_2_hex": "0x1.0ebdfe289c13ep-14",
+        "lambda_slack_hex": "0x1.2db7681c61fc5p-10"
+      },
+      {
+        "a_r_hex": "0x1.2e4748342834ep-3",
+        "index": 32,
+        "lambda_1_hex": "0x1.61bbc6ad11923p-10",
+        "lambda_2_hex": "0x1.a1ae0339264dcp-14",
+        "lambda_slack_hex": "0x1.7bd6a6e0a3f6fp-10"
+      },
+      {
+        "a_r_hex": "0x1.7667f68ddc11fp-3",
+        "index": 33,
+        "lambda_1_hex": "0x1.b62396ebbe9bbp-10",
+        "lambda_2_hex": "0x1.4064f6638f4b9p-13",
+        "lambda_slack_hex": "0x1.de3035b830852p-10"
+      },
+      {
+        "a_r_hex": "0x1.ce43abd9375bap-3",
+        "index": 34,
+        "lambda_1_hex": "0x1.0e79f6a491503p-9",
+        "lambda_2_hex": "0x1.e8679a9982efcp-13",
+        "lambda_slack_hex": "0x1.2d00704e297f3p-9"
+      },
+      {
+        "a_r_hex": "0x1.1c570da7b790ap-2",
+        "index": 35,
+        "lambda_1_hex": "0x1.4cbdd6f6abf2dp-9",
+        "lambda_2_hex": "0x1.7193c0bd56ef5p-12",
+        "lambda_slack_hex": "0x1.7af04f0e56d0dp-9"
+      },
+      {
+        "a_r_hex": "0x1.5c650bed5b1a5p-2",
+        "index": 36,
+        "lambda_1_hex": "0x1.97b32a596be6cp-9",
+        "lambda_2_hex": "0x1.156c3d1ffc5dfp-11",
+        "lambda_slack_hex": "0x1.dd0e39a16afe2p-9"
+      },
+      {
+        "a_r_hex": "0x1.a9039ade1a18dp-2",
+        "index": 37,
+        "lambda_1_hex": "0x1.f15c97ca9f327p-9",
+        "lambda_2_hex": "0x1.9cdcdc7b2efcep-11",
+        "lambda_slack_hex": "0x1.2c49e774b578ep-8"
+      },
+      {
+        "a_r_hex": "0x1.0207df95903c3p-1",
+        "index": 38,
+        "lambda_1_hex": "0x1.2df42b96b8cedp-8",
+        "lambda_2_hex": "0x1.30595d5332958p-10",
+        "lambda_slack_hex": "0x1.7a0a82eb85743p-8"
+      },
+      {
+        "a_r_hex": "0x1.37c5b3d541b64p-1",
+        "index": 39,
+        "lambda_1_hex": "0x1.6cd7e9971c945p-8",
+        "lambda_2_hex": "0x1.bc540f383aa1cp-10",
+        "lambda_slack_hex": "0x1.dbeced652b3ccp-8"
+      },
+      {
+        "a_r_hex": "0x1.76cf5d0b09955p-1",
+        "index": 40,
+        "lambda_1_hex": "0x1.b69c9752b8b61p-8",
+        "lambda_2_hex": "0x1.4116068d80ee2p-9",
+        "lambda_slack_hex": "0x1.2b93cd4cbc969p-7"
+      },
+      {
+        "a_r_hex": "0x1.c04dc92e53127p-1",
+        "index": 41,
+        "lambda_1_hex": "0x1.064ed71426097p-7",
+        "lambda_2_hex": "0x1.cb59ac3d51c7dp-9",
+        "lambda_slack_hex": "0x1.792542237a7b6p-7"
+      },
+      {
+        "a_r_hex": "0x1.0ac0df07a9414p+0",
+        "index": 42,
+        "lambda_1_hex": "0x1.3829472a6c734p-7",
+        "lambda_2_hex": "0x1.454612dcc102dp-8",
+        "lambda_slack_hex": "0x1.dacc5098ccf4ap-7"
+      },
+      {
+        "a_r_hex": "0x1.3be407beeaa7bp+0",
+        "index": 43,
+        "lambda_1_hex": "0x1.71a9b650b94e0p-7",
+        "lambda_2_hex": "0x1.c82519ab06b0dp-8",
+        "lambda_slack_hex": "0x1.2ade21931e533p-6"
+      },
+      {
+        "a_r_hex": "0x1.744f7765900bbp+0",
+        "index": 44,
+        "lambda_1_hex": "0x1.b3afc4a86b087p-7",
+        "lambda_2_hex": "0x1.3cd1541afcb58p-7",
+        "lambda_slack_hex": "0x1.78408c61b3defp-6"
+      },
+      {
+        "a_r_hex": "0x1.b4d613eb85173p+0",
+        "index": 45,
+        "lambda_1_hex": "0x1.ff323e83e3ff2p-7",
+        "lambda_2_hex": "0x1.b426871ff50adp-7",
+        "lambda_slack_hex": "0x1.d9ac62d1ec850p-6"
+      },
+      {
+        "a_r_hex": "0x1.fe6211c1ac1b9p+0",
+        "index": 46,
+        "lambda_1_hex": "0x1.2aa19b2d75c5dp-6",
+        "lambda_2_hex": "0x1.29b02cdc4ff7fp-6",
+        "lambda_slack_hex": "0x1.2a28e404e2deep-5"
+      },
+      {
+        "a_r_hex": "0x1.28fc654aff962p+1",
+        "index": 47,
+        "lambda_1_hex": "0x1.5b8a4167e5684p-6",
+        "lambda_2_hex": "0x1.932e813be045dp-6",
+        "lambda_slack_hex": "0x1.775c6151e2d72p-5"
+      },
+      {
+        "a_r_hex": "0x1.585f72a09f183p+1",
+        "index": 48,
+        "lambda_1_hex": "0x1.92fe4ddc14ddep-6",
+        "lambda_2_hex": "0x1.0f0dfcb85c625p-5",
+        "lambda_slack_hex": "0x1.d88d23a666d14p-5"
+      },
+      {
+        "a_r_hex": "0x1.8dfe699267857p+1",
+        "index": 49,
+        "lambda_1_hex": "0x1.d1bded90a53cdp-6",
+        "lambda_2_hex": "0x1.6a0931f6236dap-5",
+        "lambda_slack_hex": "0x1.2974145f3b060p-4"
+      },
+      {
+        "a_r_hex": "0x1.ca91d722a3d0bp+1",
+        "index": 50,
+        "lambda_1_hex": "0x1.0c508be21e4e2p-5",
+        "lambda_2_hex": "0x1.e0a0f55db92a7p-5",
+        "lambda_slack_hex": "0x1.7678c09febbc3p-4"
+      },
+      {
+        "a_r_hex": "0x1.0774a22d88990p+2",
+        "index": 51,
+        "lambda_1_hex": "0x1.344d54abad436p-5",
+        "lambda_2_hex": "0x1.3d47e85682789p-4",
+        "lambda_slack_hex": "0x1.d76e92ac591a4p-4"
+      },
+      {
+        "a_r_hex": "0x1.2df7106d5fe1bp+2",
+        "index": 52,
+        "lambda_1_hex": "0x1.615de73789be2p-5",
+        "lambda_2_hex": "0x1.a0d071233b52dp-4",
+        "lambda_slack_hex": "0x1.28bfb25f8018fp-3"
+      },
+      {
+        "a_r_hex": "0x1.59537de84d92bp+2",
+        "index": 53,
+        "lambda_1_hex": "0x1.941be3eefdffbp-5",
+        "lambda_2_hex": "0x1.108eb0fc26681p-3",
+        "lambda_slack_hex": "0x1.7595a9f7e5e80p-3"
+      },
+      {
+        "a_r_hex": "0x1.8a1d8c0d79ecap+2",
+        "index": 54,
+        "lambda_1_hex": "0x1.cd340d9af5664p-5",
+        "lambda_2_hex": "0x1.6303ac13637d4p-3",
+        "lambda_slack_hex": "0x1.d650af7a20d6bp-3"
+      },
+      {
+        "a_r_hex": "0x1.c0fb34ac72518p+2",
+        "index": 55,
+        "lambda_1_hex": "0x1.06b44f6a33869p-4",
+        "lambda_2_hex": "0x1.ccbd53d14de2dp-3",
+        "lambda_slack_hex": "0x1.280bbdc333d32p-2"
+      },
+      {
+        "a_r_hex": "0x1.fea70471bf09ep+2",
+        "index": 56,
+        "lambda_1_hex": "0x1.2ac9f2ce9be25p-4",
+        "lambda_2_hex": "0x1.2a00a052749e1p-2",
+        "lambda_slack_hex": "0x1.74b31d061b969p-2"
+      },
+      {
+        "a_r_hex": "0x1.21f94cbe746d4p+3",
+        "index": 57,
+        "lambda_1_hex": "0x1.53559755116d6p-4",
+        "lambda_2_hex": "0x1.805e13d11731ap-2",
+        "lambda_slack_hex": "0x1.d53379a65b8cep-2"
+      },
+      {
+        "a_r_hex": "0x1.48e4b77ed736ap+3",
+        "index": 58,
+        "lambda_1_hex": "0x1.80e105684052dp-4",
+        "lambda_2_hex": "0x1.ee782b35f070cp-2",
+        "lambda_slack_hex": "0x1.275836480042cp-1"
+      },
+      {
+        "a_r_hex": "0x1.7499ffd87c1a9p+3",
+        "index": 59,
+        "lambda_1_hex": "0x1.b406fd0ec456dp-4",
+        "lambda_2_hex": "0x1.3d5039d5313cbp-1",
+        "lambda_slack_hex": "0x1.73d1197709c78p-1"
+      },
+      {
+        "a_r_hex": "0x1.a5ada513a1593p+3",
+        "index": 60,
+        "lambda_1_hex": "0x1.ed7544ae2b1a1p-4",
+        "lambda_2_hex": "0x1.9668483221480p-1",
+        "lambda_slack_hex": "0x1.d416f0c7e6ab4p-1"
+      }
+    ]
+  },
+  "content_sha256": "817f286071fb054e0a07b29cb379dcaa01979bb6ff399873fd22e032fffc7798",
+  "coordinates": [
+    {
+      "binary64_hex": "0x1.a36e2eb1c432dp-14",
+      "decimal_120": "0.0001",
+      "exponent_decimal": "-4",
+      "index": 0
+    },
+    {
+      "binary64_hex": "0x1.08040b1c10b12p-13",
+      "decimal_120": "0.000125892541179416721042395410639580060609361740946693106910792301952664761578250202412105096627594617038869060232514490938",
+      "exponent_decimal": "-3.9",
+      "index": 1
+    },
+    {
+      "binary64_hex": "0x1.4c604e2c75fb3p-13",
+      "decimal_120": "0.000158489319246111348520210137339150701326944213382503906831629681231665686366845398011020272384611104357781163538355924199",
+      "exponent_decimal": "-3.8",
+      "index": 2
+    },
+    {
+      "binary64_hex": "0x1.a26fd472780c4p-13",
+      "decimal_120": "0.000199526231496887960135245539673953555798627431540534609922991366700493091069804896447538007979753479608108592463011263644",
+      "exponent_decimal": "-3.7",
+      "index": 3
+    },
+    {
+      "binary64_hex": "0x1.0763f01e8e5aep-12",
+      "decimal_120": "0.000251188643150958011108503206779932739415851810078247542867988842090824324772356130845385100887779695919169077625706497341",
+      "exponent_decimal": "-3.6",
+      "index": 4
+    },
+    {
+      "binary64_hex": "0x1.4b96be9c2da2cp-12",
+      "decimal_120": "0.000316227766016837933199889354443271853371955513932521682685750485279259443863923822134424810837930029518734728415284005515",
+      "exponent_decimal": "-3.5",
+      "index": 5
+    },
+    {
+      "binary64_hex": "0x1.a1721471fe40bp-12",
+      "decimal_120": "0.000398107170553497250770252305087752043487677037297380446865284148060224853869458039074018311607377360253577613955560098736",
+      "exponent_decimal": "-3.4",
+      "index": 6
+    },
+    {
+      "binary64_hex": "0x1.06c4363887511p-11",
+      "decimal_120": "0.000501187233627272285001554186884945768060471989832819263929697455889011255688830688959770539548142070470778558182555153881",
+      "exponent_decimal": "-3.3",
+      "index": 7
+    },
+    {
+      "binary64_hex": "0x1.4acda94717d68p-11",
+      "decimal_120": "0.000630957344480193249434360136622343864672945257188228724527729528833494943297686807572914067743652264873273467309883646591",
+      "exponent_decimal": "-3.2",
+      "index": 8
+    },
+    {
+      "binary64_hex": "0x1.a074ee52cd11bp-11",
+      "decimal_120": "0.000794328234724281502065918282836387932588960631755484332092323929316955697191487537497095251847190278144455199547577962578",
+      "exponent_decimal": "-3.1",
+      "index": 9
+    },
+    {
+      "binary64_hex": "0x1.0624dd2f1a9fcp-10",
+      "decimal_120": "0.001",
+      "exponent_decimal": "-3",
+      "index": 10
+    },
+    {
+      "binary64_hex": "0x1.4a050de314dd7p-10",
+      "decimal_120": "0.00125892541179416721042395410639580060609361740946693106910792301952664761578250202412105096627594617038869060232514490938",
+      "exponent_decimal": "-2.9",
+      "index": 11
+    },
+    {
+      "binary64_hex": "0x1.9f7861b7937a0p-10",
+      "decimal_120": "0.00158489319246111348520210137339150701326944213382503906831629681231665686366845398011020272384611104357781163538355924199",
+      "exponent_decimal": "-2.8",
+      "index": 12
+    },
+    {
+      "binary64_hex": "0x1.0585e4c78b07bp-9",
+      "decimal_120": "0.00199526231496887960135245539673953555798627431540534609922991366700493091069804896447538007979753479608108592463011263644",
+      "exponent_decimal": "-2.7",
+      "index": 13
+    },
+    {
+      "binary64_hex": "0x1.493cec2631f1ap-9",
+      "decimal_120": "0.00251188643150958011108503206779932739415851810078247542867988842090824324772356130845385100887779695919169077625706497341",
+      "exponent_decimal": "-2.6",
+      "index": 14
+    },
+    {
+      "binary64_hex": "0x1.9e7c6e43390b7p-9",
+      "decimal_120": "0.00316227766016837933199889354443271853371955513932521682685750485279259443863923822134424810837930029518734728415284005515",
+      "exponent_decimal": "-2.5",
+      "index": 15
+    },
+    {
+      "binary64_hex": "0x1.04e74cc73ee87p-8",
+      "decimal_120": "0.00398107170553497250770252305087752043487677037297380446865284148060224853869458039074018311607377360253577613955560098736",
+      "exponent_decimal": "-2.4",
+      "index": 16
+    },
+    {
+      "binary64_hex": "0x1.487543c6a9255p-8",
+      "decimal_120": "0.00501187233627272285001554186884945768060471989832819263929697455889011255688830688959770539548142070470778558182555153881",
+      "exponent_decimal": "-2.3",
+      "index": 17
+    },
+    {
+      "binary64_hex": "0x1.9d811398ddcc3p-8",
+      "decimal_120": "0.00630957344480193249434360136622343864672945257188228724527729528833494943297686807572914067743652264873273467309883646591",
+      "exponent_decimal": "-2.2",
+      "index": 18
+    },
+    {
+      "binary64_hex": "0x1.044914f3c02b1p-7",
+      "decimal_120": "0.00794328234724281502065918282836387932588960631755484332092323929316955697191487537497095251847190278144455199547577962578",
+      "exponent_decimal": "-2.1",
+      "index": 19
+    },
+    {
+      "binary64_hex": "0x1.47ae147ae147bp-7",
+      "decimal_120": "0.01",
+      "exponent_decimal": "-2",
+      "index": 20
+    },
+    {
+      "binary64_hex": "0x1.9c86515bda14cp-7",
+      "decimal_120": "0.0125892541179416721042395410639580060609361740946693106910792301952664761578250202412105096627594617038869060232514490938",
+      "exponent_decimal": "-1.9",
+      "index": 21
+    },
+    {
+      "binary64_hex": "0x1.03ab3d12bc2c4p-6",
+      "decimal_120": "0.0158489319246111348520210137339150701326944213382503906831629681231665686366845398011020272384611104357781163538355924199",
+      "exponent_decimal": "-1.8",
+      "index": 22
+    },
+    {
+      "binary64_hex": "0x1.46e75df96dc99p-6",
+      "decimal_120": "0.0199526231496887960135245539673953555798627431540534609922991366700493091069804896447538007979753479608108592463011263644",
+      "exponent_decimal": "-1.7",
+      "index": 23
+    },
+    {
+      "binary64_hex": "0x1.9b8c272fbe6e0p-6",
+      "decimal_120": "0.0251188643150958011108503206779932739415851810078247542867988842090824324772356130845385100887779695919169077625706497341",
+      "exponent_decimal": "-1.6",
+      "index": 24
+    },
+    {
+      "binary64_hex": "0x1.030dc4ea03a72p-5",
+      "decimal_120": "0.0316227766016837933199889354443271853371955513932521682685750485279259443863923822134424810837930029518734728415284005515",
+      "exponent_decimal": "-1.5",
+      "index": 25
+    },
+    {
+      "binary64_hex": "0x1.46211ff90ea29p-5",
+      "decimal_120": "0.0398107170553497250770252305087752043487677037297380446865284148060224853869458039074018311607377360253577613955560098736",
+      "exponent_decimal": "-1.4",
+      "index": 26
+    },
+    {
+      "binary64_hex": "0x1.9a9294b8536eap-5",
+      "decimal_120": "0.0501187233627272285001554186884945768060471989832819263929697455889011255688830688959770539548142070470778558182555153881",
+      "exponent_decimal": "-1.3",
+      "index": 27
+    },
+    {
+      "binary64_hex": "0x1.0270ac3f8a9fap-4",
+      "decimal_120": "0.0630957344480193249434360136622343864672945257188228724527729528833494943297686807572914067743652264873273467309883646591",
+      "exponent_decimal": "-1.2",
+      "index": 28
+    },
+    {
+      "binary64_hex": "0x1.455b5a30b035dp-4",
+      "decimal_120": "0.0794328234724281502065918282836387932588960631755484332092323929316955697191487537497095251847190278144455199547577962578",
+      "exponent_decimal": "-1.1",
+      "index": 29
+    },
+    {
+      "binary64_hex": "0x1.999999999999ap-4",
+      "decimal_120": "0.1",
+      "exponent_decimal": "-1",
+      "index": 30
+    },
+    {
+      "binary64_hex": "0x1.01d3f2d9684d0p-3",
+      "decimal_120": "0.125892541179416721042395410639580060609361740946693106910792301952664761578250202412105096627594617038869060232514490938",
+      "exponent_decimal": "-0.9",
+      "index": 31
+    },
+    {
+      "binary64_hex": "0x1.44960c576b375p-3",
+      "decimal_120": "0.158489319246111348520210137339150701326944213382503906831629681231665686366845398011020272384611104357781163538355924199",
+      "exponent_decimal": "-0.8",
+      "index": 32
+    },
+    {
+      "binary64_hex": "0x1.98a13577c93c0p-3",
+      "decimal_120": "0.199526231496887960135245539673953555798627431540534609922991366700493091069804896447538007979753479608108592463011263644",
+      "exponent_decimal": "-0.7",
+      "index": 33
+    },
+    {
+      "binary64_hex": "0x1.0137987dd704cp-2",
+      "decimal_120": "0.251188643150958011108503206779932739415851810078247542867988842090824324772356130845385100887779695919169077625706497341",
+      "exponent_decimal": "-0.6",
+      "index": 34
+    },
+    {
+      "binary64_hex": "0x1.43d136248490fp-2",
+      "decimal_120": "0.316227766016837933199889354443271853371955513932521682685750485279259443863923822134424810837930029518734728415284005515",
+      "exponent_decimal": "-0.5",
+      "index": 35
+    },
+    {
+      "binary64_hex": "0x1.97a967f7524b3p-2",
+      "decimal_120": "0.398107170553497250770252305087752043487677037297380446865284148060224853869458039074018311607377360253577613955560098736",
+      "exponent_decimal": "-0.4",
+      "index": 36
+    },
+    {
+      "binary64_hex": "0x1.009b9cf334252p-1",
+      "decimal_120": "0.501187233627272285001554186884945768060471989832819263929697455889011255688830688959770539548142070470778558182555153881",
+      "exponent_decimal": "-0.3",
+      "index": 37
+    },
+    {
+      "binary64_hex": "0x1.430cd74f6d478p-1",
+      "decimal_120": "0.630957344480193249434360136622343864672945257188228724527729528833494943297686807572914067743652264873273467309883646591",
+      "exponent_decimal": "-0.2",
+      "index": 38
+    },
+    {
+      "binary64_hex": "0x1.96b230bcdc434p-1",
+      "decimal_120": "0.794328234724281502065918282836387932588960631755484332092323929316955697191487537497095251847190278144455199547577962578",
+      "exponent_decimal": "-0.1",
+      "index": 39
+    },
+    {
+      "binary64_hex": "0x1.0000000000000p+0",
+      "decimal_120": "1",
+      "exponent_decimal": "0",
+      "index": 40
+    },
+    {
+      "binary64_hex": "0x1.4248ef8fc2604p+0",
+      "decimal_120": "1.25892541179416721042395410639580060609361740946693106910792301952664761578250202412105096627594617038869060232514490938",
+      "exponent_decimal": "0.1",
+      "index": 41
+    },
+    {
+      "binary64_hex": "0x1.95bb8f6d46052p+0",
+      "decimal_120": "1.58489319246111348520210137339150701326944213382503906831629681231665686366845398011020272384611104357781163538355924199",
+      "exponent_decimal": "0.2",
+      "index": 42
+    },
+    {
+      "binary64_hex": "0x1.fec982d5bb8afp+0",
+      "decimal_120": "1.99526231496887960135245539673953555798627431540534609922991366700493091069804896447538007979753479608108592463011263644",
+      "exponent_decimal": "0.3",
+      "index": 43
+    },
+    {
+      "binary64_hex": "0x1.41857e9d4cc5fp+1",
+      "decimal_120": "2.51188643150958011108503206779932739415851810078247542867988842090824324772356130845385100887779695919169077625706497341",
+      "exponent_decimal": "0.4",
+      "index": 44
+    },
+    {
+      "binary64_hex": "0x1.94c583ada5b53p+1",
+      "decimal_120": "3.16227766016837933199889354443271853371955513932521682685750485279259443863923822134424810837930029518734728415284005515",
+      "exponent_decimal": "0.5",
+      "index": 45
+    },
+    {
+      "binary64_hex": "0x1.fd93c1f526de0p+1",
+      "decimal_120": "3.98107170553497250770252305087752043487677037297380446865284148060224853869458039074018311607377360253577613955560098736",
+      "exponent_decimal": "0.6",
+      "index": 46
+    },
+    {
+      "binary64_hex": "0x1.40c28430012e7p+2",
+      "decimal_120": "5.01187233627272285001554186884945768060471989832819263929697455889011255688830688959770539548142070470778558182555153881",
+      "exponent_decimal": "0.7",
+      "index": 47
+    },
+    {
+      "binary64_hex": "0x1.93d00d2348996p+2",
+      "decimal_120": "6.30957344480193249434360136622343864672945257188228724527729528833494943297686807572914067743652264873273467309883646591",
+      "exponent_decimal": "0.8",
+      "index": 48
+    },
+    {
+      "binary64_hex": "0x1.fc5ebcec13541p+2",
+      "decimal_120": "7.94328234724281502065918282836387932588960631755484332092323929316955697191487537497095251847190278144455199547577962578",
+      "exponent_decimal": "0.9",
+      "index": 49
+    },
+    {
+      "binary64_hex": "0x1.4000000000000p+3",
+      "decimal_120": "10",
+      "exponent_decimal": "1",
+      "index": 50
+    },
+    {
+      "binary64_hex": "0x1.92db2b73b2f85p+3",
+      "decimal_120": "12.5892541179416721042395410639580060609361740946693106910792301952664761578250202412105096627594617038869060232514490938",
+      "exponent_decimal": "1.1",
+      "index": 51
+    },
+    {
+      "binary64_hex": "0x1.fb2a734897867p+3",
+      "decimal_120": "15.8489319246111348520210137339150701326944213382503906831629681231665686366845398011020272384611104357781163538355924199",
+      "exponent_decimal": "1.2",
+      "index": 52
+    },
+    {
+      "binary64_hex": "0x1.3f3df1c59536ep+4",
+      "decimal_120": "19.9526231496887960135245539673953555798627431540534609922991366700493091069804896447538007979753479608108592463011263644",
+      "exponent_decimal": "1.3",
+      "index": 53
+    },
+    {
+      "binary64_hex": "0x1.91e6de449ff77p+4",
+      "decimal_120": "25.1188643150958011108503206779932739415851810078247542867988842090824324772356130845385100887779695919169077625706497341",
+      "exponent_decimal": "1.4",
+      "index": 54
+    },
+    {
+      "binary64_hex": "0x1.f9f6e4990f227p+4",
+      "decimal_120": "31.6227766016837933199889354443271853371955513932521682685750485279259443863923822134424810837930029518734728415284005515",
+      "exponent_decimal": "1.5",
+      "index": 55
+    },
+    {
+      "binary64_hex": "0x1.3e7c5939384acp+5",
+      "decimal_120": "39.8107170553497250770252305087752043487677037297380446865284148060224853869458039074018311607377360253577613955560098736",
+      "exponent_decimal": "1.6",
+      "index": 56
+    },
+    {
+      "binary64_hex": "0x1.90f3253c017a1p+5",
+      "decimal_120": "50.1187233627272285001554186884945768060471989832819263929697455889011255688830688959770539548142070470778558182555153881",
+      "exponent_decimal": "1.7",
+      "index": 57
+    },
+    {
+      "binary64_hex": "0x1.f8c4106c1abfbp+5",
+      "decimal_120": "63.0957344480193249434360136622343864672945257188228724527729528833494943297686807572914067743652264873273467309883646591",
+      "exponent_decimal": "1.8",
+      "index": 58
+    },
+    {
+      "binary64_hex": "0x1.3dbb36138c149p+6",
+      "decimal_120": "79.4328234724281502065918282836387932588960631755484332092323929316955697191487537497095251847190278144455199547577962578",
+      "exponent_decimal": "1.9",
+      "index": 59
+    },
+    {
+      "binary64_hex": "0x1.9000000000000p+6",
+      "decimal_120": "100",
+      "exponent_decimal": "2",
+      "index": 60
+    }
+  ],
+  "exclusions": [
+    "G5 exact ground-state certification",
+    "encoded tie-set computation",
+    "A/B/C classification",
+    "grid sweep",
+    "experiment",
+    "result",
+    "conclusion",
+    "D011 companion execution",
+    "V-14 expansion execution"
+  ],
+  "grid_rule": {
+    "N_axis": 61,
+    "P": 10,
+    "q_max": 2,
+    "q_min": -4
+  },
+  "inputs": {
+    "adnye_001_sha256": "9473c205a002697492c75af9ab694920b6bf822b38b5bd5c58f8f240ca66116a",
+    "adnye_002_sha256": "9d634366be5c737dbefd1ade5be5f76ceb960c9af4fa4b3d4cbc5ab3b35a2992",
+    "canonical_instance_sha256": "c4615d9b5066597c4754a1e06d2b3a7906c218965a7d6d530cf54f75c4b5f243",
+    "lambda_ref_binary64_hex": "0x1.2b93cd4cbc969p-7",
+    "v_budget_binary64_hex": "0x1.4000000000000p+2",
+    "v_card_binary64_hex": "0x1.0000000000000p+0",
+    "v_sector_binary64_hex": "0x1.0000000000000p+0"
+  },
+  "purpose": "Binds primary binary64 coordinate and coefficient inputs; not a grid sweep or result artifact.",
+  "schema": "g4-primary-coordinate-coefficient-ledger/v1"
+}

@@ -1,0 +1,21 @@
+{
+  "approval_record_created": false,
+  "armed_ready": true,
+  "blob_count": 90,
+  "bundle_sha256": "284e713c0988a8ecae135e53bcce2c7b2fd2bcf8ab23c2e527884b5bbd088a7e",
+  "frozen_files_edited": false,
+  "frozen_seal_sha256": "220eae886fec6fecb594c7c9dcf7df2b6458b7846b90f6ce298c959f0cb69a5b",
+  "is_qualification_receipt": false,
+  "kernel_id": "shivanshsrivastava06/g9-wp7-nonscientific-dry-run-v2-284e713c",
+  "metadata_sha256": "80efdc4656a12fdaad6dd55aecf95c16bc4f24e1e21cf7a14ae827f057a40940",
+  "numerical_reference_recomputed": false,
+  "reference_seal_regenerated": false,
+  "runtime_config_sha256": "7cd2799858d126b5a113af17d78b693ae984dd76a0cc694a2cb48f73d7148a05",
+  "schema": "decisions_os/wp7b_d013_v2_armed_ready_build/v1",
+  "scope": "NONSCIENTIFIC synthetic dry run; NOT production acceptance",
+  "script_bytes": 583062,
+  "script_file": "g9_wp7_nonscientific_dry_run_v2_284e713c.READY.py",
+  "script_sha256": "dc4d22c49f18f2e9674c850011720573726517431db60f9ca5c97fe5a4591384",
+  "seal_sha256": "47f7435ae366a2397fc6ab2a9eb96f24fe64ce795605ac572c2de6aede12a289",
+  "self_approved": false
+}

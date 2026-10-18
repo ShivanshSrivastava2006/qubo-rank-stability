@@ -1,0 +1,259 @@
+# Gate-9 Kaggle GPU allocation probe. Diagnostic only.
+# No project inputs, no network, no installs, NO COMPILATION, no scientific result.
+import glob
+import json
+import os
+import shutil
+import stat
+import subprocess
+
+SCHEMA_VERSION = 3
+REQUESTED_ACCELERATOR = "GPU T4 x2 (NvidiaTeslaT4)"
+REQUESTED_GPU_COUNT = 2
+BOUNDED_TIMEOUT_S = 30
+
+
+def char_device_nodes():
+    nodes = []
+    for path in sorted(glob.glob("/dev/nvidia[0-9]*")):
+        try:
+            if stat.S_ISCHR(os.stat(path).st_mode):
+                nodes.append(path)
+        except OSError:
+            pass
+    return nodes
+
+
+def run_bounded(argv):
+    """One bounded subprocess call. Never retried. Never a compilation."""
+    try:
+        proc = subprocess.run(
+            argv, capture_output=True, text=True,
+            timeout=BOUNDED_TIMEOUT_S, check=False,
+        )
+    except subprocess.TimeoutExpired:
+        return {"ran": False, "reason": "timeout"}
+    except Exception as exc:  # bounded: report, never retry
+        return {"ran": False, "reason": type(exc).__name__}
+    return {"ran": True, "returncode": proc.returncode, "stdout": proc.stdout}
+
+
+def nvidia_smi_probe():
+    exe = shutil.which("nvidia-smi")
+    if exe is None:
+        return {"present": False, "state": "absent",
+                "gpu_count": None, "gpu_lines": []}
+    result = run_bounded([exe, "-L"])
+    if not result["ran"]:
+        return {"present": True, "state": "error", "reason": result["reason"],
+                "gpu_count": None, "gpu_lines": []}
+    if result["returncode"] != 0:
+        return {"present": True, "state": "error", "reason": "nonzero_exit",
+                "returncode": result["returncode"],
+                "gpu_count": None, "gpu_lines": []}
+    lines = [ln.strip() for ln in result["stdout"].splitlines()
+             if ln.strip().startswith("GPU ")]
+    return {"present": True, "state": "ok", "returncode": 0,
+            "gpu_count": len(lines), "gpu_lines": lines}
+
+
+def nvcc_probe():
+    """Compiler PRESENCE and USABILITY, kept apart. Compiles nothing.
+
+    Presence is a PATH lookup ONLY: CUDA_HOME is never consulted here, so an
+    unset CUDA_HOME can never be reported as a missing compiler.
+    """
+    exe = shutil.which("nvcc")
+    if exe is None:
+        return {"path": None, "presence": "ABSENT",
+                "usability": "NOT_APPLICABLE", "version_line": None}
+    result = run_bounded([exe, "--version"])
+    if not result["ran"]:
+        return {"path": exe, "presence": "PRESENT", "usability": "INCONCLUSIVE",
+                "reason": result["reason"], "version_line": None}
+    if result["returncode"] != 0:
+        return {"path": exe, "presence": "PRESENT", "usability": "UNUSABLE",
+                "returncode": result["returncode"], "version_line": None}
+    version_line = next(
+        (ln.strip() for ln in result["stdout"].splitlines() if "release" in ln),
+        None,
+    )
+    return {"path": exe, "presence": "PRESENT", "usability": "USABLE",
+            "returncode": 0, "version_line": version_line}
+
+
+cuda_home = os.environ.get("CUDA_HOME")
+image_type = os.environ.get("COLAB_IMAGE_TYPE")
+device_nodes = char_device_nodes()
+node_count = len(device_nodes)
+smi = nvidia_smi_probe()
+nvcc = nvcc_probe()
+
+cuda_home_is_absolute_dir = bool(
+    cuda_home and os.path.isabs(cuda_home) and os.path.isdir(cuda_home)
+)
+path_entries = [entry for entry in os.environ.get("PATH", "").split(os.pathsep) if entry]
+cuda_bin = (
+    os.path.normpath(os.path.join(cuda_home, "bin"))
+    if cuda_home and os.path.isabs(cuda_home) else None
+)
+cuda_bin_on_path = bool(
+    cuda_bin and cuda_bin in {os.path.normpath(entry) for entry in path_entries}
+)
+nvcc_matches_cuda_home_bin = bool(
+    cuda_bin and nvcc["path"]
+    and os.path.normpath(nvcc["path"]) == os.path.join(cuda_bin, "nvcc")
+)
+
+# --- Status 1: gpu_allocation. Physical GPU visibility ONLY. ---
+# Ignores CUDA_HOME, nvcc and COLAB_IMAGE_TYPE, so a missing compiler can
+# never be reported as a missing GPU. FAIL requires DEFINITE non-visibility;
+# missing/erroring/timed-out nvidia-smi and contradictory evidence are
+# INCONCLUSIVE, never FAIL.
+allocation_notes = []
+if smi["state"] == "ok" and smi["gpu_count"] >= 1 and node_count >= 1:
+    gpu_allocation = "PASS"
+elif smi["state"] == "absent" and node_count == 0:
+    gpu_allocation = "FAIL"
+    allocation_notes.append(
+        "definite: no /dev/nvidiaN character device and nvidia-smi not present"
+    )
+elif smi["state"] == "ok" and smi["gpu_count"] == 0 and node_count == 0:
+    gpu_allocation = "FAIL"
+    allocation_notes.append(
+        "definite: no /dev/nvidiaN character device and nvidia-smi -L exited 0 "
+        "listing no GPU"
+    )
+else:
+    gpu_allocation = "INCONCLUSIVE"
+    if node_count >= 1 and smi["state"] != "ok":
+        allocation_notes.append(
+            "device nodes present but nvidia-smi absent, errored or timed out: "
+            "allocation not determined, NOT a failure"
+        )
+    elif node_count >= 1 and smi["gpu_count"] == 0:
+        allocation_notes.append(
+            "contradictory: device nodes present but nvidia-smi -L listed no GPU"
+        )
+    elif node_count == 0 and smi["state"] == "ok":
+        allocation_notes.append(
+            "contradictory: nvidia-smi -L listed GPUs but no /dev/nvidiaN "
+            "character device"
+        )
+    else:
+        allocation_notes.append(
+            "no device node and nvidia-smi absent, errored or timed out: "
+            "non-visibility not definite"
+        )
+
+# --- Status 2: cuda_compiler. PATH presence ONLY. ---
+# ABSENT means "not on PATH"; no other location was searched. It is never an
+# allocation finding, and it is never inferred from CUDA_HOME.
+cuda_compiler = nvcc["presence"]
+
+# --- Status 3: cuda_compiler_usable. Bounded `nvcc --version` ONLY. ---
+# PRESENT is not usability; usability rests on the bounded exit status. Even
+# USABLE does not establish that anything can be built (no compilation here).
+cuda_compiler_usable = nvcc["usability"]
+
+# --- Status 4: launcher_guard_cuda_home. Conservative CUDA_HOME/bin/PATH/nvcc check. ---
+# An absent CUDA_HOME, a missing CUDA_HOME/bin PATH entry, or a different nvcc
+# BLOCKS the reviewed launcher -- without proving that a compiler is absent.
+launcher_guard_problems = []
+if not cuda_home_is_absolute_dir:
+    launcher_guard_problems.append("CUDA_HOME unset or not an absolute directory")
+if not cuda_bin_on_path:
+    launcher_guard_problems.append("CUDA_HOME/bin not on PATH")
+if not nvcc_matches_cuda_home_bin:
+    launcher_guard_problems.append("nvcc on PATH is not CUDA_HOME/bin/nvcc")
+launcher_guard_cuda_home = (
+    "SATISFIED" if not launcher_guard_problems else "BLOCKED"
+)
+
+# --- COLAB_IMAGE_TYPE: recorded and cross-checked, never allocation proof. ---
+if gpu_allocation == "PASS":
+    image_type_agrees_with_allocation = image_type == "gpu"
+elif gpu_allocation == "FAIL":
+    image_type_agrees_with_allocation = image_type != "gpu"
+else:
+    image_type_agrees_with_allocation = None
+
+caveats = []
+if gpu_allocation == "INCONCLUSIVE":
+    caveats.append("gpu_allocation is INCONCLUSIVE: %s" % "; ".join(allocation_notes))
+if image_type != "gpu":
+    caveats.append("COLAB_IMAGE_TYPE is not 'gpu' (recorded, not allocation evidence)")
+if image_type_agrees_with_allocation is False:
+    caveats.append(
+        "COLAB_IMAGE_TYPE disagrees with observed GPU allocation; "
+        "image type alone is not evidence in either direction"
+    )
+if gpu_allocation == "PASS" and smi["gpu_count"] != REQUESTED_GPU_COUNT:
+    caveats.append(
+        "visible GPU count %d != requested %d"
+        % (smi["gpu_count"], REQUESTED_GPU_COUNT)
+    )
+if cuda_compiler == "ABSENT":
+    caveats.append(
+        "nvcc not found on PATH; no other location searched and CUDA_HOME not "
+        "used to infer this"
+    )
+if cuda_compiler_usable == "UNUSABLE":
+    caveats.append("nvcc is on PATH but `nvcc --version` exited non-zero")
+if cuda_compiler_usable == "INCONCLUSIVE":
+    caveats.append("`nvcc --version` did not complete within the bounded call")
+if cuda_compiler_usable == "USABLE" and nvcc.get("version_line") is None:
+    caveats.append("`nvcc --version` exited 0 but no release line was parsed")
+if launcher_guard_cuda_home == "BLOCKED":
+    caveats.append(
+        "reviewed launcher CUDA_HOME/bin/PATH/nvcc guard BLOCKED: %s; "
+        "this is NOT evidence that a compiler is absent"
+        % "; ".join(launcher_guard_problems)
+    )
+
+probe_conditions_met = (
+    gpu_allocation == "PASS"
+    and smi["gpu_count"] == REQUESTED_GPU_COUNT
+    and image_type == "gpu"
+    and cuda_compiler == "PRESENT"
+    and cuda_compiler_usable == "USABLE"
+    and launcher_guard_cuda_home == "SATISFIED"
+    and not caveats
+)
+
+report = {
+    "probe": "gate9_kaggle_gpu_allocation_probe",
+    "schema_version": SCHEMA_VERSION,
+    "requested_accelerator": REQUESTED_ACCELERATOR,
+    "requested_gpu_count": REQUESTED_GPU_COUNT,
+    "colab_image_type": image_type,
+    "colab_image_type_agrees_with_allocation": image_type_agrees_with_allocation,
+    "cuda_home": cuda_home,
+    "cuda_home_is_absolute_dir": cuda_home_is_absolute_dir,
+    "cuda_bin_on_path": cuda_bin_on_path,
+    "nvcc_matches_cuda_home_bin": nvcc_matches_cuda_home_bin,
+    "nvidia_device_node_count": node_count,
+    "nvidia_device_nodes": device_nodes,
+    "nvidiactl_present": os.path.exists("/dev/nvidiactl"),
+    "nvidia_smi": smi,
+    "nvcc": nvcc,
+    "gpu_allocation": gpu_allocation,
+    "gpu_allocation_notes": allocation_notes,
+    "cuda_compiler": cuda_compiler,
+    "cuda_compiler_usable": cuda_compiler_usable,
+    "launcher_guard_cuda_home": launcher_guard_cuda_home,
+    "launcher_guard_problems": launcher_guard_problems,
+    "caveats": caveats,
+    "probe_conditions_met": probe_conditions_met,
+    "compilation_performed": False,
+    "authorizes": "nothing",
+}
+print(json.dumps(report, indent=2, sort_keys=True))
+
+if not probe_conditions_met:
+    raise RuntimeError(
+        "GATE9_PROBE_NOT_CLEAN: gpu_allocation=%s; cuda_compiler=%s; "
+        "cuda_compiler_usable=%s; launcher_guard_cuda_home=%s; caveats=%s"
+        % (gpu_allocation, cuda_compiler, cuda_compiler_usable,
+           launcher_guard_cuda_home, "; ".join(caveats) or "none")
+    )

@@ -1,0 +1,5 @@
+command: /home/shivansh-srivastava/venv/bin/kaggle kernels push -p /tmp/g9-api-probe.VB4IDV --accelerator NvidiaTeslaT4 -t 600
+return_code: 0
+stdout:
+Kernel version 1 successfully pushed.  Please check progress at https://www.kaggle.com/code/shivanshsrivastava06/g9-gpu-allocation-api-probe-v1
+stderr: [empty]

@@ -1,0 +1,81 @@
+import itertools
+from src.g4.instance import Instance
+from src.g4.parameters import Coefficients
+
+def iter_unbalanced_domain(instance: Instance, coefficients: Coefficients):
+    n = len(instance.tickers)
+    for bits in itertools.product((0, 1), repeat=n):
+        yield bits
+
+def iter_slack_domain(instance: Instance, coefficients: Coefficients, sector_slack_bits: int = 2, budget_slack_bits: int = 11):
+    """
+    Yields (x, y) for all exact minimizer lifts in C_slack.
+    
+    If a coefficient is +0.0 (inactive), the penalty is 0 for all representable
+    slack states. Thus, EVERY representable slack state is an exact minimizer
+    for that register, creating massive auxiliary degeneracy. This enumerator
+    correctly yields all of them. 
+    
+    (Note: The +0.0 handling branch is currently UNREACHABLE dead code because 
+    `Coefficients` rejects values <= 0.0. This behavior is documented here for Gate 6, 
+    but is strictly untestable until Gate 6 lifts the parameters.py restriction.)
+    
+    If a residual is not exactly representable (e.g. half-integer or out of bounds),
+    this enumerator correctly finds the absolute minimum possible penalty for the
+    discrete register and yields ALL states achieving that exact minimum.
+    (e.g., if h=1.5, yields both s=1 and s=2; if h=4 and max is 3, yields s=3).
+    A numerically near-minimal lift (one that does not achieve the absolute
+    minimum possible over the discrete domain) is excluded.
+    """
+    n = len(instance.tickers)
+    
+    sector_max = (1 << sector_slack_bits) - 1
+    budget_max = (1 << budget_slack_bits) - 1
+    
+    def get_sector_bits(s_val):
+        return tuple((s_val >> d) & 1 for d in range(sector_slack_bits))
+        
+    def get_budget_bits(s_val):
+        return tuple((s_val >> d) & 1 for d in range(budget_slack_bits))
+        
+    for bits in itertools.product((0, 1), repeat=n):
+        h_sector = []
+        for members in instance.sectors:
+            h_sector.append(float(instance.C) - sum(bits[i] for i in members))
+        
+        budget_sum = sum(instance.prices[i] * bits[i] for i in range(n))
+        h_budget = float(instance.B) - budget_sum
+        
+        sector_minimizers = []
+        for j in range(len(instance.sectors)):
+            if coefficients.sector_slack == 0.0:
+                best_s = list(range(sector_max + 1))
+            else:
+                best_s = []
+                min_penalty = None
+                for s in range(sector_max + 1):
+                    penalty = (h_sector[j] - s)**2
+                    if min_penalty is None or penalty < min_penalty:
+                        min_penalty = penalty
+                        best_s = [s]
+                    elif penalty == min_penalty:
+                        best_s.append(s)
+            sector_minimizers.append([get_sector_bits(s) for s in best_s])
+            
+        if coefficients.budget_slack == 0.0:
+            best_budget_s = list(range(budget_max + 1))
+        else:
+            best_budget_s = []
+            min_penalty = None
+            for s in range(budget_max + 1):
+                penalty = (h_budget - s)**2
+                if min_penalty is None or penalty < min_penalty:
+                    min_penalty = penalty
+                    best_budget_s = [s]
+                elif penalty == min_penalty:
+                    best_budget_s.append(s)
+        budget_minimizers = [get_budget_bits(s) for s in best_budget_s]
+        
+        for s_bits in itertools.product(*sector_minimizers, budget_minimizers):
+            y = tuple(itertools.chain.from_iterable(s_bits))
+            yield (bits, y)

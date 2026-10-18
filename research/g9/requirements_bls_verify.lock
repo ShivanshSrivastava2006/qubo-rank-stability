@@ -1,0 +1,34 @@
+# Gate 9 -- isolated BLS verifier environment for the drand DEFAULT chain.
+#
+# Package set discovered by installing py_ecc==8.0.0 into a throwaway venv and
+# freezing it; every transitive dependency is pinned explicitly, with the sha256
+# of the exact distribution file downloaded into ../wheels.  ../venv was created
+# and populated with:
+#
+#   ../venv/bin/pip install --no-index --find-links ../wheels \
+#       --require-hashes --no-compile -r research/g9/requirements_bls_verify.lock
+#
+# --require-hashes forbids any dependency the resolver would have to choose, so
+# the set below is complete and closed.  Verified with ../venv/bin/pip freeze.
+typing-inspection==0.4.4 \
+    --hash=sha256:65b8397ba37ccbce054456aaccddfc91e6e3083c92824df348d96ca832f3f147
+annotated-types==0.8.0 \
+    --hash=sha256:f072f4d804ea359e4eaf198b1af7a8b0943881a87f31bb764f8bf219bb9419e0
+eth-hash==0.8.0 \
+    --hash=sha256:523718a51b369ab89866b929a5c93c52978cd866ea309192ad980dd8271f9fac
+cytoolz==1.1.0 \
+    --hash=sha256:c7a98deb11ccd8e5d9f9441ef2ff3352aab52226a2b7d04756caaa53cd612363
+toolz==1.1.0 \
+    --hash=sha256:15ccc861ac51c53696de0a5d6d4607f99c210739caf987b5d2054f3efed429d8
+pydantic==2.13.5 \
+    --hash=sha256:346a034f080da3755d8e9cb5e00e8b07de1d39e4f6e2c87d8ab7cafa0b269a73
+pydantic-core==2.46.5 \
+    --hash=sha256:0fc5be0abd4a407e200d844b404e33639a554e7bd0d448e7b9ae181be4789ac2
+typing-extensions==4.16.0 \
+    --hash=sha256:481caa481374e813c1b176ada14e97f1f67a4539ce9cfeb3f350d78d6370c2e8
+eth-typing==6.0.0 \
+    --hash=sha256:ee74fb641eb36dd885e1c42c2a3055314efa532b3e71480816df70a94d35cfb9
+eth-utils==6.0.0 \
+    --hash=sha256:63cf48ee32c45541cb5748751909a8345c470432fb6f0fed4bd7c53fd6400469
+py-ecc==8.0.0 \
+    --hash=sha256:c0b2dfc4bde67a55122a392591a10e851a986d5128f680628c80b405f7663e13

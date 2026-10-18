@@ -1,0 +1,17 @@
+{
+  "code_file": "g9_cuda_core_a_corruption_qualification_kaggle.py",
+  "competition_sources": [],
+  "dataset_sources": [],
+  "enable_gpu": true,
+  "enable_internet": false,
+  "enable_tpu": false,
+  "id": "shivanshsrivastava06/g9-cuda-core-a-corruption-qualification-585da5d8",
+  "is_private": true,
+  "kernel_sources": [],
+  "kernel_type": "script",
+  "keywords": [],
+  "language": "python",
+  "machine_shape": "NvidiaTeslaT4",
+  "model_sources": [],
+  "title": "G9 CUDA Core A Corruption Qualification 585da5d8"
+}

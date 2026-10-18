@@ -1,0 +1,19 @@
+# SHA-256 of every file this build created, 2026-10-03.
+# Regenerate:  sha256sum *.py *.json ANALYSIS_NOTES.md MOCK_RUN_LOG.txt > FILE_HASHES.txt
+# Directory:   g9_jobs/operational/analysis_20261003/
+#
+## the pipeline
+effd65ace367a31f83ba7f041c5783cd6ae5b279b8b52c47753ca880d6a4feb8  analyze_stage2.py
+422d993ad06a21f4f091673c4bbbd96f7cfa1edf6e81be7cf816e0d6be19b408  make_mock_outputs.py
+fff5cb50a6ed61dc7d08fe0f9b6c09e4879bfa6a9fdda221f8672d10d1a547a3  render_paper_slots.py
+2558f6fa8bd4ddba42a10612d94af3d891e634f7f6419547a63913f18fd3a1be  run_mock_tests.py
+c49cc1bfc957e8eb44d2ce1e5f1f6200283e102a0dc400d8961f9624d077a0ed  stage2_schema.py
+07943fdb9e2771b6bec7f0d4d090abfdecc70933d4d75de81e1badffaed1c966  verify_outputs.py
+
+## census profiles
+78d0877c9585aaadae33cb3c8a65044a3bffa127cffa98b23852e7e3ad4eae59  FROZEN_CENSUS.json
+9e4e207bac0c7f639618e10da464d80fe12b99d01d71964ce41a0353e4ab794c  MOCK_CENSUS.json
+
+## documentation and the recorded mock run
+278e0dff6cadc972aca9ab5ad811602d66b9b4f34109444089030dfec945ef56  ANALYSIS_NOTES.md
+2ce3edbc0917fad7a0b49d1ee4eb2c9f6a383a9ad3d44d44a412ba5dd966b8c1  MOCK_RUN_LOG.txt

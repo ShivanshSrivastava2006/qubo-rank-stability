@@ -1,0 +1,17 @@
+# G2 canonical-instance digest manifest
+#
+# VERIFY:  cd research/canonical && sha256sum -c DIGESTS.txt
+#
+# All paths below are relative to research/canonical/. That single documented
+# invocation is the only supported one. Regenerate after ANY change with:
+#   cd research/canonical && { sed -n '1,/^# END HEADER$/p' DIGESTS.txt; \
+#     sha256sum stage1_instance.json build_stage1_instance.py G2_PROVENANCE.md \
+#     D005_CONFORMANCE.md ../audit/verify_g2_canonical.py ../audit/verify_g2_d005.py; \
+#   } > t && mv t DIGESTS.txt
+# END HEADER
+c4615d9b5066597c4754a1e06d2b3a7906c218965a7d6d530cf54f75c4b5f243  stage1_instance.json
+3012442b9ad1fef0af20dc1844ded195211cf8c6ebb942284e50c285471d23ba  build_stage1_instance.py
+c3d926e4f390ea824d869cd37dd3ae8f750f6b581ad598ca307884746ede3a68  G2_PROVENANCE.md
+569782a7bee6fed1c5a4a22baf0a378d20fbf35563695497faab23578b29c702  D005_CONFORMANCE.md
+ccea2737b2559ce2b8452dbf7507145039bbb3efc208f4ee1f4660a6f4f26b17  ../audit/verify_g2_canonical.py
+1438041c6988745d048279fc2cb60a8bd757fcdaef7403b39bba8d953b59cb95  ../audit/verify_g2_d005.py

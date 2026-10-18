@@ -1,0 +1,7 @@
+{
+  "reviewer": "agy / gemini-3.1-pro-high",
+  "reviewed_at_utc": "2026-10-02T22:37:51Z",
+  "candidate_canonical_file_sha256": "ec20f44f8fa2ec4abe4419d99c7bd88c1c5b4affb8951a1350e59e208d90377c",
+  "scope": "Exact candidate record/evidence/source hash report; no scientific production readiness assertion",
+  "actual_reviewer_output": "REVIEW PASS\n\n**Factual Review Note:**\n*   **Candidate comparison pin:** `ec20f44f8fa2ec4abe4419d99c7bd88c1c5b4affb8951a1350e59e208d90377c`\n*   **Draft identity:** `fd35474780ce2f25555b7f32649608f6e303e1c5715110d68199769d33b49901` (Status: `DRAFT_UNQUALIFIED`)\n*   **Source-map hashes:** \n    *   Qualified source map: `f0580038393ab5d521e4508fe6ba15200d1d60bdb42a04fc34cf4d445a1b16c3`\n    *   Source map: `e74b6a9a7607eabdc20ec5fcf9906856e6a354eb1bf02aa278618c7fd7f0da83`\n*   **WP7 receipt:** `b9e18f9082749d33ef3dda786027e2cb70abef0a6dfd153508d59c1671f9f097` (Mode: `non_scientific_wp7_dry_run`)\n*   **Scope:** This record accepts, for the bound bundle only, the exact DRAFT_UNQUALIFIED WP1 production identity whose content SHA-256 is bound below. The embedded identity remains a DRAFT: it is not re-labelled, not re-validated as qualified, and the WP1 draft validator is unchanged and still refuses it. This acceptance is not a draw approval, not a push approval, not a GPU allocation and not a scientific-write authorization.\n\nThis note is not ownerapproval or signature, and no scientificdraw/write is authorized by it.\n"
+}

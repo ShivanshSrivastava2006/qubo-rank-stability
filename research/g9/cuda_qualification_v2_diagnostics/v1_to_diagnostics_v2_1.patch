@@ -1,0 +1,71 @@
+# D013 clean-case refusal diagnostics -- versioned patch against the FROZEN v1 plan
+#
+#   base: research/g9/cuda_qualification/stage2_cuda_d013_inactive_corruption_qualification.py
+#         sha256 ab0c906017fa7555ee5a00f8ba02cc15e8a467f046008d427be018c318382c5c
+#   harness version: d013-corruption-qualification-diagnostics/v2.1
+#   status: UNROUTED DRAFT. NOT OWNER-APPROVED. NOT A RELEASE ARTIFACT.
+#
+# This patch is NOT applied. The frozen v1 plan is byte-identical and unmodified.
+# It records the exact, minimal semantic delta that a future owner-reviewed
+# release would have to contain. Three hunks, no guard added, removed or moved:
+#
+#   P1  clean-case catch binds `as exc` and routes to
+#       d013_refusal_diagnostics.raise_clean_case_refusal: SAME typed refusal,
+#       still raised, still aborting, now chained from `exc`, carrying a bounded
+#       sanitized nested reason, the exception type, the exception chain and the
+#       case/stage identity.
+#   P2  numeric-disagreement branch keeps v1's truthful wording but is taken from
+#       a named constant, so it is provably distinct from the refusal message.
+#       v1 raised the SAME string from both branches, which is precisely what
+#       made the measured T4 traceback ambiguous.
+#   P3  import + version constant.
+#
+# Preserved unchanged: release gate, token proof, plan, the nine mutations, the
+# detection cases and their order, the failure order inside the case loop, the
+# direct_tiny_positive refusal probe, the post-run source-map re-check, and the
+# `if mutation is not None and not detected` refusal at v1:583-585.
+#
+--- a/research/g9/cuda_qualification/stage2_cuda_d013_inactive_corruption_qualification.py
++++ b/research/g9/cuda_qualification_v2_diagnostics/stage2_cuda_d013_inactive_corruption_qualification_diagnostics.py
+@@ -58,6 +58,9 @@
+ from research.g9.cuda_qualification import stage2_cuda_d013_inactive as d013
+ from research.g9.cuda_qualification import stage2_cuda_core_qualification as core_clean
+ from research.g9.cuda_qualification import stage2_cuda_execution_contract as contract
++from research.g9.cuda_qualification_v2_diagnostics import d013_refusal_diagnostics
++
++HARNESS_VERSION = "d013-corruption-qualification-diagnostics/v2.1"
+ 
+ 
+ ROOT = Path(__file__).resolve().parents[3]
+@@ -570,12 +573,27 @@
+                         library, payload, condition, records)
+                     detected = (not agrees) or raw_rejected
+                     if mutation is None and not agrees:
++                        # Truthful and DISTINCT from the refusal branch above.
++                        # v1 raised this identical string from BOTH branches, which
++                        # is why the preserved T4 traceback could not tell a real
++                        # numeric disagreement from an ordinary D013 refusal.
+                         raise CorruptionQualificationError(
+-                            "clean D013 CUDA build was rejected by the independent reference")
+-                except d013.D013InactiveError:
++                            d013_refusal_diagnostics.NUMERIC_DISAGREEMENT_MESSAGE)
++                except d013.D013InactiveError as exc:
++                    # DIAGNOSTIC (v2.1). Same fail-closed disposition: a clean-case
++                    # D013 refusal still aborts the qualification with the SAME
++                    # typed CorruptionQualificationError, so no dependent GPU, WP3
++                    # or write step runs. What changes is that the nested reason,
++                    # the exception type and the case/stage identity are retained,
++                    # bounded and sanitized, and the refusal is no longer reported
++                    # as a failure of the independent reference, which was never
++                    # consulted. The raise is chained from `exc` so the original
++                    # D013InactiveError and its own __cause__ chain stay reachable.
+                     if mutation is None:
+-                        raise CorruptionQualificationError(
+-                            "clean D013 CUDA build was rejected by the independent reference")
++                        d013_refusal_diagnostics.raise_clean_case_refusal(
++                            exc, case=label, stage="clean_case_run_host_emulated_frame",
++                            condition=condition, input_builder=case.input_builder,
++                            mutation_label=None, case_index=len(case_results))
+                     detected = reference.reference_rejects_raw_counters(
+                         library, payload, condition, records)
+                 case_results.append({"condition": condition, "input_builder": case.input_builder,

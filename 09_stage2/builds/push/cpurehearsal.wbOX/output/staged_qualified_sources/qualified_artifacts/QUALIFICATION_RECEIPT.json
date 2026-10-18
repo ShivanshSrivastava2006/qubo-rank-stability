@@ -1,0 +1,29 @@
+{
+  "scope": "Syntheticqualificationonly, notproductionacceptance",
+  "receipt": {
+    "counters": {
+      "cuda_compile_count": 3,
+      "core_corruption_mutations": 8,
+      "d013_corruption_mutations": 9
+    },
+    "identities": {},
+    "digests": {
+      "qualification_sha256": "f219378838321f3c447607da7aa1598cdf04ac662e041fe25b7e83e62007f4b8",
+      "verified_d013_release_token_sha256": "7123ac07f73fd30645a258b9e91e316ea12eac4517a2566c5ecae34dcd513b8c",
+      "compiled_core_library_sha256": "cfb96a6782a151aeebfbbe41fea98884059a2bdf183b248149dba3fdeebd6265",
+      "compiled_d013_library_sha256": "a2eaa25570d475ab3fc1e9fc54705118933ab5cdfa54ae207cf65632fed4db12"
+    },
+    "status": "ok",
+    "output": {
+      "status": "ok"
+    }
+  },
+  "wall_seconds": {
+    "wp6b": 652.550318461
+  },
+  "files_sha256": {
+    "stage2_cuda_d013_inactive_v2.so": "a2eaa25570d475ab3fc1e9fc54705118933ab5cdfa54ae207cf65632fed4db12",
+    "stage2_cuda_core_bridge.so": "cfb96a6782a151aeebfbbe41fea98884059a2bdf183b248149dba3fdeebd6265",
+    "VERIFIED_D013_RELEASE_TOKEN.json": "5aba7c2ece3d11ecc5de98c2aebe7be781420e3a989f43e97b41f6d43690af5a"
+  }
+}

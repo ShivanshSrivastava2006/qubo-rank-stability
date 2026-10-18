@@ -1,0 +1,16 @@
+{
+  "code_file": "g9_gpu_allocation_api_probe.py",
+  "competition_sources": [],
+  "dataset_sources": [],
+  "enable_gpu": true,
+  "enable_internet": false,
+  "enable_tpu": false,
+  "id": "shivanshsrivastava06/g9-gpu-allocation-api-probe-v1",
+  "is_private": true,
+  "kernel_sources": [],
+  "kernel_type": "script",
+  "language": "python",
+  "machine_shape": "NvidiaTeslaT4",
+  "model_sources": [],
+  "title": "G9 GPU Allocation API Probe V1"
+}

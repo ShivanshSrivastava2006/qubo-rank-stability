@@ -1,0 +1,24 @@
+# G3 ground-truth and ADNYE digest manifest (batches A and C)
+#
+# VERIFY:  cd research/ground_truth && sha256sum -c DIGESTS.txt
+#
+# All paths below are relative to research/ground_truth/. That single documented
+# invocation is the only supported one. Regenerate after ANY change with:
+#   cd research/ground_truth && { sed -n '1,/^# END HEADER$/p' DIGESTS.txt; \
+#     sha256sum G3_GROUND_TRUTH.json compute_g3_ground_truth.py emit_adnye_002.py G3_PROVENANCE.md \
+#       ../adnye/ADNYE-001_Lambda_ref.json ../adnye/ADNYE-001_Lambda_ref.json.sha256 \
+#       ../adnye/ADNYE-002_s_domain_box.json ../adnye/ADNYE-002_s_domain_box.json.sha256; \
+#   } > t && mv t DIGESTS.txt
+#
+# NOTE: both ADNYE records embed resolved_at_utc and the DECISIONS.md intake digest, so they are
+# deliberately NOT byte-reproducible across runs; their lines below pin the emitted
+# bytes only. G3_GROUND_TRUTH.json carries no timestamp and IS byte-reproducible.
+# END HEADER
+13229ad17e0a109731c0682c1ce22a820ea3ca412364fd882a897d036fc475db  G3_GROUND_TRUTH.json
+bb7f1f9dd708fc51c053fe9a31932c794cd3c98628bb4c8f8a80c777123076c2  compute_g3_ground_truth.py
+093ca89fb9619d2e64785e6cdad7cbd3edd1d9ff833d7594245442e727c46965  emit_adnye_002.py
+fe55fd83bf241c6793504aae19b7aa38ca2e824875f2bba0e1e00de379df4fe2  G3_PROVENANCE.md
+9473c205a002697492c75af9ab694920b6bf822b38b5bd5c58f8f240ca66116a  ../adnye/ADNYE-001_Lambda_ref.json
+433ae59fb25677156b1b9e9492ed918d14dbe843bc7a08012bfb3d90113ff936  ../adnye/ADNYE-001_Lambda_ref.json.sha256
+9d634366be5c737dbefd1ade5be5f76ceb960c9af4fa4b3d4cbc5ab3b35a2992  ../adnye/ADNYE-002_s_domain_box.json
+313e5eb59cde1833a90a25823657b27a0fdbb1c53f9ce13ab5373aa4b58124ef  ../adnye/ADNYE-002_s_domain_box.json.sha256

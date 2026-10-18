@@ -1,0 +1,24 @@
+{
+  "calculated": {
+    "Delta_full_raw_decimal": "0.018407980994804198",
+    "Lambda_ref_raw_decimal": "0.009142375225086057",
+    "decade_span": 6,
+    "q_ceil": 1,
+    "q_floor": 0,
+    "q_max": 2,
+    "q_min": -4,
+    "rho_box_binary64": 2.013479051296642,
+    "rho_box_decimal_100dp": "2.013479051296642009492950436038252320181471890974825207251147304243311454812743517222372562502037788",
+    "rho_box_rounding_error_ulps": 0.3774470913604102,
+    "s_max": 100.0,
+    "s_min": 0.0001
+  },
+  "official": {
+    "adnye_001_digest": "sha256:e94ccf751d32dcc6403d15f25a88d33a41e4b2c7288b318d32f03a5931a644a2",
+    "adnye_002_digest": "sha256:6469e01f0087bc2818dfa21f3daddccadbeae0987b098d27fbe93927c64ad5b5",
+    "rho_box": 2.013479051296642,
+    "s_max": 100.0,
+    "s_min": 0.0001
+  },
+  "status": "REPLAY_CLEAN_NOT_ACCEPTED"
+}

@@ -1,0 +1,22 @@
+{
+  "CUDA_HOME": null,
+  "cuda_home_bin_on_path": false,
+  "image_env": {
+    "BUILD_DATE": "20260629-122507",
+    "COLAB_IMAGE_TYPE": "cpu",
+    "CUDA_VERSION": null,
+    "GIT_COMMIT": "fc61d5cda7da39530055bae9bd0e92865f995cd9"
+  },
+  "nvcc_path": null,
+  "nvidia_device_nodes": [],
+  "nvidiactl_present": false,
+  "problems": [
+    "BUILD_DATE does not match the pinned GPU image",
+    "COLAB_IMAGE_TYPE does not match the pinned GPU image",
+    "CUDA_HOME is unset or not absolute",
+    "nvcc is not an executable on PATH",
+    "no /dev/nvidiaN character device"
+  ],
+  "proc_driver_gpu_models": [],
+  "requested_docker_image": "gcr.io/kaggle-gpu-images/python@sha256:37c64f7dd9c54116ecd1bcc88817c5469b88387388fade02bfa8bf3fc647d461"
+}

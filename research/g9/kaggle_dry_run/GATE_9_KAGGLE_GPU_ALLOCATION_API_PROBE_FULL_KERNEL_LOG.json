@@ -1,0 +1,52 @@
+[{"stream_name":"stdout","time":1.154184457,"data":"{\n"}
+,{"stream_name":"stdout","time":1.154229699,"data":"  \"authorizes\": \"nothing\",\n"}
+,{"stream_name":"stdout","time":1.154236795,"data":"  \"caveats\": [],\n"}
+,{"stream_name":"stdout","time":1.154241327,"data":"  \"colab_image_type\": \"gpu\",\n"}
+,{"stream_name":"stdout","time":1.1542459919999999,"data":"  \"colab_image_type_agrees_with_allocation\": true,\n"}
+,{"stream_name":"stdout","time":1.154250512,"data":"  \"compilation_performed\": false,\n"}
+,{"stream_name":"stdout","time":1.154254361,"data":"  \"cuda_bin_on_path\": true,\n"}
+,{"stream_name":"stdout","time":1.154257946,"data":"  \"cuda_compiler\": \"PRESENT\",\n"}
+,{"stream_name":"stdout","time":1.1542615569999999,"data":"  \"cuda_compiler_usable\": \"USABLE\",\n"}
+,{"stream_name":"stdout","time":1.154265183,"data":"  \"cuda_home\": \"/usr/local/cuda\",\n"}
+,{"stream_name":"stdout","time":1.154268873,"data":"  \"cuda_home_is_absolute_dir\": true,\n"}
+,{"stream_name":"stdout","time":1.154272553,"data":"  \"gpu_allocation\": \"PASS\",\n"}
+,{"stream_name":"stdout","time":1.154278136,"data":"  \"gpu_allocation_notes\": [],\n"}
+,{"stream_name":"stdout","time":1.15428502,"data":"  \"launcher_guard_cuda_home\": \"SATISFIED\",\n"}
+,{"stream_name":"stdout","time":1.1542875989999999,"data":"  \"launcher_guard_problems\": [],\n"}
+,{"stream_name":"stdout","time":1.154290009,"data":"  \"nvcc\": {\n"}
+,{"stream_name":"stdout","time":1.154292323,"data":"    \"path\": \"/usr/local/cuda/bin/nvcc\",\n"}
+,{"stream_name":"stdout","time":1.154294779,"data":"    \"presence\": \"PRESENT\",\n"}
+,{"stream_name":"stdout","time":1.154297271,"data":"    \"returncode\": 0,\n"}
+,{"stream_name":"stdout","time":1.154299689,"data":"    \"usability\": \"USABLE\",\n"}
+,{"stream_name":"stdout","time":1.15430216,"data":"    \"version_line\": \"Cuda compilation tools, release 12.8, V12.8.93\"\n"}
+,{"stream_name":"stdout","time":1.154304654,"data":"  },\n"}
+,{"stream_name":"stdout","time":1.154307008,"data":"  \"nvcc_matches_cuda_home_bin\": true,\n"}
+,{"stream_name":"stdout","time":1.154309405,"data":"  \"nvidia_device_node_count\": 2,\n"}
+,{"stream_name":"stdout","time":1.15431176,"data":"  \"nvidia_device_nodes\": [\n"}
+,{"stream_name":"stdout","time":1.154314679,"data":"    \"/dev/nvidia0\",\n"}
+,{"stream_name":"stdout","time":1.154339097,"data":"    \"/dev/nvidia1\"\n"}
+,{"stream_name":"stdout","time":1.154343167,"data":"  ],\n"}
+,{"stream_name":"stdout","time":1.154347281,"data":"  \"nvidia_smi\": {\n"}
+,{"stream_name":"stdout","time":1.154350971,"data":"    \"gpu_count\": 2,\n"}
+,{"stream_name":"stdout","time":1.154355206,"data":"    \"gpu_lines\": [\n"}
+,{"stream_name":"stdout","time":1.15435938,"data":"      \"GPU 0: Tesla T4 (UUID: GPU-9db3cb81-5616-bff2-1c4c-65c72a493592)\",\n"}
+,{"stream_name":"stdout","time":1.154363187,"data":"      \"GPU 1: Tesla T4 (UUID: GPU-6372ad62-117b-50f2-7ed7-f0b74687ffd0)\"\n"}
+,{"stream_name":"stdout","time":1.154366879,"data":"    ],\n"}
+,{"stream_name":"stdout","time":1.15437025,"data":"    \"present\": true,\n"}
+,{"stream_name":"stdout","time":1.154373805,"data":"    \"returncode\": 0,\n"}
+,{"stream_name":"stdout","time":1.154377313,"data":"    \"state\": \"ok\"\n"}
+,{"stream_name":"stdout","time":1.154380912,"data":"  },\n"}
+,{"stream_name":"stdout","time":1.154384292,"data":"  \"nvidiactl_present\": true,\n"}
+,{"stream_name":"stdout","time":1.1543878539999999,"data":"  \"probe\": \"gate9_kaggle_gpu_allocation_probe\",\n"}
+,{"stream_name":"stdout","time":1.154391494,"data":"  \"probe_conditions_met\": true,\n"}
+,{"stream_name":"stdout","time":1.154400531,"data":"  \"requested_accelerator\": \"GPU T4 x2 (NvidiaTeslaT4)\",\n"}
+,{"stream_name":"stdout","time":1.154406245,"data":"  \"requested_gpu_count\": 2,\n"}
+,{"stream_name":"stdout","time":1.154412847,"data":"  \"schema_version\": 3\n"}
+,{"stream_name":"stdout","time":1.154415287,"data":"}\n"}
+,{"stream_name":"stderr","time":3.6165864819999998,"data":"/usr/local/lib/python3.12/dist-packages/mistune.py:435: SyntaxWarning: invalid escape sequence '\\|'\n"}
+,{"stream_name":"stderr","time":3.616649304,"data":"  cells[i][c] = re.sub('\\\\\\\\\\|', '|', cell)\n"}
+,{"stream_name":"stderr","time":4.007398681,"data":"/usr/local/lib/python3.12/dist-packages/nbconvert/filters/filter_links.py:36: SyntaxWarning: invalid escape sequence '\\_'\n"}
+,{"stream_name":"stderr","time":4.007427268,"data":"  text = re.sub(r'_', '\\_', text) # Escape underscores in display text\n"}
+,{"stream_name":"stderr","time":5.70407735,"data":"[NbConvertApp] Converting notebook __script__.ipynb to html\n"}
+,{"stream_name":"stderr","time":7.073503885,"data":"[NbConvertApp] Writing 313732 bytes to __results__.html\n"}
+]

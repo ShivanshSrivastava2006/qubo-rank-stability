@@ -1,0 +1,40 @@
+{
+ "dependencies": {
+  "research/g9/cuda_qualification/stage2_cuda_core_bridge.cu": "a94b59f672456de8370d020800bde80f0c892a6a258e2f78b8d59dde5e199846",
+  "research/g9/cuda_qualification/stage2_cuda_core_bridge.py": "e0d13fbbc693be58c7c062edb546b5412397074de2f39f60f472d7b30aaaa088",
+  "research/g9/cuda_qualification/stage2_cuda_core_corruption_qualification.py": "65f0f1d67d9df65602df28854b1dcae976a9c0bfe0c25eebb45cd7249527e218",
+  "research/g9/cuda_qualification/stage2_cuda_core_qualification.py": "8b8cae6d839e581f993c5bf4a52a970036fa110b433481be1b31c7199103871d",
+  "research/g9/cuda_qualification/stage2_cuda_core_stream_engine.cu": "fce00217f8530a695d676a774e4f741a83dec2aa7066c8f8a85ce136eac37d14",
+  "research/g9/cuda_qualification/stage2_cuda_core_stream_engine.py": "d377411e6494c19fbc891df52e1ad7226de1df771bc7afdf059cf8a4368a644d",
+  "research/g9/cuda_qualification/stage2_cuda_d013_inactive.cu": "2d7bc8f559ced574283b8b4430ab6326058ae351dc5dde89386934910a3d023f",
+  "research/g9/cuda_qualification/stage2_cuda_d013_inactive.py": "06b02b2ba800f0c888eb1eb9d9d9a727c0f72d6a11871deeece6e0cf342f74c4",
+  "research/g9/cuda_qualification/stage2_cuda_execution_contract.py": "f731690ec858bc4abaecd8edd3bd3c285ebae332b2ee1894241e431804d1a0c6",
+  "research/g9/cuda_qualification/stage2_cuda_input_frame.py": "61186bf383ec25935852c01dd735f1ffd1f278d922baf4de26f6a95b0c13c597",
+  "research/g9/run_stage2_cuda_core_corruption_qualification.py": "be6c06cf0587a0f4dadb47fb19554c4cbd4f368d9906a37bbc7b714c9c86f8b8",
+  "research/g9/run_stage2_cuda_core_qualification.py": "b207aa09afc65a12341297dfc20e79bd163083c6f7221c574b96e60f7e6e431e",
+  "research/g9/stage2_beacon_bls_verify.py": "fce7bbf2f39ca70d9a97ca3f6e2a7d8a4427256013bf7b9be1ee7430e266b3c5",
+  "research/g9/stage2_commitment_adapter.py": "31fa49efa2510bc04ca44a255129b7101602e1c09c00adf969cdd1b57cfd2108",
+  "research/g9/stage2_coordinate_records.py": "ed6c2033fa3d650c1e367f5b00f53d714e445dd70eed4aa1d1fcba2dc658f009",
+  "research/g9/stage2_d013_inactive_evaluator.py": "f1b701dcd3887c98641b34b0ad4840fe4350835f8818e1e976edef85c92e6fc6",
+  "research/g9/stage2_generation_contract.py": "2b6129e1d559a85b23c055275844fc032a34eccaeec53383f27b6076f21980e6",
+  "research/g9/stage2_generation_release.py": "fc746ecf909f3501f06f0fa7afe439acdcb0a4a5b0be971aa9f1efa26f1bb213",
+  "research/g9/stage2_generation_writer.py": "f2dbed527574acec5739c2310ad06a2c3d4c684e82634727d46b0a6c5cf152e6",
+  "research/g9/stage2_generator_guard.py": "acb1e7191da1c61c89574d5986c86c2dfcaf1b7a915838ce9ca6071c8b665229",
+  "research/g9/stage2_instance_preparation.py": "6a34b3df324b6da00b0552e9dd5237532073bb7c8f6f9a6562f1fdf4d620d21e",
+  "research/g9/stage2_production_identity.py": "e27a70b0dcc39487fc1595a5630c2a5ab692cbdddd8380eb099e3a006f57c172",
+  "research/g9/stage2_production_writer.py": "6aead30747985536b0b87bb698d2ef7567cfa65af3c312dbf1b0ca4768b55145",
+  "research/g9/stage2_reference_seal.py": "5eae8b2836f8ea4641031361bf33ef23fcc7baa02b60d92a3ecf0d1e84eb484f",
+  "research/g9/stage2_section_b1_recheck.py": "36a891ddf5064f86e27ddab830fed5d2b7602adf99f10a39d62eea8b1f30cd93",
+  "research/g9/stage2_section_b2_harness.py": "4d46ee775ffcfac5c7cc56c932ae3dab2965b7e9442c0cb32682e3dc48f6d8c1",
+  "research/g9/stage2_timestamp_witness.py": "a1c248767ef952c51a279947f04371685833676b776084de6dc47f58f0453ee8",
+  "research/g9/verify_stage2_cuda_core_corruption_qualification_fixtures.py": "b8d6ea456475436f1bf63b6dbcb8a01d825de56d3f6f9be5f165368ca8d6386f",
+  "research/g9/verify_stage2_cuda_core_stream_engine_host_emulation.py": "16867cd54ac113d9ed9e28ef76cf072ce5a6b4663cbcec3638b3a0a3541dd630"
+ },
+ "package_files_sha256": {
+  "GATE_9_WP7_PACKAGE_DRAFT.md": "d12cbaa4a8eca0ce847989465f3292e8441aeb73b1d0165e7e5496ea191d3dbb",
+  "build_wp7_package.py": "1b33af87c514042aadb5d6a1083c214be9bfe6c7db17b3d593ba9b85537ce76c",
+  "verify_wp7_package_fixtures.py": "f0a5dcc5eeb01161845fcc987260ff553a10609c636f8070967537e29cf358fa",
+  "wp7_environment_pin.json": "c0c57c774380ed025cf00925512ff57c6185ff0b4955669d5282bd1bdda0cadc",
+  "wp7_session.py": "7b2975adf30c3694f914a3ee8648a20c4bbe774a643144eb5f2b970b79973e52"
+ }
+}

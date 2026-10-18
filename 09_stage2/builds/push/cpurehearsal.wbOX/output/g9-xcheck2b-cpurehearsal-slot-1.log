@@ -1,0 +1,40 @@
+[{"stream_name":"stderr","time":48.107284267,"data":"Traceback (most recent call last):\n"}
+,{"stream_name":"stderr","time":48.107335957,"data":"  File \"/kaggle/working/staged_qualified_sources/crosscheck_child.py\", line 119, in \u003cmodule\u003e\n"}
+,{"stream_name":"stdout","time":48.107296427,"data":"{\n"}
+,{"stream_name":"stdout","time":48.107364087,"data":"  \"schema\": \"decisions_os/g9_b2_wp3_crosscheck_difference/v1\",\n"}
+,{"stream_name":"stdout","time":48.107370117,"data":"  \"status\": \"REFUSED_CROSSCHECK_DIFFERENCE_OR_REFUSAL\",\n"}
+,{"stream_name":"stdout","time":48.107373767,"data":"  \"scope\": \"actual_instance_b2_wp3_crosscheck_only_no_scientific_write\",\n"}
+,{"stream_name":"stdout","time":48.107376917,"data":"  \"slot\": 1,\n"}
+,{"stream_name":"stdout","time":48.107380077,"data":"  \"kernel_id\": \"shivanshsrivastava06/g9-real-xcheck-slot-1-9b9596a5-xcheck2b\",\n"}
+,{"stream_name":"stdout","time":48.107383597,"data":"  \"instance_id\": \"stage2_01\",\n"}
+,{"stream_name":"stdout","time":48.107386537,"data":"  \"prepared_record_sha256\": \"6efcab02e93ac5afd0328ba28c250f5274c134bed4990bb3ddcc6c41d7f0cd47\",\n"}
+,{"stream_name":"stdout","time":48.107389877,"data":"  \"plan_sha256\": \"3ee7424ffe6d5e8eedbcbbd51bec8bf41cd89373f677169a95bf70e888389f3d\",\n"}
+,{"stream_name":"stdout","time":48.107392807,"data":"  \"stage\": \"child_exception\",\n"}
+,{"stream_name":"stdout","time":48.107394917,"data":"  \"detail\": \"GpuUnavailable: Actual live platform probe failed\",\n"}
+,{"stream_name":"stdout","time":48.107396907,"data":"  \"differences\": [],\n"}
+,{"stream_name":"stdout","time":48.107398827,"data":"  \"comparisons_completed\": 0,\n"}
+,{"stream_name":"stdout","time":48.107400747,"data":"  \"gpu\": {},\n"}
+,{"stream_name":"stdout","time":48.107403027,"data":"  \"receipt_written\": false,\n"}
+,{"stream_name":"stdout","time":48.107405157,"data":"  \"scientific_writes\": [],\n"}
+,{"stream_name":"stdout","time":48.107407177,"data":"  \"content_sha256\": \"012df7bd6ac5c39da17342386444997c771fcdc5a058e2b72632795dc08df098\"\n"}
+,{"stream_name":"stdout","time":48.107409297,"data":"}\n"}
+,{"stream_name":"stderr","time":48.107587087,"data":"    receipt = parent_mod.run_crosscheck_r2(\n"}
+,{"stream_name":"stderr","time":48.107594767,"data":"              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n"}
+,{"stream_name":"stderr","time":48.107598397,"data":"  File \"/kaggle/working/staged_qualified_sources/scratch/production-package-prep/xcheck_parent_r2.py\", line 247, in run_crosscheck_r2\n"}
+,{"stream_name":"stderr","time":48.107602037,"data":"    observed_platform = live_platform_probe()\n"}
+,{"stream_name":"stderr","time":48.107604927,"data":"                        ^^^^^^^^^^^^^^^^^^^^^\n"}
+,{"stream_name":"stderr","time":48.107608017,"data":"  File \"/kaggle/working/staged_qualified_sources/crosscheck_child.py\", line 104, in live_platform_probe\n"}
+,{"stream_name":"stderr","time":48.107649477,"data":"    raise GpuUnavailable('Actual live platform probe failed')\n"}
+,{"stream_name":"stderr","time":48.107654307,"data":"GpuUnavailable: Actual live platform probe failed\n"}
+,{"stream_name":"stderr","time":48.306608851,"data":"Traceback (most recent call last):\n"}
+,{"stream_name":"stderr","time":48.306642901000004,"data":"  File \"/kaggle/src/script.py\", line 65, in \u003cmodule\u003e\n"}
+,{"stream_name":"stderr","time":48.306881901,"data":"    if code!=0:raise RuntimeError('Isolated crosscheck child failed '+str(code)+' '+json.dumps(failure))\n"}
+,{"stream_name":"stderr","time":48.307071971,"data":"               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n"}
+,{"stream_name":"stderr","time":48.307077871,"data":"RuntimeError: Isolated crosscheck child failed 1 {\"kind\": \"child_exit\", \"exit_code\": 1}\n"}
+,{"stream_name":"stderr","time":50.56264802,"data":"/usr/local/lib/python3.12/dist-packages/mistune.py:435: SyntaxWarning: invalid escape sequence '\\|'\n"}
+,{"stream_name":"stderr","time":50.56267733,"data":"  cells[i][c] = re.sub('\\\\\\\\\\|', '|', cell)\n"}
+,{"stream_name":"stderr","time":50.938215955,"data":"/usr/local/lib/python3.12/dist-packages/nbconvert/filters/filter_links.py:36: SyntaxWarning: invalid escape sequence '\\_'\n"}
+,{"stream_name":"stderr","time":50.938257795,"data":"  text = re.sub(r'_', '\\_', text) # Escape underscores in display text\n"}
+,{"stream_name":"stderr","time":52.653324479,"data":"[NbConvertApp] Converting notebook __script__.ipynb to html\n"}
+,{"stream_name":"stderr","time":54.016500466,"data":"[NbConvertApp] Writing 581878 bytes to __results__.html\n"}
+]

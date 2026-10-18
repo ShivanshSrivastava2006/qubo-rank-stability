@@ -1,0 +1,27 @@
+{
+  "family_integrity_checks": 60,
+  "family_integrity_failures": 0,
+  "format_regression_tests": {
+    "failed": 0,
+    "passed": 23,
+    "scope": "format only; three piece sources per layout; no inference",
+    "work": "/home/shivansh-srivastava/decisions_os/g9_jobs/scratch/analysisfix/format_tests.vnLbr6"
+  },
+  "mock_tests": {
+    "failed": 0,
+    "passed": 36
+  },
+  "new_pyc": 0,
+  "original_hashes_verified": 10,
+  "real_inference_created": false,
+  "record_validation": {
+    "expected_records": 226981,
+    "failed": 0,
+    "family": "primary__primary__r0x1_0000000000000p-1",
+    "files": 56,
+    "first_error": null,
+    "passed": 226981,
+    "records": 226981
+  },
+  "scope": "Format plumbing only; no scientific conclusions from real data"
+}

@@ -1,0 +1,10 @@
+Gate-9 CUDA core dry run FAILED (no receipt written)
+approved_release_sha256: 50f25827ef07b8fcbf3f19223f3982b486f1b11c5d71a7d0c037fd1c6f5328a9
+kaggle_image_label_operator_asserted: kaggle-default-image-unpinned-operator-unverified
+summary: reviewed CLI returned nonzero status
+returncode: 1
+--- stdout (bounded tail) ---
+
+--- stderr (bounded tail) ---
+FAIL Gate-9 core qualification: nvcc is unavailable
+

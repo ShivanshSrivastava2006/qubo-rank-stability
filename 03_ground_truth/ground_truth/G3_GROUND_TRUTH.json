@@ -1,0 +1,171 @@
+{
+  "authority": {
+    "acceptance": "Production never asserts acceptance. Acceptance is an external fact recorded by the independent reviewer and the human decision record: see research/audit/G3_ADNYE_00{1,2}_CODEX_REPLAY.json, research/audit/G3_EXIT_READINESS_PACKET.md, the append-only cross-review logs, and DECISIONS.md. Gate exit is a separate direct human decision and is never implied by this artifact.",
+    "clause": "(a) — original-problem ground truth",
+    "human_authorization": "Approved 2026-08-25: start Gate 3, limited to (a) enumeration of F and {0,1}^20 and computation of f*, X*, Lambda_ref, and Delta_full, with f*/X* recorded in a named artifact outside research/adnye/; (b) D014 ADNYE-001 and ADNYE-002, their validator, official outputs, and independent audit; and (c) necessary append-only logs. Claude owns research/adnye/** and the ground-truth artifact; Codex owns new research/audit/** G3 validation material, with the existing frozen verifier scripts unchanged absent a corrective task. Canonical inputs stay read-only. This excludes G4+, QUBO construction, certification, experiments, and conclusions."
+  },
+  "content_sha256": "2ef3ee62c501fd5ea226bd24ca511e6ef7c1c82e785a8cb1ba46017b38568998",
+  "diagnostics": {
+    "OPT_f_configuration": {
+      "c_f": 2048,
+      "epsilon": "2^-52",
+      "rule": "OPT_f(x) iff x in F and |f(x)-f*| <= fl((c_f*eps)*fl(Lambda_ref+max(|f(x)|,|f*|)))"
+    },
+    "OPT_f_status": "NON-PRIMARY DIAGNOSTIC. X* above is the primary §3.1 exact-equality set. D015's OPT_f is the downstream decoded-candidate predicate; it is reported here because it is now computable, not as a substitute.",
+    "OPT_f_tolerant_set": [
+      [
+        "GOOGL",
+        "BAC",
+        "JNJ",
+        "MRK",
+        "XOM",
+        "CAT"
+      ]
+    ],
+    "OPT_f_tolerant_set_size": 1
+  },
+  "explicitly_excluded": {
+    "ADNYE-002": "not produced by this script. Under D014's approved chronology G3-C emits it after a sidecar/schema verification of ADNYE-001 with Lambda_ref != 0 — NOT after final resolved-branch acceptance, which is impossible before ADNYE-002 exists.",
+    "G4_and_later": [
+      "QUBO construction",
+      "encodings",
+      "coefficient bit patterns",
+      "grid coordinates",
+      "certification",
+      "experiments",
+      "A/B/C rates",
+      "conclusions"
+    ]
+  },
+  "gate": "G3",
+  "governing_specification": {
+    "ddof_convention": "population standard deviation, ddof = 0, stated with the number as D008 requires; a reporting convention, not a decision D008 could have approved.",
+    "feasible_set": "F = { x in {0,1}^20 : sum_i x_i = K, n_j(x) <= C for all j = 1..4, p^T x <= B }",
+    "ledger": "FROZEN_MATH_SPEC.md §5.2 canonical binary64 ledger: no FMA, no reassociation, no library dot product, no pow; accumulators start at +0.0; mu terms in increasing i, then quad terms row-major (i,k).",
+    "objective": "f(x) = -mu^T x + kappa_risk * x^T Sigma x   [FROZEN_MATH_SPEC.md §3.1]",
+    "optimum": "f* = min_{x in F} f(x); X* = {x in F : f(x) = f*}   [§3.1]"
+  },
+  "input_digest_preimages": {
+    "D007_kappa_risk_triple": "json.dumps(instance['kappa_risk'], sort_keys=True, separators=(',',':'), ensure_ascii=False) as UTF-8",
+    "F_predicate": "UTF-8 bytes of the D008 F-predicate line of governing_rule_verbatim, no trailing LF",
+    "canonical_Sigma": "bytes of previous_work/QDTRINITY_sTAGE_2/datasets/Sigma.csv",
+    "canonical_instance": "bytes of research/canonical/stage1_instance.json",
+    "canonical_mu": "bytes of previous_work/QDTRINITY_sTAGE_2/datasets/mu.csv"
+  },
+  "inputs": {
+    "D007_kappa_risk_triple": "sha256:188201833cb873ef513c1d846be7c0077db6d67efe1ce2360b4f0c626926ebc9",
+    "F_predicate": "sha256:85b082fab01c912d69b2c4a7bcb2d62a884d18abb5b8ecf715e59ef03980df3d",
+    "canonical_Sigma": "sha256:ebcdfb342bc30367aa2baa00c9190d86256f2b8dbedd6d07c23fc680ed346e8b",
+    "canonical_instance": "sha256:c4615d9b5066597c4754a1e06d2b3a7906c218965a7d6d530cf54f75c4b5f243",
+    "canonical_mu": "sha256:a20f7b0abd5795e058929e3705d277837d37f10aa9787d044a297f78ed2018b9"
+  },
+  "ledger_conformance": {
+    "cardinality_feasible_states_fully_literal": 38760,
+    "extremal_witnesses_reverified": 4,
+    "literal_states_checked": 58768,
+    "result": "bit-identical on every checked state",
+    "sampled_full_space_states": 20004
+  },
+  "populations": {
+    "F": 976,
+    "binary_full_space": 1048576,
+    "cardinality_feasible": 38760,
+    "note": "|F| is instance-dependent and price-dependent; D008 forbids naming F by a cardinality. C(20,6) = 38760 is exact combinatorics."
+  },
+  "resolver": {
+    "numpy": "not used for ledger arithmetic",
+    "python": "3.12.3",
+    "script": "research/ground_truth/compute_g3_ground_truth.py"
+  },
+  "results": {
+    "Delta_full": 0.018407980994804198,
+    "Delta_full_units": "E",
+    "Lambda_ref": 0.009142375225086057,
+    "Lambda_ref_units": "E",
+    "X_star": [
+      {
+        "mask": 301576,
+        "tickers": [
+          "GOOGL",
+          "BAC",
+          "JNJ",
+          "MRK",
+          "XOM",
+          "CAT"
+        ]
+      }
+    ],
+    "X_star_definition": "exact binary64 equality with f*, per FROZEN_MATH_SPEC §3.1",
+    "X_star_size": 1,
+    "argmax_f_over_F": [
+      "AMZN",
+      "V",
+      "BAC",
+      "PFE",
+      "ABBV",
+      "GE"
+    ],
+    "argmax_f_over_full_space": [
+      "MSFT",
+      "V",
+      "MA"
+    ],
+    "argmin_f_over_full_space": [
+      "AAPL",
+      "NVDA",
+      "GOOGL",
+      "AMZN",
+      "GS",
+      "LLY",
+      "JNJ",
+      "MRK",
+      "ABBV",
+      "XOM",
+      "CVX",
+      "CAT"
+    ],
+    "f_star": -0.011208571005366133,
+    "f_star_units": "E",
+    "max_f_over_F": -0.002066195780280076,
+    "max_f_over_full_space": 0.0019019122031305124,
+    "min_f_over_full_space": -0.016506068791673687
+  },
+  "schema": "decisions_os/g3_original_problem_ground_truth",
+  "schema_version": "1.0.0",
+  "status": "RESOLVED — produced by the official resolver",
+  "transparency_candidates": [
+    {
+      "population": "F",
+      "statistic": "range",
+      "units": "E",
+      "value": 0.009142375225086057
+    },
+    {
+      "ddof": 0,
+      "population": "F",
+      "statistic": "std",
+      "units": "E",
+      "value": 0.0016865729019384184
+    },
+    {
+      "population": "cardinality_feasible",
+      "statistic": "range",
+      "units": "E",
+      "value": 0.014095699981532154
+    },
+    {
+      "ddof": 0,
+      "population": "cardinality_feasible",
+      "statistic": "std",
+      "units": "E",
+      "value": 0.002120698445901396
+    },
+    {
+      "population": "binary_full_space",
+      "statistic": "range",
+      "units": "E",
+      "value": 0.018407980994804198
+    }
+  ],
+  "transparency_limit": "D008 R-U03-2: all five candidates are reported for transparency ONLY, never for re-selection of Lambda_ref."
+}

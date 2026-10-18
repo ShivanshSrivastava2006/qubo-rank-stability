@@ -1,0 +1,9 @@
+[{"stream_name":"stdout","time":1.257293156,"data":"Gate-9 A pre-launch environment: {\"COLAB_IMAGE_TYPE\": \"gpu\", \"CUDA_HOME\": \"/usr/local/cuda\", \"build_env\": {\"BUILD_DATE\": \"20260629-122508\", \"CUDA_VERSION\": \"12.8.1\", \"GIT_COMMIT\": \"fc61d5cda7da39530055bae9bd0e92865f995cd9\"}, \"cuda_home_bin_on_path\": true, \"image_digest_status\": \"post_run_metadata_audit_required\", \"nvcc_path\": \"/usr/local/cuda/bin/nvcc\", \"nvidia_device_nodes\": [\"nvidia0\", \"nvidia1\"], \"problems\": [], \"submitted_docker_image\": null}\n"}
+,{"stream_name":"stdout","time":124.659772237,"data":"PASS (pending post-run image metadata audit and owner acceptance; amendment A not satisfied) Gate-9 CUDA corruption checks; receipt: /kaggle/working/g9_cuda_core_a_corruption_qualification_receipt.json\n"}
+,{"stream_name":"stderr","time":127.479280122,"data":"/usr/local/lib/python3.12/dist-packages/mistune.py:435: SyntaxWarning: invalid escape sequence '\\|'\n"}
+,{"stream_name":"stderr","time":127.479344162,"data":"  cells[i][c] = re.sub('\\\\\\\\\\|', '|', cell)\n"}
+,{"stream_name":"stderr","time":127.916282942,"data":"/usr/local/lib/python3.12/dist-packages/nbconvert/filters/filter_links.py:36: SyntaxWarning: invalid escape sequence '\\_'\n"}
+,{"stream_name":"stderr","time":127.916313395,"data":"  text = re.sub(r'_', '\\_', text) # Escape underscores in display text\n"}
+,{"stream_name":"stderr","time":130.082168143,"data":"[NbConvertApp] Converting notebook __script__.ipynb to html\n"}
+,{"stream_name":"stderr","time":132.213753978,"data":"[NbConvertApp] Writing 959577 bytes to __results__.html\n"}
+]

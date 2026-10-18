@@ -1,0 +1,19 @@
+{
+  "slot_id": "stage2_03",
+  "status": "DRAFT_INVALID_UNARMED",
+  "instance_id": "PENDING_INSTANCE_HASH",
+  "generation_manifest_sha256": "PENDING_MANIFEST_HASH",
+  "prepared_record_sha256": "PENDING_PREPARED_HASH",
+  "accepted_identity_sha256": "PENDING_IDENTITY_HASH",
+  "bundle_sha256": "PENDING_BUNDLE_HASH",
+  "kernel_id": "PENDING_KERNEL_ID",
+  "account": "PENDING_ACCOUNT",
+  "action": "push_and_run_wp8_scientific",
+  "expiry": "PENDING_EXPIRY",
+  "nonce": "PENDING_NONCE",
+  "source_dependencies_snapshot_sha256": "PROVISIONAL_SOURCE_HASH_SUBJECT_TO_INVALIDATION",
+  "authorizations": {
+    "scientific_write_approved": false,
+    "production_identity_approved": false
+  }
+}

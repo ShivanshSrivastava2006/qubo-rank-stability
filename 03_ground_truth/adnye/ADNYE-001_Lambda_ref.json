@@ -1,0 +1,82 @@
+{
+  "adnye_id": "ADNYE-001",
+  "delta_full": 0.018407980994804198,
+  "execution_point": "G3.compute_Lambda_ref",
+  "governing_decision": "D008",
+  "governing_decision_approved_date": "2026-08-24",
+  "governing_decision_digest": "sha256:bde5cd4977786ba8b5bf251437c01717b0aac4dff6950680e47f7a68979ddaa4",
+  "governing_decision_snapshot": "## D008 — Definition of `Lambda_ref` (U-03)\nStatus: **APPROVED — RULE ONLY; NO NUMERIC VALUE**\n\n**Approved:** Shivansh, 2026-08-24. **Approval provenance:** given by Shivansh and relayed verbatim in\n`codex_messages/to_claude.md` [2026-08-24 09:47:14], and confirmed directly by Shivansh to Claude in the\nsame session. **Memo:** `research/decisions/U03_DECISION_MEMO.md` (revision 4, supporting analysis — not\nthe decision). **U-03 is CLOSED.**\n\n### The approved rule\n\n    Lambda_ref = max_{x in F} f(x) - min_{x in F} f(x)\n\n    F = { x in {0,1}^20 : sum_i x_i = K,  n_j(x) <= C for all j = 1..4,  p^T x <= B }\n\n- **Statistic:** the **range** of `f` over the population — not the standard deviation.\n- **Population `F`:** defined by the **predicate above**, never by a cardinality. **Do not write \"the\n  976-portfolio feasible set\":** `|F| = 976` is `[EXPERIMENTAL]` and **pre-canonical**, depending on the\n  synthetic hand-chosen price vector (`PROTOTYPE_AUDIT.md` F-4). `C(20,6) = 38,760` is exact combinatorics\n  and may be stated as such.\n- **Units:** `[Lambda_ref] = E`, the objective unit, realized under D007 as decimal simple daily return.\n  **Never `R`** — in the declared algebra `R` is the **residual / violation** unit (`[h] = R`,\n  `[v_ref] = R`, `[lambda_1] = E/R`). See D007's NOTATION CORRECTION.\n\n### RULE ONLY — the number is NOT approved\n\n**D008 approves a rule and fixes no numeric value.** The numeric `Lambda_ref` is a prospective **ADNYE**\nrecord executing at `G3.compute_Lambda_ref`, with all six mandatory fields: the rule above; named inputs\n(canonical `mu`, `Sigma`, the D007 triple, the canonical instance, and the `F` predicate); declared\ndependency edges with acyclic closure; exact execution point; immutable hashed output location; and the\nprohibition on encoded-QUBO or result artifacts anywhere in its closure.\n\n> **CLARIFICATION — 2026-08-24, Claude. FIELD 5 IS ASSERTED BUT NOT SPECIFIED.**\n> The sentence above lists six fields and thereby claims the charter §5 closure is complete. **It is not.**\n> Field 5 — *standalone output location and content-hash scheme* — is discharged here only by the phrase\n> \"immutable hashed output location\", which **names no location and defines no scheme**, and **no\n> authoritative file supplies either** (searched: `IMPLEMENTATION_SPEC.md`, `VALIDATION_SPEC.md`,\n> `GATE_1_CHARTER.md`, this register). **Raised by Codex** (`codex_messages/to_claude.md`\n> [2026-08-24 15:12:23]) and verified before recording.\n>\n> **What this does and does not do.** It does **NOT** undo or narrow this decision: the rule, units,\n> population, execution point and prohibitions all stand exactly as approved. It **DOES** mean the\n> six-field closure **must not be claimed complete at W0b** until field 5 is actually specified and\n> approved. **Neither agent has invented the missing fields.** Recommendation drafted for human review in\n> `research/decisions/ADNYE_OUTPUT_CONTRACT_MEMO.md` (non-authoritative).\n\n> **SUPERSEDED STATUS — D014, 2026-08-25.** Field 5 is now specified and human-approved for this record\n> and D010's box record by D014, which adopts the ADNYE Output Contract revision 6. This changes neither\n> D008's rule, numeric status, stop condition, or gate: the record remains admitted and unexecuted. The\n> quoted clarification above is retained as the accurate pre-D014 state.\n\n\n> **STATUS CHANGE — ADNYE now has its FIRST admitted prospective record.** Until this approval the ADNYE\n> table had **zero** instances, because both its candidate source rules (U-03, U-04) were unapproved. With\n> D008 the `Lambda_ref` row's source rule **is** approved, so it becomes an **admitted prospective record —\n> still NOT executed.** The three-axis domain box (U-04) remains **unapproved and therefore still not an\n> admitted instance.** Any surface stating \"ADNYE has zero current instances\" is now stale.\n>\n> **SUPERSEDED IN PART, 2026-08-24 by D010.** The sentence above about U-04 was true when D008 was\n> approved and is retained unrewritten as the record of that moment. **U-04 was approved later the same\n> day as D010**, so the box row is now an admitted prospective record too: **ADNYE has TWO admitted\n> records, not one.** \"`Lambda_ref` is ADNYE's first admitted record\" remains true historically but must\n> not be used as a present-tense count.\n\n### Degeneracy guard\n\nIf `Lambda_ref` evaluates to `0` — every member of `F` sharing an identical `f` — this is a **G3 STOP\nCONDITION**, not a value to be patched or substituted at runtime. Gate-1 exit forbids unresolved\nmathematical choices, and an approved rule with an undefined edge case is one.\n\n### Transparency reporting — approved, with an explicit limit\n\nAll considered candidate values are to be **reported at G3** alongside the approved value. **For\ntransparency ONLY, never for re-selection.** Seeing the candidates does not license changing the rule; it\nexists so the conditioning can be reported honestly — if the candidates prove close, the caveat is minor;\nif they diverge widely, that belongs prominently in any write-up.\n\n**The considered candidates are these five** (statistic x population):\n\n| # | Statistic | Population | Status |\n|---|---|---|---|\n| 1 | range | `F` (all three constraint families) | **APPROVED — this is the rule** |\n| 2 | std | `F` | considered, rejected |\n| 3 | range | cardinality-feasible (`sum_i x_i = K`) | considered, rejected |\n| 4 | std | cardinality-feasible | considered, rejected |\n| 5 | range | full decoded search space `{0,1}^20` | considered, rejected |\n\nCandidates 2 and 4 are **not reportable as written**: \"std\" is incomplete until `ddof` is fixed (the same\ncompleteness objection that counted against them in the ground of choice above). Whichever `ddof` G3\nreports must be **stated with the number**; it is a reporting convention, not a decision, and it must not\nbe presented as a value `D008` could have approved.\n\n> **CLARIFICATION — 2026-08-24 10:05 IST, Claude.** As first written, this section enumerated only \"range\n> and std, over `F` and over the cardinality-feasible set\" — the **register's four**. That enumeration was\n> **incomplete against the memo the approval rested on**: `U03_DECISION_MEMO.md` §4 (\"A fifth the register\n> does not list\", lines 196-213) raises range over `{0,1}^20`, assesses it, and rejects it on two stated\n> grounds. Shivansh approved \"**all considered** candidates\" reported at G3, so candidate 5 is inside the\n> approval and was omitted by a clerical defect in Claude's drafting, not by any narrowing decision.\n> **Raised by Codex** (`codex_messages/to_claude.md` [2026-08-24 09:55:10]) and verified against the memo\n> before amending. **This is clerical: it implements the existing approval and changes no scientific\n> content, no rule, no scope.** The approved rule, population, units, R-U03-2 and the ground of choice are\n> all untouched.\n>\n> Two consequences Shivansh should see, neither of which is assumed resolved here:\n> - **G3 cost.** Candidate 5 requires evaluating `f` over `2^20 = 1,048,576` points, against 976 for `F`\n>   and 38,760 for cardinality-feasible. That is cheap, but it is a real G3 obligation this amendment\n>   creates, and it did not exist under the four-candidate reading.\n> - **If the narrower reading was intended,** i.e. Shivansh meant only the register's four, this is a\n>   **one-line narrowing** — strike row 5 and say so. That narrowing needs his word; **Claude must not\n>   choose it**, because the wider reading is the one the approval's own words support.\n\n### Pre-declaration (accepted with this approval) — R-U03-2\n\n**A transition region falling outside the eventual `s`-box is NOT grounds to revisit U-03.** It is grounds\nfor U-04's declared 0.5x/2x domain-expansion check `[SCOPE §14]`. Any genuine re-opening requires a new\ndated approval that states what was observed first. **Recording this now is what makes it binding.**\n\n**Scope note on R-U03-2, carried from the memo:** R-U03-2 constrains **re-selection after results**. It does\n**not** restrict which arguments could be weighed before the decision. Ex-ante robustness was a legitimate\ncompeting consideration and was weighed on its merits, not ruled out of order.\n\n### Ground of choice — recorded narrowly\n\n**Interpretability.** The range *is* the quantity `Lambda_ref` denotes: the largest objective difference\nwithin the population, i.e. the objective scale a penalty competes against. Standard deviation is a proxy,\nand a dispersion statistic imports a distributional framing absent from an exhaustive combinatorial\nenumeration.\n\n**Completeness.** `max - min` is a complete rule as written. \"Standard deviation\" is **not** complete until\n`ddof` is fixed, and M1 forbids residual discretion at Gate 1.\n\n**Population.** `F` is the population the scientific question is about (`X*`, `f*` and H0-H3 are defined\nover it), and under **D002 all three constraint families are swept**, so singling out cardinality to define\nthe normalizer's population has no principled basis.\n\n**NOT claimed, and recorded as unrefuted:** that robustness is irrelevant. Exhaustive enumeration removes\nthe **sampling-error** rationale for preferring std — `Lambda_ref` is a deterministic functional of a fixed\nfinite population, carrying no estimation uncertainty — but it does **not** remove **finite-population\nsensitivity to extreme values**: the range is determined by exactly two members of `F` and the std by all\nof them, however `F` was obtained. **That trade-off is real, was weighed, and is not refuted.** A reviewer\nweighing finite-population sensitivity above interpretability would reach std by sound reasoning. The\nresidual concern stands on the record: if the extreme portfolio setting the range is one no penalty setting\nunder study would select, the range inflates the scale relative to the region actually explored. **The G3\ncandidate report is the declared mitigation** — it makes that a reported fact rather than a silent one.\n\n### Bias\n\n`Lambda_ref` is a **single common scalar** entering the slack and unbalanced coefficient maps identically\nand appearing in no encoding-distinguishing term. It introduces **no direct asymmetric bias** at any grid\npoint. This is checkable from the frozen formulas.\n\n**But it is NOT a free reparameterization.** `Lambda_ref -> gamma*Lambda_ref` with `s -> s/gamma` leaves\nslack's `lambda_S` **exactly** invariant and sends unbalanced's **`lambda_2 -> lambda_2/gamma`** — worst in\nthe small-`s` regime, where the ratio is exactly `1/gamma`. `lambda_2` is quadratic in `a(s)`, so the\nleading `gamma` cannot cancel `1/gamma^2` from `a(s/gamma)^2`. **Consequence: U-03's choice is a physical\nchoice for the unbalanced encoding and U-04 CANNOT compensate for it.** This distinguishes it from V-15,\nwhich rescales `f` and drags `Lambda_ref` with it (`Q -> gamma*Q`, argmin invariant) — **V-15 is\nunaffected**. No claim is made about how the two encodings' sampled grids correspond under a change of\nnormalizer; that belongs to U-04 and G6+.\n\n### Explicitly NOT approved by D008\n\n- Any numeric `Lambda_ref`, any candidate value, or any ratio between candidates.\n- The `s`-box (U-04), grid resolution (U-05), `alpha` (U-13), canonical data (U-07), or any Stage-2 item.\n- Any claim that the range is stable under canonical data, or that robustness is irrelevant.\n- Execution of the `Lambda_ref` ADNYE record — that is **G3**, separately gated.\n\n### MANDATORY CONDITIONING\n\nEvery downstream conclusion is **CONDITIONAL ON** the U-03 rule alongside D004-D007. Because U-03 is not\nreparameterizable for the unbalanced encoding, a different `Lambda_ref` definition would sample a genuinely\ndifferent set of `(lambda_1, lambda_2)` pairs — this conditioning is **not** cosmetic.\n\nFinal decision:\n**APPROVED — `Lambda_ref = range of f over predicate-defined F`, units `E`, RULE ONLY with no numeric\nvalue; R-U03-2 accepted; all considered candidates to be reported at G3 for transparency only, never\nre-selection. 2026-08-24, Shivansh. U-03 CLOSED.**\n\n---\n\n",
+  "governing_decision_source": {
+    "capture_rule": "decision_section_v1",
+    "path": "research/decisions/DECISIONS.md",
+    "section_heading": "## D008 — Definition of `Lambda_ref` (U-03)",
+    "source_file_digest": "sha256:c6f34d1d29029c00b7e8ae3eaa05e6812963279d13ca78a4ad1d7c3b22487e16"
+  },
+  "governing_rule_digest": "sha256:8592154f7625abae2016f08b9f21ec2a058500ebd89929542d9f9e76d0f2e12f",
+  "governing_rule_verbatim": "Lambda_ref = max_{x in F} f(x) - min_{x in F} f(x)\nF = { x in {0,1}^20 : sum_i x_i = K, n_j(x) <= C for all j = 1..4, p^T x <= B }",
+  "inputs": [
+    {
+      "digest": "sha256:a20f7b0abd5795e058929e3705d277837d37f10aa9787d044a297f78ed2018b9",
+      "name": "canonical_mu"
+    },
+    {
+      "digest": "sha256:ebcdfb342bc30367aa2baa00c9190d86256f2b8dbedd6d07c23fc680ed346e8b",
+      "name": "canonical_Sigma"
+    },
+    {
+      "digest": "sha256:188201833cb873ef513c1d846be7c0077db6d67efe1ce2360b4f0c626926ebc9",
+      "name": "D007_kappa_risk_triple"
+    },
+    {
+      "digest": "sha256:c4615d9b5066597c4754a1e06d2b3a7906c218965a7d6d530cf54f75c4b5f243",
+      "name": "canonical_instance"
+    },
+    {
+      "digest": "sha256:85b082fab01c912d69b2c4a7bcb2d62a884d18abb5b8ecf715e59ef03980df3d",
+      "name": "F_predicate"
+    }
+  ],
+  "quantity": "Lambda_ref",
+  "resolved_at_utc": "2026-08-25T13:59:20Z",
+  "resolver": {
+    "numpy": "2.4.4",
+    "python": "CPython 3.12.3"
+  },
+  "status": "resolved",
+  "transparency_candidates": [
+    {
+      "population": "F",
+      "statistic": "range",
+      "units": "E",
+      "value": 0.009142375225086057
+    },
+    {
+      "ddof": 0,
+      "population": "F",
+      "statistic": "std",
+      "units": "E",
+      "value": 0.0016865729019384184
+    },
+    {
+      "population": "cardinality_feasible",
+      "statistic": "range",
+      "units": "E",
+      "value": 0.014095699981532154
+    },
+    {
+      "ddof": 0,
+      "population": "cardinality_feasible",
+      "statistic": "std",
+      "units": "E",
+      "value": 0.002120698445901396
+    },
+    {
+      "population": "binary_full_space",
+      "statistic": "range",
+      "units": "E",
+      "value": 0.018407980994804198
+    }
+  ],
+  "units": "E",
+  "value": 0.009142375225086057
+}

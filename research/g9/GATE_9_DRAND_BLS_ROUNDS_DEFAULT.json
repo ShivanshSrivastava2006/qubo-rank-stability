@@ -1,0 +1,122 @@
+{
+  "schema": "decisions_os/gate9/drand_bls_rounds_default/v1",
+  "purpose": "Real drand DEFAULT chain rounds, fetched read-only, to demonstrate that the py_ecc G2Basic ciphersuite verifies this chain's scheme exactly. Not a chain-policy adoption decision.",
+  "chain_hash": "8990e7a9aaed2ffed73dbd7092123d6f289930540d7651336225dc172e51b2ce",
+  "chain_info_source": "research/g9/GATE_9_DRAND_CHAIN_INFO_DEFAULT_INFO.json",
+  "scheme": {
+    "scheme_id": "pedersen-bls-chained",
+    "key_group": "G1 (48-byte compressed public key)",
+    "sig_group": "G2 (96-byte compressed signature)",
+    "hash_to_curve_dst": "BLS_SIG_BLS12381G2_XMD:SHA-256_SSWU_RO_NUL_",
+    "message_construction": "sha256(previous_signature || uint64_big_endian(round))",
+    "chained": true,
+    "py_ecc_ciphersuite": "py_ecc.bls.G2Basic",
+    "source_of_truth": "research/g9/GATE_9_DRAND_SCHEMES_SOURCE.go.txt"
+  },
+  "rounds": {
+    "round_1": {
+      "url": "https://api.drand.sh/8990e7a9aaed2ffed73dbd7092123d6f289930540d7651336225dc172e51b2ce/public/1",
+      "fetched_at_utc": "2026-09-27T07:00:19Z",
+      "http_method": "GET (read-only HTTPS)",
+      "raw_response_body": "{\"round\":1,\"randomness\":\"101297f1ca7dc44ef6088d94ad5fb7ba03455dc33d53ddb412bbc4564ed986ec\",\"signature\":\"8d61d9100567de44682506aea1a7a6fa6e5491cd27a0a0ed349ef6910ac5ac20ff7bc3e09d7c046566c9f7f3c6f3b10104990e7cb424998203d8f7de586fb7fa5f60045417a432684f85093b06ca91c769f0e7ca19268375e659c2a2352b4655\",\"previous_signature\":\"176f93498eac9ca337150b46d21dd58673ea4e3581185f869672e59fa4cb390a\"}",
+      "parsed": {
+        "round": 1,
+        "randomness": "101297f1ca7dc44ef6088d94ad5fb7ba03455dc33d53ddb412bbc4564ed986ec",
+        "signature": "8d61d9100567de44682506aea1a7a6fa6e5491cd27a0a0ed349ef6910ac5ac20ff7bc3e09d7c046566c9f7f3c6f3b10104990e7cb424998203d8f7de586fb7fa5f60045417a432684f85093b06ca91c769f0e7ca19268375e659c2a2352b4655",
+        "previous_signature": "176f93498eac9ca337150b46d21dd58673ea4e3581185f869672e59fa4cb390a"
+      }
+    },
+    "round_2": {
+      "url": "https://api.drand.sh/8990e7a9aaed2ffed73dbd7092123d6f289930540d7651336225dc172e51b2ce/public/2",
+      "fetched_at_utc": "2026-09-27T07:00:19Z",
+      "http_method": "GET (read-only HTTPS)",
+      "raw_response_body": "{\"round\":2,\"randomness\":\"e8fee7dac6eb2b89df97d631cfccedbada7d5d05495bb546eef462e4145fdf8f\",\"signature\":\"aa18facd2d51b616511d542de6f9af8a3b920121401dad1434ed1db4a565f10e04fad8d9b2b4e3e0094364374caafe9b10478bf75650124831509c638b5a36a7a232ec70289f8751a2adb47fc32eb70b57dc81c39d48cbcac9fec46cdfc31663\",\"previous_signature\":\"8d61d9100567de44682506aea1a7a6fa6e5491cd27a0a0ed349ef6910ac5ac20ff7bc3e09d7c046566c9f7f3c6f3b10104990e7cb424998203d8f7de586fb7fa5f60045417a432684f85093b06ca91c769f0e7ca19268375e659c2a2352b4655\"}",
+      "parsed": {
+        "round": 2,
+        "randomness": "e8fee7dac6eb2b89df97d631cfccedbada7d5d05495bb546eef462e4145fdf8f",
+        "signature": "aa18facd2d51b616511d542de6f9af8a3b920121401dad1434ed1db4a565f10e04fad8d9b2b4e3e0094364374caafe9b10478bf75650124831509c638b5a36a7a232ec70289f8751a2adb47fc32eb70b57dc81c39d48cbcac9fec46cdfc31663",
+        "previous_signature": "8d61d9100567de44682506aea1a7a6fa6e5491cd27a0a0ed349ef6910ac5ac20ff7bc3e09d7c046566c9f7f3c6f3b10104990e7cb424998203d8f7de586fb7fa5f60045417a432684f85093b06ca91c769f0e7ca19268375e659c2a2352b4655"
+      }
+    },
+    "round_1000000": {
+      "url": "https://api.drand.sh/8990e7a9aaed2ffed73dbd7092123d6f289930540d7651336225dc172e51b2ce/public/1000000",
+      "fetched_at_utc": "2026-09-27T07:00:19Z",
+      "http_method": "GET (read-only HTTPS)",
+      "raw_response_body": "{\"round\":1000000,\"randomness\":\"a26ba4d229c666f52a06f1a9be1278dcc7a80dbc1dd2004a1ae7b63cb79fd37e\",\"signature\":\"87e355169c4410a8ad6d3e7f5094b2122932c1062f603e6628aba2e4cb54f46c3bf1083c3537cd3b99e8296784f46fb40e090961cf9634f02c7dc2a96b69fc3c03735bc419962780a71245b72f81882cf6bb9c961bcf32da5624993bb747c9e5\",\"previous_signature\":\"86bbc40c9d9347568967add4ddf6e351aff604352a7e1eec9b20dea4ca531ed6c7d38de9956ffc3bb5a7fabe28b3a36b069c8113bd9824135c3bff9b03359476f6b03beec179d4aeff456f4d34bbf702b9af78c3bb44e1892ace8e581bf4afa9\"}",
+      "parsed": {
+        "round": 1000000,
+        "randomness": "a26ba4d229c666f52a06f1a9be1278dcc7a80dbc1dd2004a1ae7b63cb79fd37e",
+        "signature": "87e355169c4410a8ad6d3e7f5094b2122932c1062f603e6628aba2e4cb54f46c3bf1083c3537cd3b99e8296784f46fb40e090961cf9634f02c7dc2a96b69fc3c03735bc419962780a71245b72f81882cf6bb9c961bcf32da5624993bb747c9e5",
+        "previous_signature": "86bbc40c9d9347568967add4ddf6e351aff604352a7e1eec9b20dea4ca531ed6c7d38de9956ffc3bb5a7fabe28b3a36b069c8113bd9824135c3bff9b03359476f6b03beec179d4aeff456f4d34bbf702b9af78c3bb44e1892ace8e581bf4afa9"
+      }
+    },
+    "round_1000001": {
+      "url": "https://api.drand.sh/8990e7a9aaed2ffed73dbd7092123d6f289930540d7651336225dc172e51b2ce/public/1000001",
+      "fetched_at_utc": "2026-09-27T07:00:19Z",
+      "http_method": "GET (read-only HTTPS)",
+      "raw_response_body": "{\"round\":1000001,\"randomness\":\"27b8659bb2785868af4106ccd0e76a2ab75d79a010b339c27f703ed53aaed6ca\",\"signature\":\"a8fe12fb1d6935c5da586b3daa1767a38c6213fbd4fca14df42e8cdb727b51e4559faddbe544b0639792cd39706668bc0de69224433040cfa6dff5b99cf38518fef04722f4a35b7a5d1890512d8745d1d1cdf69f9e4b9207b55c6fa82884a59d\",\"previous_signature\":\"87e355169c4410a8ad6d3e7f5094b2122932c1062f603e6628aba2e4cb54f46c3bf1083c3537cd3b99e8296784f46fb40e090961cf9634f02c7dc2a96b69fc3c03735bc419962780a71245b72f81882cf6bb9c961bcf32da5624993bb747c9e5\"}",
+      "parsed": {
+        "round": 1000001,
+        "randomness": "27b8659bb2785868af4106ccd0e76a2ab75d79a010b339c27f703ed53aaed6ca",
+        "signature": "a8fe12fb1d6935c5da586b3daa1767a38c6213fbd4fca14df42e8cdb727b51e4559faddbe544b0639792cd39706668bc0de69224433040cfa6dff5b99cf38518fef04722f4a35b7a5d1890512d8745d1d1cdf69f9e4b9207b55c6fa82884a59d",
+        "previous_signature": "87e355169c4410a8ad6d3e7f5094b2122932c1062f603e6628aba2e4cb54f46c3bf1083c3537cd3b99e8296784f46fb40e090961cf9634f02c7dc2a96b69fc3c03735bc419962780a71245b72f81882cf6bb9c961bcf32da5624993bb747c9e5"
+      }
+    },
+    "round_recent": {
+      "url": "https://api.drand.sh/8990e7a9aaed2ffed73dbd7092123d6f289930540d7651336225dc172e51b2ce/public/6502044",
+      "fetched_at_utc": "2026-09-27T07:00:19Z",
+      "http_method": "GET (read-only HTTPS)",
+      "raw_response_body": "{\"round\":6502044,\"randomness\":\"e775fa8dbfcf85ab25b0f32a091dd74c66237fb5c851a1ff0c43cbc2d277ec7d\",\"signature\":\"aa9ca148bd555711c3ec79ed2ad70970fae9e09e5b216f9f0cb308e181efef0a7e6cdad4e348af32d1093757acb03336023fd1a2adfb98d60a1c20c81cbc32a266636fb2c3ef8fc1b188d3bca1dcb564c3dae14d2825f05f0e3df179952517d4\",\"previous_signature\":\"96a904464bd0c275529697b1b5f2edfb10304abdfde9b4520c7bfc338735b773eed876e3877f67425877d1b58c8f83aa152ca5e22f48937c56c3d8d7945866d667dff76b031c4dc40ee5d1d9457f2835ccc6ced2b9068d8d4670c04b83be1423\"}",
+      "parsed": {
+        "round": 6502044,
+        "randomness": "e775fa8dbfcf85ab25b0f32a091dd74c66237fb5c851a1ff0c43cbc2d277ec7d",
+        "signature": "aa9ca148bd555711c3ec79ed2ad70970fae9e09e5b216f9f0cb308e181efef0a7e6cdad4e348af32d1093757acb03336023fd1a2adfb98d60a1c20c81cbc32a266636fb2c3ef8fc1b188d3bca1dcb564c3dae14d2825f05f0e3df179952517d4",
+        "previous_signature": "96a904464bd0c275529697b1b5f2edfb10304abdfde9b4520c7bfc338735b773eed876e3877f67425877d1b58c8f83aa152ca5e22f48937c56c3d8d7945866d667dff76b031c4dc40ee5d1d9457f2835ccc6ced2b9068d8d4670c04b83be1423"
+      }
+    },
+    "round_recent_predecessor": {
+      "url": "https://api.drand.sh/8990e7a9aaed2ffed73dbd7092123d6f289930540d7651336225dc172e51b2ce/public/6502043",
+      "fetched_at_utc": "2026-09-27T07:00:19Z",
+      "http_method": "GET (read-only HTTPS)",
+      "raw_response_body": "{\"round\":6502043,\"randomness\":\"628b01d0017e4410a28e4085fd2dbcde7f5f76a59f97df2093f0e444e3f6b218\",\"signature\":\"96a904464bd0c275529697b1b5f2edfb10304abdfde9b4520c7bfc338735b773eed876e3877f67425877d1b58c8f83aa152ca5e22f48937c56c3d8d7945866d667dff76b031c4dc40ee5d1d9457f2835ccc6ced2b9068d8d4670c04b83be1423\",\"previous_signature\":\"925b45f3359f38f1b31f601d5b986e433d5e2280a12a7b0834e80c5a7dcac25e777f5d361a92dcbd866dd56860aeba900d29dbc83b9fe374183e3e5d420509dfd541b64ba2ea6b6ed5e25ff0106b3a0761bea6f87fc22eab3884a64734d26ff5\"}",
+      "parsed": {
+        "round": 6502043,
+        "randomness": "628b01d0017e4410a28e4085fd2dbcde7f5f76a59f97df2093f0e444e3f6b218",
+        "signature": "96a904464bd0c275529697b1b5f2edfb10304abdfde9b4520c7bfc338735b773eed876e3877f67425877d1b58c8f83aa152ca5e22f48937c56c3d8d7945866d667dff76b031c4dc40ee5d1d9457f2835ccc6ced2b9068d8d4670c04b83be1423",
+        "previous_signature": "925b45f3359f38f1b31f601d5b986e433d5e2280a12a7b0834e80c5a7dcac25e777f5d361a92dcbd866dd56860aeba900d29dbc83b9fe374183e3e5d420509dfd541b64ba2ea6b6ed5e25ff0106b3a0761bea6f87fc22eab3884a64734d26ff5"
+      }
+    }
+  },
+  "byte_for_byte_check": {
+    "against": "research/g9/GATE_9_DRAND_CHAIN_INFO_DEFAULT_ROUND_1000000.json",
+    "fields": [
+      "round",
+      "randomness",
+      "signature",
+      "previous_signature"
+    ],
+    "identical": true
+  },
+  "chain_continuity": {
+    "rule": "round r+1 . previous_signature == round r . signature",
+    "checks": [
+      {
+        "pair": "1 -> 2",
+        "ok": true
+      },
+      {
+        "pair": "1000000 -> 1000001",
+        "ok": true
+      },
+      {
+        "pair": "6502043 -> 6502044",
+        "ok": true
+      }
+    ]
+  },
+  "genesis_seed": {
+    "round_1_previous_signature": "176f93498eac9ca337150b46d21dd58673ea4e3581185f869672e59fa4cb390a",
+    "equals_committed_info_groupHash": true,
+    "note": "Round 1's previous_signature is the chain genesis seed, not a G2 signature. It is a bare 32-byte SHA-256 value. Per the committed chain information it is the groupHash 176f9349...cb390a. It is therefore required to be exactly 32 bytes, NOT 96, and the verifier applies a distinct genesis-length rule to it. See schemes.go line 112: `if len(b.GetPreviousSignature()) > 0 { h.Write(...) }` -- the digest tolerates a shorter/absent previous signature, and for round 1 the seed is what gets hashed."
+  }
+}

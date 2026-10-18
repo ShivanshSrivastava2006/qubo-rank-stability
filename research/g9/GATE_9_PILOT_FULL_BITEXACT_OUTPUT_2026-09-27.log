@@ -1,0 +1,118 @@
+==============================================================================
+PILOT stage-2 CPU cost: tau = cost of ONE full-domain grid point
+==============================================================================
+
+[MACHINE]
+             nproc: 22
+         cpu_model: Intel(R) Core(TM) Ultra 9 185H
+          platform: Linux-7.0.0-31-generic-x86_64-with-glibc2.39
+           machine: x86_64
+    python_version: 3.12.3
+       python_full: 3.12.3
+     numpy_version: 2.4.4
+       grid_points: 3404715  (5 instances x 680,943 points)
+  grid_composition: 61^2 x 3 x 61 = 680,943  (src/g5/core_pass.py ROW_COUNT=61)
+  states_per_point: 1048576  (2**20 decoded states)
+        timed_rows: ('row0',)  (ONE row = ONE grid point)
+     bitexact_rows: ('row0', 'row1')  (extra row is NOT in the timed unit)
+      -O in effect: no (asserts on)
+
+[LOAD] NOTE: os.getloadavg()[0] is the 1-minute load average.  This machine is shared, so a section timed while load1 > cpu_count was running under concurrent load and its wall time is an UPPER BOUND on the true cost, never a lower bound.  A section timed with load1 << cpu_count is closer to an uncontended measurement.
+
+[0] FULL-DOMAIN BIT-EXACTNESS (--full-bitexact): reference vs NumPy over all 2**20 states
+    reference: pure Python over all 1,048,576 states, one row ('row0') under both encodings
+  before : loadavg=(12.08, 9.83, 8.33)  cpu_count=22
+  after  : loadavg=(6.96, 8.91, 8.84)  cpu_count=22
+    reference wall time: 9.19 min (551.1 s) [MEASURED, full domain]
+  before : loadavg=(6.96, 8.91, 8.84)  cpu_count=22
+  after  : loadavg=(6.35, 8.72, 8.78)  cpu_count=22
+    numpy wall time    : 7.120 s (7.1 s) [MEASURED, full domain]
+    ('row0', 'unbalanced') | ref bits 3fe1da272862f598 / vec bits 3fe1da272862f598 | ref argmin 35939 / vec argmin 35939 | ref ties 1 / vec ties 1 | ref len 1,048,576 / vec len 1,048,576 | match True
+         ('row0', 'slack') | ref bits 3f9a75cd0bb6ed69 / vec bits 3f9a75cd0bb6ed69 | ref argmin 63 / vec argmin 63 | ref ties 1 / vec ties 1 | ref len 1,515,175 / vec len 1,515,175 | match True
+    FULL-DOMAIN BIT-EXACT OVERALL: True
+
+[1] UNIT OF WORK: one campaign grid point == ONE coefficient row under BOTH encodings
+    representative block: states [92000,96000)
+    repeats: 3 (minimum wall time taken)
+  before : loadavg=(6.35, 8.72, 8.78)  cpu_count=22
+  after  : loadavg=(6.08, 8.62, 8.75)  cpu_count=22
+    block density  : 1.4452 lifts/state (whole-domain mean 1.4450)
+    timed          : 2.034 s (2.034 s)  states 4000 lifts 5781 words 9781 tau 9771 tie-hits 0
+    measured sec / state        : 508.5 us  [MEASURED, ONE row under both encodings]
+    measured sec / lift         : 351.8 us  [MEASURED]
+    control (2 rows, NOT the unit): 561.1 us/state, words 19562 (vs 9781 for one row)  [MEASURED, min of 3 on the same block, control only]
+    MARGINAL cost of the extra row   : 21.519 us per extra energy word (9,781 extra words, 210.5 ms extra)  [MEASURED]
+    [PASS] unit of work is ONE row: timed unit = 'row0' under both encodings; extra bit-exactness rows ('row0', 'row1') are NOT timed; a second row adds 21.519 us per extra energy word (MEASURED)
+    EXTRAPOLATED sec / grid point: 533.2 s (8.89 min)  [EXTRAPOLATED: measured us/state x 2^20, ONE row under both encodings]
+
+[2] NUMPY-VECTORISED path (vectorised across states, exact order)
+    bit-for-bit verification block: states [4096,4352)
+    budget-tied states inside the block: 256 (so the frozen lift stream has 256 duplicated words)
+    bit-exactness rows here: ('row0', 'row1') (row1 is an EXTRA case; it is NOT part of the timed unit)
+           (row, encoding) |         ref bits         vec bits | ref argmin vec argmin |  ref tie  vec tie | ref words vec words | match
+    ('row0', 'unbalanced') | 3fff59d9d3458cd2 3fff59d9d3458cd2 |       4335       4335 |        1        1 |       256       256 | True
+         ('row0', 'slack') | 3fa674a771c970f8 3fa674a771c970f8 |         62         62 |        2        2 |       512       512 | True
+    ('row1', 'unbalanced') | 401bf8a0902de00d 401bf8a0902de00d |       4351       4351 |        1        1 |       256       256 | True
+         ('row1', 'slack') | 3fe1074a771c9710 3fe1074a771c9710 |         62         62 |        2        2 |       512       512 | True
+    BIT-FOR-BIT (min bits + argmin + complete tie set + stream length) OVERALL: True
+    [PASS] argmin basis (unbalanced): unbalanced argmin 4335 >= block start 4096: absolute state-index basis confirmed
+    [PASS] argmin basis (slack): slack argmin 62 is a position inside the 512-word lift stream: block-relative basis confirmed
+    [PASS] both derivations agree: both derivations agree on min bits, argmin and tie count
+
+    [Rule A] one-ulp corruption of the NumPy result, per comparison:
+     unbalanced: global min 1.95943625 attained at 1 position(s); tau band = 2,081 ulps; runner-up is 1.513e-01 away
+                  CONTROL (1 ulp at the runner-up position) flipped: nothing
+                        min_bits: 1-ulp corruption FLIPS it; load-bearing mutation = move the global minimum (every copy) by ulps -> flipped=True (smallest shift 1 ulps)
+                          argmin: 1-ulp corruption does NOT flip it; load-bearing mutation = move the global minimum (every copy) by ulps -> flipped=True (smallest shift 1125899906842624 ulps)
+                         tie_set: 1-ulp corruption does NOT flip it; load-bearing mutation = move the global minimum (every copy) by ulps -> flipped=True (smallest shift 1125899906842624 ulps)
+                   stream_length: 1-ulp corruption does NOT flip it; load-bearing mutation = drop one word (length is a COUNT, not a value) -> flipped=True
+    [PASS] sensitivity (unbalanced): unbalanced: all four comparisons are load-bearing (each flips under its own minimal mutation; a one-ulp value corruption alone flips ['min_bits'])
+          slack: global min 0.04385875 attained at 2 position(s); tau band = 3,507 ulps; runner-up is 8.000e-04 away
+                  CONTROL (1 ulp at the runner-up position) flipped: nothing
+                        min_bits: 1-ulp corruption FLIPS it; load-bearing mutation = move the global minimum (every copy) by ulps -> flipped=True (smallest shift 1 ulps)
+                          argmin: 1-ulp corruption does NOT flip it; load-bearing mutation = move the global minimum (every copy) by ulps -> flipped=True (smallest shift 1125899906842624 ulps)
+                         tie_set: 1-ulp corruption does NOT flip it; load-bearing mutation = move the global minimum (every copy) by ulps -> flipped=True (smallest shift 1125899906842624 ulps)
+                   stream_length: 1-ulp corruption does NOT flip it; load-bearing mutation = drop one word (length is a COUNT, not a value) -> flipped=True
+    [PASS] sensitivity (slack): slack: all four comparisons are load-bearing (each flips under its own minimal mutation; a one-ulp value corruption alone flips ['min_bits'])
+
+[3] Vectorised path timing over the FULL 2**20 domain, ONE row under both encodings (no extrapolation):
+  before : loadavg=(5.98, 8.52, 8.71)  cpu_count=22
+  after  : loadavg=(5.90, 8.46, 8.69)  cpu_count=22
+    [PASS] full-domain slack stream length: slack stream length 1515175 == 1515175 (1 timed row x frozen lift total)
+      measured wall time (full domain)  : 6.009 s (6.009 s)  [MEASURED]
+      states evaluated                  : 1,048,576 (ONE row)
+      slack lift words emitted          : 1,515,175 (1 timed row x 1,515,175)
+      total lift-evaluations timed      : 2,563,751 (unbalanced 1,048,576 + slack 1,515,175)
+      measured seconds / state          : 5.731 us [MEASURED]
+      measured seconds / lift-eval      : 2.344 us [MEASURED]
+      sec / grid point (MEASURED)       : 6.01 s  [MEASURED: the full domain was run for ONE row, both encodings]
+    [PASS] budget-tie deduplication matches frozen domain: budget-tied states 466599 match the frozen domain (1515175 lifts over 1048576 states)
+
+[4] TAU and campaign extrapolation (3,404,715 grid points, ONE row each)
+    core counts reported: [16, 32, 22] (32 and this machine's cpu_count=22 are required)
+    REFERENCE: 508.5 us/state, 351.8 us/lift  [MEASURED on the representative block, ONE row]
+               sec/grid-point = 533.2 s (8.89 min)  [EXTRAPOLATED: measured us/state x 2^20]
+               total = 504,233 core-hours  [EXTRAPOLATED: sec/point x 3,404,715]
+               wall on 16 cores = 31,515 h (1,313 d)  [EXTRAPOLATED]
+               wall on 32 cores = 15,757 h (657 d)  [EXTRAPOLATED]
+               wall on 22 cores = 22,920 h (955 d)  [EXTRAPOLATED]
+    [PASS] reference core-hours arithmetic: core-hours and wall-clock re-derived from 533.15 s/point x 3,404,715 points
+
+    VECTORISED: 5.731 us/state, 2.344 us/lift [MEASURED, full domain, ONE row]
+               sec/grid-point = 6.01 s  [MEASURED]
+               total = 5,683 core-hours  [EXTRAPOLATED: sec/point x 3,404,715]
+               wall on 16 cores = 355.2 h (14.8 d)  [EXTRAPOLATED]
+               wall on 32 cores = 177.6 h (7.4 d)  [EXTRAPOLATED]
+               wall on 22 cores = 258.3 h (10.8 d)  [EXTRAPOLATED]
+    [PASS] vectorised core-hours arithmetic: core-hours and wall-clock re-derived from 6.01 s/point x 3,404,715 points
+
+    [PASS] load reporting: load average and cpu_count captured before and after all 4 timed sections
+
+[5] FEASIBILITY INDICATOR (cost only; no scientific output)
+    vectorised speedup over reference ~ 89x
+    See per-path core-hours above; owner decides feasibility.
+
+    --full-bitexact verdict: PASS
+
+    All gates passed.
+==============================================================================

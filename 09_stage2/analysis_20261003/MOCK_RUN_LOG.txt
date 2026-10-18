@@ -1,0 +1,48 @@
+work dir: /home/shivansh-srivastava/decisions_os/g9_jobs/scratch/analysis/final
+
+T1  end-to-end MOCK run: verify -> analyze -> render
+  ....  reusing the cached mock tree at /home/shivansh-srivastava/decisions_os/g9_jobs/scratch/analysis/final/mock_cache
+  PASS  T1.mock_tree_built — 5 slots x 97,339 records (real census is 2,080,562)
+  PASS  T1.verify_exit_zero — exit=0
+  PASS  T1.verify_pass — 225 checks, 0 failures
+  PASS  T1.verify_rows — 97,339 rows per slot
+  PASS  T1.verify_not_frozen — mock profile correctly reported as not the frozen census
+  PASS  T1.analyze_exit_zero — exit=0
+  PASS  T1.inference_self_hash — content_sha256=51d22803560fa0c7...
+  PASS  T1.inference_is_mock — is_mock=true because the census profile is not the frozen one
+  PASS  T1.inference_five_slots — 5 slots
+  PASS  T1.no_floats — the inference record contains no JSON float leaf
+  PASS  T1.render_exit_zero — exit=0
+  PASS  T1.render_manifest_self_hash — RENDERED_SLOTS.json re-derives
+  PASS  T1.slots_emitted — SLOT-1, SLOT-2, SLOT-4, SLOT-5, SLOT-6, SLOT-7
+  PASS  T1.slots_refused — SLOT-3 and SLOT-8 refused with stated reasons
+
+T2  negative tests — each MUST fail closed
+  PASS  N1.tampered_record_hash_fails — exit=1
+  PASS  N1.tampered_record_hash_named — failing checks: ['V6_full_records', 'V8_row_census', 'V8_slot_row_census']
+  PASS  N2.missing_slot_fails — exit=1
+  PASS  N2.missing_slot_named — failing checks: ['V1_slot_present']
+  PASS  N3.short_row_count_fails — exit=1
+  PASS  N3.short_row_count_named — failing checks: ['V5_range_cover', 'V8_slot_row_census']
+  PASS  N4.wrong_instance_fails — exit=1
+  PASS  N4.wrong_instance_named — failing checks: ['V1_instance_identity']
+  PASS  N5.repartitioned_plan_fails — exit=1
+  PASS  N5.repartitioned_plan_named — failing checks: ['V4_sealed_plan', 'V8_slot_row_census']
+  PASS  N6.forged_census_fails — exit=2
+  PASS  N6.forged_census_named — census profile refused: census profile per_slot_rows is 2080561 but its families sum to 2080562
+
+T3  MOCK labelling
+  PASS  T3.marker_everywhere — 6 markers (root + 5 slots)
+  PASS  T3.every_table_and_csv_labelled — 18 files; unlabelled: []
+  PASS  T3.inference_flagged_mock — STAGE2_INFERENCE.json carries is_mock=true
+  PASS  T3.inference_statement_present — is_mock_statement names the data as fabricated
+  PASS  T3.slot8_stub_is_the_only_captionless_table — SLOT-8 stub carries the MOCK banner and no caption, by design
+  PASS  T3.every_table_caption_labelled — 12/12 emitting tables carry the caption token
+  PASS  T3.every_latex_row_terminated — 12 tables; unterminated rows: []
+  PASS  T3.no_raw_thousands_commas — unprotected thousands commas in cells: []
+  PASS  T3.no_markdown_in_tables — markdown emphasis in cells: []
+  PASS  T3.figures_labelled — 3 figure CSVs
+
+========================================================================
+passed: 36    failed: 0
+VERDICT: PASS

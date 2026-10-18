@@ -1,0 +1,199 @@
+{
+ "sealed_sha256": "5104ccd5c9d538e58859f70741daf73e7581926442b089e0afd8792e73429123",
+ "family": "primary__primary__r0x1_0000000000000p_0",
+ "card_slices": [
+  0,
+  20,
+  40,
+  60
+ ],
+ "instances": {
+  "stage2_01": {
+   "counts": {
+    "slack": {
+     "A": 62160,
+     "B": 0,
+     "C": 164821
+    },
+    "unbalanced": {
+     "A": 36772,
+     "B": 17078,
+     "C": 173131
+    }
+   },
+   "sealed_counts": {
+    "slack": {
+     "A": 62160,
+     "B": 0,
+     "C": 164821
+    },
+    "unbalanced": {
+     "A": 36772,
+     "B": 17078,
+     "C": 173131
+    }
+   },
+   "counts_match": true,
+   "slack_only_A": 49312,
+   "unbalanced_only_A": 23924,
+   "both_directional_sealed": "yes",
+   "both_directional_match": true,
+   "labels_sha256": "bdf7eca9e0ca1d1902ef9a53b53bdc291082e3796243bef12c9cb54e8a1522b3",
+   "record_dir": "/home/shivansh-srivastava/decisions_os/g9_jobs/scratch/prodv4/final_merge_c.QANf/merge/piece_merge_slot1/staged_qualified_sources/scratch/v4_sweep/stage2_01/primary__primary__r0x1_0000000000000p_0/full_records"
+  },
+  "stage2_02": {
+   "counts": {
+    "slack": {
+     "A": 180844,
+     "B": 0,
+     "C": 46137
+    },
+    "unbalanced": {
+     "A": 11907,
+     "B": 49343,
+     "C": 165731
+    }
+   },
+   "sealed_counts": {
+    "slack": {
+     "A": 180844,
+     "B": 0,
+     "C": 46137
+    },
+    "unbalanced": {
+     "A": 11907,
+     "B": 49343,
+     "C": 165731
+    }
+   },
+   "counts_match": true,
+   "slack_only_A": 171117,
+   "unbalanced_only_A": 2180,
+   "both_directional_sealed": "yes",
+   "both_directional_match": true,
+   "labels_sha256": "fd093160eb462d0c71d8505f528e409cac67d528bd523a72c14a837b1f51cec3",
+   "record_dir": "/home/shivansh-srivastava/decisions_os/g9_jobs/scratch/prodv4/final_merge_c.QANf/merge/piece_merge_slot2/staged_qualified_sources/scratch/v4_sweep/stage2_02/primary__primary__r0x1_0000000000000p_0/full_records"
+  },
+  "stage2_03": {
+   "counts": {
+    "slack": {
+     "A": 212097,
+     "B": 0,
+     "C": 14884
+    },
+    "unbalanced": {
+     "A": 31911,
+     "B": 23704,
+     "C": 171366
+    }
+   },
+   "sealed_counts": {
+    "slack": {
+     "A": 212097,
+     "B": 0,
+     "C": 14884
+    },
+    "unbalanced": {
+     "A": 31911,
+     "B": 23704,
+     "C": 171366
+    }
+   },
+   "counts_match": true,
+   "slack_only_A": 180186,
+   "unbalanced_only_A": 0,
+   "both_directional_sealed": "no",
+   "both_directional_match": true,
+   "labels_sha256": "3226a18c4f62c67ad6d526a482b3f168f330d725209946322bd763fe73b79b3d",
+   "record_dir": "/home/shivansh-srivastava/decisions_os/g9_jobs/scratch/prodv4/final_merge_c.QANf/merge/piece_merge_slot3/staged_qualified_sources/scratch/v4_sweep/stage2_03/primary__primary__r0x1_0000000000000p_0/full_records"
+  },
+  "stage2_04": {
+   "counts": {
+    "slack": {
+     "A": 169153,
+     "B": 0,
+     "C": 57828
+    },
+    "unbalanced": {
+     "A": 9632,
+     "B": 39008,
+     "C": 178341
+    }
+   },
+   "sealed_counts": {
+    "slack": {
+     "A": 169153,
+     "B": 0,
+     "C": 57828
+    },
+    "unbalanced": {
+     "A": 9632,
+     "B": 39008,
+     "C": 178341
+    }
+   },
+   "counts_match": true,
+   "slack_only_A": 160720,
+   "unbalanced_only_A": 1199,
+   "both_directional_sealed": "yes",
+   "both_directional_match": true,
+   "labels_sha256": "d135dc625981e72fba0065e0c47e2eb7457daba9605076eda7a9ca6cd8ed2a9a",
+   "record_dir": "/home/shivansh-srivastava/decisions_os/g9_jobs/scratch/prodv4/final_merge_c.QANf/merge/piece_merge_slot4/staged_qualified_sources/scratch/v4_sweep/stage2_04/primary__primary__r0x1_0000000000000p_0/full_records"
+  },
+  "stage2_05": {
+   "counts": {
+    "slack": {
+     "A": 218075,
+     "B": 0,
+     "C": 8906
+    },
+    "unbalanced": {
+     "A": 27833,
+     "B": 96652,
+     "C": 102496
+    }
+   },
+   "sealed_counts": {
+    "slack": {
+     "A": 218075,
+     "B": 0,
+     "C": 8906
+    },
+    "unbalanced": {
+     "A": 27833,
+     "B": 96652,
+     "C": 102496
+    }
+   },
+   "counts_match": true,
+   "slack_only_A": 190421,
+   "unbalanced_only_A": 179,
+   "both_directional_sealed": "yes",
+   "both_directional_match": true,
+   "labels_sha256": "3fd9617bf90d1124c0f78e0d481f3599e55b0442a38c3801a035eb4a4d4f95a1",
+   "record_dir": "/home/shivansh-srivastava/decisions_os/g9_jobs/scratch/prodv4/final_merge_c.QANf/merge/piece_merge_slot5/staged_qualified_sources/scratch/v4_sweep/stage2_05/primary__primary__r0x1_0000000000000p_0/full_records"
+  }
+ },
+ "panels": [
+  "stage2_01_card00.png",
+  "stage2_01_card20.png",
+  "stage2_01_card40.png",
+  "stage2_01_card60.png",
+  "stage2_02_card00.png",
+  "stage2_02_card20.png",
+  "stage2_02_card40.png",
+  "stage2_02_card60.png",
+  "stage2_03_card00.png",
+  "stage2_03_card20.png",
+  "stage2_03_card40.png",
+  "stage2_03_card60.png",
+  "stage2_04_card00.png",
+  "stage2_04_card20.png",
+  "stage2_04_card40.png",
+  "stage2_04_card60.png",
+  "stage2_05_card00.png",
+  "stage2_05_card20.png",
+  "stage2_05_card40.png",
+  "stage2_05_card60.png"
+ ]
+}

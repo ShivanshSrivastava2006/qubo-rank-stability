@@ -1,0 +1,9 @@
+[{"stream_name":"stdout","time":0.844677409,"data":"Gate-9 pre-launch environment: {\"CUDA_HOME\": \"/usr/local/cuda\", \"cuda_home_bin_on_path\": true, \"image_env\": {\"BUILD_DATE\": \"20260629-122508\", \"COLAB_IMAGE_TYPE\": \"gpu\", \"CUDA_VERSION\": \"12.8.1\", \"GIT_COMMIT\": \"fc61d5cda7da39530055bae9bd0e92865f995cd9\"}, \"nvcc_path\": \"/usr/local/cuda/bin/nvcc\", \"nvidia_device_nodes\": [\"nvidia0\", \"nvidia1\"], \"nvidiactl_present\": true, \"problems\": [], \"proc_driver_gpu_models\": [\"Tesla T4\", \"Tesla T4\"], \"submitted_docker_image\": null}\n"}
+,{"stream_name":"stdout","time":223.456787991,"data":"PASS Gate-9 CUDA core dry run; receipt: /kaggle/working/g9_cuda_core_dry_run_receipt.json\n"}
+,{"stream_name":"stderr","time":225.572179846,"data":"/usr/local/lib/python3.12/dist-packages/mistune.py:435: SyntaxWarning: invalid escape sequence '\\|'\n"}
+,{"stream_name":"stderr","time":225.572237855,"data":"  cells[i][c] = re.sub('\\\\\\\\\\|', '|', cell)\n"}
+,{"stream_name":"stderr","time":225.86649944,"data":"/usr/local/lib/python3.12/dist-packages/nbconvert/filters/filter_links.py:36: SyntaxWarning: invalid escape sequence '\\_'\n"}
+,{"stream_name":"stderr","time":225.866530348,"data":"  text = re.sub(r'_', '\\_', text) # Escape underscores in display text\n"}
+,{"stream_name":"stderr","time":227.221804751,"data":"[NbConvertApp] Converting notebook __script__.ipynb to html\n"}
+,{"stream_name":"stderr","time":228.62612342,"data":"[NbConvertApp] Writing 761969 bytes to __results__.html\n"}
+]

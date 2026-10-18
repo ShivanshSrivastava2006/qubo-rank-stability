@@ -1,0 +1,17 @@
+{
+  "code_file": "g9_wp7_nonscientific_dry_run_v2_284e713c.READY.py",
+  "competition_sources": [],
+  "dataset_sources": [],
+  "enable_gpu": true,
+  "enable_internet": false,
+  "enable_tpu": false,
+  "id": "shivanshsrivastava06/g9-wp7-nonscientific-dry-run-v2-284e713c",
+  "is_private": true,
+  "kernel_sources": [],
+  "kernel_type": "script",
+  "keywords": [],
+  "language": "python",
+  "machine_shape": "NvidiaTeslaT4",
+  "model_sources": [],
+  "title": "G9 WP7 Nonscientific Dry Run v2 284e713c"
+}

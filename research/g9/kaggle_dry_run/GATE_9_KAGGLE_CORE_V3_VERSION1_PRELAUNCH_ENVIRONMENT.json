@@ -1,0 +1,22 @@
+{
+  "CUDA_HOME": "/usr/local/cuda",
+  "cuda_home_bin_on_path": true,
+  "image_env": {
+    "BUILD_DATE": "20260629-122508",
+    "COLAB_IMAGE_TYPE": "gpu",
+    "CUDA_VERSION": "12.8.1",
+    "GIT_COMMIT": "fc61d5cda7da39530055bae9bd0e92865f995cd9"
+  },
+  "nvcc_path": "/usr/local/cuda/bin/nvcc",
+  "nvidia_device_nodes": [
+    "nvidia0",
+    "nvidia1"
+  ],
+  "nvidiactl_present": true,
+  "problems": [],
+  "proc_driver_gpu_models": [
+    "Tesla T4",
+    "Tesla T4"
+  ],
+  "submitted_docker_image": null
+}
