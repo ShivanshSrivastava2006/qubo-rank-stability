@@ -52,21 +52,25 @@ bash ops/scripts/run_tests.sh             # Gate 5 machinery tests
 bash ops/scripts/run_stage2_fixtures.sh stage2.tsv  # all 32 Stage-2 fixture suites (slow: ~30 min)
 ```
 
-**Clean-folder test (2026-10-18).** Every check in the two runners plus all 32 Stage-2 fixture
-suites (66 commands) was run on a fresh copy of this repository, with the original project
-hidden from the process, under Python 3.14.4. **56 pass.** The 10 that do not:
+**Clean-folder test (2026-10-24).** Every check in the two runners plus all 32 Stage-2 fixture
+suites (66 commands) was run on a fresh clone of this repository, with the original project
+hidden from the process, under CPython 3.12.3 with NumPy 2.4.4 and `py_ecc` 8.0.0, and with
+`TMPDIR` on the same disk as the repository. **60 pass.** The 6 that do not:
 
 | Check | Why it fails |
 |---|---|
 | `research/audit/verify_g2_canonical.py`, `research/audit/verify_gate0_facts.py`, `02_data/canonical/audit_g2_batch3_delta.py` | Need the original source data, which is not included |
 | Gate-2 and Gate-3 checksum checks (`DIGESTS.txt` in `02_data/canonical/` and `03_ground_truth/ground_truth/`) | Three provenance notes they list are not included; every other listed file matches |
-| `verify_stage2_generator_fixtures.py` | The Stage-2 generator deliberately refuses to run on any CPython other than 3.12 |
 | `verify_stage2_section_b1_recheck_fixtures.py` | Contains an absolute path to the original machine |
-| `verify_stage2_beacon_bls_verify_fixtures.py` | Needs the third-party `py_ecc` package (randomness beacon; the beacon was deferred and not used) |
-| `verify_stage2_reference_seal_fixtures.py` | Copies the repository into the temporary folder with hard links, which fails when `/tmp` is on a different filesystem. Passes with `TMPDIR` set to a folder on the same disk as the repository |
-| `verify_stage2_section_b2_harness_fixtures.py` | Fails in the original project too on this Python version; the study specifies Python 3.12, not re-checked here |
 
-Notes: `verify_stage2_cuda_core_corruption_qualification_fixtures.py` failed once ("normal/-O plan differs") and passed on the two later runs, so treat it as intermittent. `verify_stage2_d013_inactive_evaluator_fixtures.py` needs more than 5 minutes; the runner allows 15.
+In the original project, all 32 Stage-2 fixture suites pass under the same environment.
+
+Notes:
+- `verify_stage2_beacon_bls_verify_fixtures.py` needs the third-party `py_ecc` package (randomness beacon; the beacon was deferred and not used).
+- `verify_stage2_reference_seal_fixtures.py` copies the repository into the temporary folder with hard links, so `TMPDIR` must be on the same filesystem as the repository.
+- Under Python 3.14, the Stage-2 generator and section-B2 harness suites also fail: the study specifies CPython 3.12.
+- `verify_stage2_cuda_core_corruption_qualification_fixtures.py` failed once on 2026-10-18 ("normal/-O plan differs") and has passed on every later run; treat it as intermittent.
+- `verify_stage2_d013_inactive_evaluator_fixtures.py` needs more than 5 minutes; the runner allows 15.
 
 ## Licence
 
