@@ -68,39 +68,6 @@ hidden from the process, under Python 3.14.4. **56 pass.** The 10 that do not:
 
 Notes: `verify_stage2_cuda_core_corruption_qualification_fixtures.py` failed once ("normal/-O plan differs") and passed on the two later runs, so treat it as intermittent. `verify_stage2_d013_inactive_evaluator_fixtures.py` needs more than 5 minutes; the runner allows 15.
 
-## What is not included, and why
-
-- **Raw result records** (about 22 GB: Stage-2 production records 9.9 GB, Gate-5 certification
-  output 1.1 GB, Stage-1 GPU runs 11 GB) are too large for git. A data deposit (Zenodo) is
-  planned with the arXiv version. The sealed summary that the paper's numbers come from is
-  included (`09_stage2/sealed_results/STAGE2_INFERENCE.json`).
-- **The Stage-2 reference seal** (`wp7b_reference_seal.json`, 302 MB) exceeds GitHub's file-size
-  limit; `research/g9/stage2_reference_seal.py` regenerates it.
-- **The GPU production runs** were executed on Kaggle Tesla T4 workers; the job harness is not
-  included because it is tied to that environment and to machine-specific paths.
-- **Working notes, most decision records and the Stage-1 GPU run bundles** are not included.
-  Some frozen documents still refer to them, or to files by their original names.
-- **The original source data** that the Stage-1 instance was built from is not included; the built,
-  hash-checked instance is (`02_data/canonical/`).
-- **Absolute paths.** Some frozen scripts and records contain the original machine paths
-  (`/home/shivansh-srivastava/decisions_os/...`). They are left unchanged because frozen files
-  are hash-pinned. Scripts that read those paths will not run elsewhere without the raw records.
-
-## Public-copy adjustments
-
-- Four independent review scripts are placed in the gate folder they check:
-  `04_encodings/g4/review_g4_energy_conformance.py`, `02_data/canonical/audit_g2_batch3_delta.py`,
-  and `05_certification/g5/review_g5_amortisation_v2.py` and `review_g5_domain_cache_corrective.py`.
-  Their root-folder line was changed for the new location; `04_encodings/g4/verify_g4_energy.py`
-  pins the new value of its probe.
-- Five files were renamed: `08_audit/audit/verify_gate0_review_findings.py`,
-  `08_audit/audit/GATE_0_INDEPENDENT_AUDIT.md`, `08_audit/audit/G3_ADNYE_00{1,2}_INDEPENDENT_REPLAY.json`
-  and `research/g9/GATE_9_TIMESTAMP_WITNESS_INDEPENDENT_REVIEW.md`.
-- Wording in some unpinned documents and code comments was edited for the public copy.
-  No hash-pinned file was edited except the four review scripts above.
-- Edited files' sha256 values therefore differ from any recorded for them in the project
-  records. `ops/scripts/run_all_verifiers.sh` and `run_tests.sh` call the current paths.
-
 ## Licence
 
 Code: MIT (`LICENSE`). Documentation, specifications, records and data: CC BY 4.0 (`LICENSE-docs`).
